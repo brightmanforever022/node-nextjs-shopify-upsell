@@ -3,7 +3,6 @@ const withCSS = require("@zeit/next-css");
 
 const webpack = require("webpack");
 const apiKey = JSON.stringify(process.env.SHOPIFY_API_KEY);
-console.log('apiKey', apiKey);
 
 module.exports = withCSS({
   webpack: config => {
