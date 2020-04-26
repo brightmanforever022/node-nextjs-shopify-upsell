@@ -7,6 +7,8 @@ import Cookies from "js-cookie";
 import "@shopify/polaris/styles.css";
 import translations from "@shopify/polaris/locales/en.json";
 
+const apiKey = process.env.SHOPIFY_API_KEY;
+
 const client = new ApolloClient({
   fetchOptions: {
     credentials: "include"
@@ -21,7 +23,7 @@ class MyApp extends App {
         <AppProvider i18n={translations}>
           <Provider
             config={{
-              apiKey: process.env.SHOPIFY_API_KEY,
+              apiKey: apiKey,
               shopOrigin: shopOrigin,
               forceRedirect: true
             }}
