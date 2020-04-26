@@ -21,7 +21,7 @@ class MyApp extends App {
         <AppProvider i18n={translations}>
           <Provider
             config={{
-              apiKey: API_KEY,
+              apiKey: process.env.SHOPIFY_API_KEY,
               shopOrigin: shopOrigin,
               forceRedirect: true
             }}
