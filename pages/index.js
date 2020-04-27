@@ -23,7 +23,7 @@ const SHOP_TIPJAR_METAFIELD_QUERY = gql`
   }
 `;
 
-const handleUpdateSettings = () => {
+const handleUpdateSettings = async () => {
   const updateMetafield = await fetch(`https://wishlist-marketing.myshopify.com/admin/api/2020-04/metafields.json`, {
     method: 'POST',
     headers: {
