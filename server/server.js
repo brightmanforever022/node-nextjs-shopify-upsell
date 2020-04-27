@@ -59,9 +59,9 @@ app.prepare().then(() => {
 
   // Create/update the shop metafield
   router.post('/updateSettingsMetafield', async ctx => {
-    console.log('ctx.req.body', ctx.req.body);
+    console.log('ctx.request.body', ctx.request.body);
     // Return message if no metafield value provided
-    if (!ctx.req.body.metafieldValue) {
+    if (!ctx.request.body.metafieldValue) {
       ctx.body = 'No metafield value provided.';
     };
 
@@ -75,7 +75,7 @@ app.prepare().then(() => {
         'metafield': {
           'namespace': 'tipjar',
           'key': 'settings',
-          'value': ctx.req.body.metafieldValue,
+          'value': ctx.request.body.metafieldValue,
           'value_type': 'string'
         }
       })
