@@ -62,14 +62,14 @@ app.prepare().then(() => {
         'Content-Type': 'application/json',
         'X-Shopify-Access-Token': ctx.session.accessToken,
       },
-      body: {
+      body: JSON.stringify({
         "metafield": {
           "namespace": "tipjar",
           "key": "settings",
           "value": "this is a test",
           "value_type": "string"
         }
-      }
+      })
     });
     const updateMetafieldJson = await updateMetafield.json();
     console.log('serverresponse:', JSON.stringify(updateMetafieldJson));
