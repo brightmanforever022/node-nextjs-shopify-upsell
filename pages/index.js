@@ -22,6 +22,10 @@ const SHOP_TIPJAR_METAFIELD_QUERY = gql`
   }
 `;
 
+const handleUpdateSettings = () => {
+  console.log('update the settings/create the metafield with rest api');
+}
+
 const Index = () => {
   const { loading, error, data } = useQuery(SHOP_TIPJAR_METAFIELD_QUERY, {
     fetchPolicy: 'network-only'
@@ -31,7 +35,13 @@ const Index = () => {
   if (error) return <p>Error: {error.message}</p>;
 
   return (
-    <Page title="Tip Settings">
+    <Page
+      title="Tip Settings"
+      primaryAction={{
+        content: 'Update settings',
+        onAction: () => handleUpdateSettings,
+      }}
+    >
       <Layout>
         <p>Data: { JSON.stringify(data) }</p>
         <DefaultTippingPercentage />
