@@ -24,23 +24,16 @@ const SHOP_TIPJAR_METAFIELD_QUERY = gql`
 `;
 
 const handleUpdateSettings = async () => {
-  const updateMetafield = await fetch(`https://wishlist-marketing.myshopify.com/admin/api/2020-04/metafields.json`, {
+  console.log('make the call');
+  const updateMetafield = await fetch('/updateSettingsMetafield', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'X-Shopify-Access-Token': Cookies.get('shopOrigin'),
     },
-    body: {
-      "metafield": {
-        "namespace": "tipjar",
-        "key": "settings",
-        "value": "this is a test",
-        "value_type": "string"
-      }
-    }
+    body: {}
   });
   const updateMetafieldJson = await updateMetafield.json();
-  console.log('updateMetafieldJson:', JSON.stringify(updateMetafieldJson));
+  console.log('client response updateMetafieldJson:', JSON.stringify(updateMetafieldJson));
 }
 
 const Index = () => {

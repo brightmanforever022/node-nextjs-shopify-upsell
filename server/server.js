@@ -55,9 +55,32 @@ app.prepare().then(() => {
   );
   server.use(
     graphQLProxy({
-      version: ApiVersion.October19
+      version: ApiVersion.April20
     })
   );
+
+  // Create/update the shop metafield
+  router.post('/updateSettingsMetafield', async ctx => {
+    const updateMetafield = await fetch(`https://wishlist-marketing.myshopify.com/admin/api/2020-04/metafields.json`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Shopify-Access-Token': Cookies.get('shopOrigin'),
+      },
+      body: {
+        "metafield": {
+          "namespace": "tipjar",
+          "key": "settings",
+          "value": "this is a test",
+          "value_type": "string"
+        }
+      }
+    });
+    const updateMetafieldJson = await updateMetafield.json();
+    console.log('serverresponse:', JSON.stringify(updateMetafieldJson));
+    ctx.body = updateMetafieldJson;
+  });
+
   router.get("*", verifyRequest(), async ctx => {
     await handle(ctx.req, ctx.res);
     ctx.respond = false;
