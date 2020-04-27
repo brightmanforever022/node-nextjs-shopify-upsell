@@ -55,8 +55,10 @@ app.prepare().then(() => {
     })
   );
 
+  server.use(bodyParser());
+
   // Create/update the shop metafield
-  router.post('/updateSettingsMetafield', bodyParser(), async ctx => {
+  router.post('/updateSettingsMetafield', async ctx => {
     console.log('ctx.req.body', ctx.req.body);
     // Return message if no metafield value provided
     if (!ctx.req.body.metafieldValue) {
