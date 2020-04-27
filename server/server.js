@@ -44,11 +44,6 @@ app.prepare().then(() => {
           secure: true,
           sameSite: "none"
         });
-        ctx.cookies.set("accessToken", accessToken, {
-          httpOnly: false,
-          secure: true,
-          sameSite: "none"
-        })
         ctx.redirect("/");
       }
     })
@@ -65,7 +60,7 @@ app.prepare().then(() => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-Shopify-Access-Token': Cookies.get('shopOrigin'),
+        'X-Shopify-Access-Token': ctx.session.accessToken,
       },
       body: {
         "metafield": {

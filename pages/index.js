@@ -1,7 +1,6 @@
 import { Page, Layout } from '@shopify/polaris';
 import gql from 'graphql-tag';
 import { useQuery } from '@apollo/react-hooks';
-import Cookies from 'js-cookie';
 import DefaultTippingPercentage from '../components/DefaultTippingPercentage';
 import EnableTipJarApp from '../components/EnableTipJarApp';
 import EnableCustomTipOption from '../components/EnableCustomTipOption';
@@ -30,7 +29,9 @@ const handleUpdateSettings = async () => {
     headers: {
       'Content-Type': 'application/json',
     },
-    body: {}
+    body: {
+      tipJarSettings: 'asdf'
+    }
   });
   const updateMetafieldJson = await updateMetafield.json();
   console.log('client response updateMetafieldJson:', JSON.stringify(updateMetafieldJson));
@@ -52,7 +53,6 @@ const Index = () => {
         onAction: handleUpdateSettings,
       }}
     >
-      {console.log('access token:', Cookies.get('accessToken'))}
       <Layout>
         <p>Data: { JSON.stringify(data) }</p>
         <DefaultTippingPercentage />
