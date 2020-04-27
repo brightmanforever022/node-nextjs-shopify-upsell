@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Page, Layout } from '@shopify/polaris';
 import gql from 'graphql-tag';
 import { useQuery } from '@apollo/react-hooks';
@@ -27,7 +28,11 @@ const Index = () => {
     fetchPolicy: 'network-only'
   });
 
+  const [updateMetafieldIsLoading, setUpdateMetafieldIsLoading] = useState(false);
+
   const handleUpdateSettings = async () => {
+    setUpdateMetafieldIsLoading(true);
+
     const updateMetafield = await fetch('/updateSettingsMetafield', {
       method: 'POST',
       headers: {
@@ -41,6 +46,7 @@ const Index = () => {
     console.log('Response for updateMetafieldJson:', JSON.stringify(updateMetafieldJson));
   
     // Refetch data to make sure everything is up to date
+    setUpdateMetafieldIsLoading(false);
     refetch();
   }
   
@@ -53,6 +59,7 @@ const Index = () => {
       primaryAction={{
         content: 'Update settings',
         onAction: handleUpdateSettings,
+        loading: updateMetafieldIsLoading
       }}
     >
       <Layout>
