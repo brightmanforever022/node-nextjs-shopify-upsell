@@ -1,14 +1,39 @@
 import { Page, Layout } from '@shopify/polaris';
+import gql from 'graphql-tag';
+import { useQuery } from '@apollo/react-hooks';
 import DefaultTippingPercentage from '../components/DefaultTippingPercentage';
 import EnableTipJarApp from '../components/EnableTipJarApp';
 import EnableCustomTipOption from '../components/EnableCustomTipOption';
 import TipModalTitle from '../components/TipModalTitle';
 import TipModalDescription from '../components/TipModalDescription';
 
+const SHOP_TIPJAR_METAFIELD_QUERY = gql`
+  query {
+    shop {
+      metafields(first: 1, namespace: "tipjar") {
+        edges {
+          node {
+            key
+            value
+          }
+        }
+      }
+    }
+  }
+`;
+
 const Index = () => {
+  const { loading, error, data } = useQuery(SHOP_TIPJAR_METAFIELD_QUERY, {
+    fetchPolicy: 'network-only'
+  });
+  
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
+
   return (
     <Page title="Tip Settings">
       <Layout>
+        <p>Data: { JSON.stringify(data) }</p>
         <DefaultTippingPercentage />
 
         <EnableTipJarApp />
@@ -18,26 +43,6 @@ const Index = () => {
         <TipModalTitle />
 
         <TipModalDescription />
-
-        {/* <Layout.AnnotatedSection
-          title="Tip Modal Background Color"
-          description="Default background color for Tip Modal on store checkout page."
-        >
-          <Card sectioned>
-            <FormLayout>
-            </FormLayout>
-          </Card>
-        </Layout.AnnotatedSection>
-
-        <Layout.AnnotatedSection
-          title="Tip Modal Text Color"
-          description="Default text color for Tip Modal on store checkout page."
-        >
-          <Card sectioned>
-            <FormLayout>
-            </FormLayout>
-          </Card>
-        </Layout.AnnotatedSection> */}
       </Layout>
     </Page>
   )
