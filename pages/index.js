@@ -39,7 +39,7 @@ const Index = () => {
       title="Tip Settings"
       primaryAction={{
         content: 'Update settings',
-        onAction: () => handleUpdateSettings,
+        onAction: handleUpdateSettings,
       }}
     >
       <Layout>
