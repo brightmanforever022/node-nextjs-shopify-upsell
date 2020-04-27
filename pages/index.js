@@ -22,24 +22,27 @@ const SHOP_TIPJAR_METAFIELD_QUERY = gql`
   }
 `;
 
-const handleUpdateSettings = async () => {
-  const updateMetafield = await fetch('/updateSettingsMetafield', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      metafieldValue: 'This is a newly updated value.'
-    })
-  });
-  const updateMetafieldJson = await updateMetafield.json();
-  console.log('Response for updateMetafieldJson:', JSON.stringify(updateMetafieldJson));
-}
-
 const Index = () => {
-  const { loading, error, data } = useQuery(SHOP_TIPJAR_METAFIELD_QUERY, {
+  const { loading, error, data, refetch } = useQuery(SHOP_TIPJAR_METAFIELD_QUERY, {
     fetchPolicy: 'network-only'
   });
+
+  const handleUpdateSettings = async () => {
+    const updateMetafield = await fetch('/updateSettingsMetafield', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        metafieldValue: 'This is a newly updated value again 22222.'
+      })
+    });
+    const updateMetafieldJson = await updateMetafield.json();
+    console.log('Response for updateMetafieldJson:', JSON.stringify(updateMetafieldJson));
+  
+    // Refetch data to make sure everything is up to date
+    refetch();
+  }
   
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
