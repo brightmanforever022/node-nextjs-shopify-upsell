@@ -44,6 +44,11 @@ app.prepare().then(() => {
           secure: true,
           sameSite: "none"
         });
+        ctx.cookies.set("accessToken", accessToken, {
+          httpOnly: false,
+          secure: true,
+          sameSite: "none"
+        })
         ctx.redirect("/");
       }
     })

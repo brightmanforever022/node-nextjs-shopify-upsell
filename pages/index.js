@@ -1,6 +1,7 @@
 import { Page, Layout } from '@shopify/polaris';
 import gql from 'graphql-tag';
 import { useQuery } from '@apollo/react-hooks';
+import Cookies from 'js-cookie';
 import DefaultTippingPercentage from '../components/DefaultTippingPercentage';
 import EnableTipJarApp from '../components/EnableTipJarApp';
 import EnableCustomTipOption from '../components/EnableCustomTipOption';
@@ -23,7 +24,16 @@ const SHOP_TIPJAR_METAFIELD_QUERY = gql`
 `;
 
 const handleUpdateSettings = () => {
-  console.log('update the settings/create the metafield with rest api');
+  // const updateMetafield = await fetch(`https://wishlist-marketing.myshopify.com/admin/api/2020-04/graphql.json`, {
+  //   method: 'POST',
+  //   headers: {
+  //     'Content-Type': 'application/json',
+  //     'X-Shopify-Access-Token': Cookies.get('shopOrigin'),
+  //   },
+  //   body: createQuery
+  // });
+  // const createResponseJson = await createResponse.json();
+  // console.log('createResponeJson:', JSON.stringify(createResponseJson));
 }
 
 const Index = () => {
@@ -42,6 +52,7 @@ const Index = () => {
         onAction: handleUpdateSettings,
       }}
     >
+      {console.log('access token:', Cookies.get('accessToken'))}
       <Layout>
         <p>Data: { JSON.stringify(data) }</p>
         <DefaultTippingPercentage />
