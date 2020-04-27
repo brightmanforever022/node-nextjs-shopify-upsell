@@ -30,11 +30,11 @@ const handleUpdateSettings = async () => {
       'Content-Type': 'application/json',
     },
     body: {
-      tipJarSettings: 'asdf'
+      metafieldValue: 'This is a newly updated value.'
     }
   });
   const updateMetafieldJson = await updateMetafield.json();
-  console.log('client response updateMetafieldJson:', JSON.stringify(updateMetafieldJson));
+  console.log('Response for updateMetafieldJson:', JSON.stringify(updateMetafieldJson));
 }
 
 const Index = () => {
