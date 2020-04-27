@@ -23,15 +23,14 @@ const SHOP_TIPJAR_METAFIELD_QUERY = gql`
 `;
 
 const handleUpdateSettings = async () => {
-  console.log('make the call');
   const updateMetafield = await fetch('/updateSettingsMetafield', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: {
+    body: JSON.stringify({
       metafieldValue: 'This is a newly updated value.'
-    }
+    })
   });
   const updateMetafieldJson = await updateMetafield.json();
   console.log('Response for updateMetafieldJson:', JSON.stringify(updateMetafieldJson));
