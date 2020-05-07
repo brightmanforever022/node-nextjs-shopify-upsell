@@ -33,34 +33,35 @@ const Index = () => {
   const [newSettings, updateSettings] = useState({});
 
   const handleUpdateSettings = async () => {
-    // setUpdateMetafieldIsLoading(true);
+    setUpdateMetafieldIsLoading(true);
 
-    // const updateMetafield = await fetch('/updateSettingsMetafield', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify({
-    //     metafieldValue: JSON.stringify(
-    //       {
-    //         enableTipJar: true,
-    //         enableCustomTipOption: true,
-    //       }
-    //     )
-    //   })
-    // });
-    // const updateMetafieldJson = await updateMetafield.json();
-    // console.log('Response for updateMetafieldJson:', JSON.stringify(updateMetafieldJson));
+    const updateMetafield = await fetch('/updateSettingsMetafield', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        metafieldValue: JSON.stringify(
+          {
+            enableTipJar: true,
+            enableCustomTipOption: true,
+          }
+        )
+      })
+    });
+    const updateMetafieldJson = await updateMetafield.json();
+    console.log('Response for updateMetafieldJson:', JSON.stringify(updateMetafieldJson));
   
-    // // Refetch data to make sure everything is up to date
-    // setUpdateMetafieldIsLoading(false);
-    // refetch();
+    // Refetch data to make sure everything is up to date
+    setUpdateMetafieldIsLoading(false);
+    refetch();
   }
   
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
   const settings = data.shop.metafields.edges[0].node.value;
+  console.log('high settings', settings);
   
   return (
     <Page
