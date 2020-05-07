@@ -55,20 +55,18 @@ const Index = () => {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
-  const settings = newSettings ? newSettings : JSON.parse(data.shop.metafields.edges[0].node.value);
+  const originalSettings = JSON.parse(data.shop.metafields.edges[0].node.value);
+  const settings = newSettings ? newSettings : originalSettings;
   
   return (
     <Page
       title="Tip Settings"
-      primaryAction={newSettings && (JSON.stringify(newSettings) != JSON.stringify(settings)) ? {
+      primaryAction={newSettings && (JSON.stringify(newSettings) != JSON.stringify(originalSettings)) ? {
         content: 'Update settings',
         onAction: handleUpdateSettings,
         loading: updateMetafieldIsLoading
       } : null}
     >
-      {console.log('settings', settings)}
-      {console.log('newSettings', newSettings)}
-      {console.log('comparison', JSON.stringify(settings) == JSON.stringify(newSettings))}
       <Layout>
         <p>Metafield value: { JSON.stringify(settings) }</p>
         <p>State: { JSON.stringify(newSettings) }</p>
