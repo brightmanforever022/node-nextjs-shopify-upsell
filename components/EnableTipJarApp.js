@@ -4,14 +4,14 @@ import { Layout, SettingToggle } from '@shopify/polaris';
 function EnableTipJarApp({ settings, updateSettings }) {
   const [tipJarActive, setTipJarActive] = useState(settings.enableTipJar);
 
-  const handleToggle = useCallback(() => {
+  const handleToggle = () => {
     setTipJarActive((tipJarActive) => !tipJarActive);
     let newSettings = {...settings};
     console.log('tipjaractive', tipJarActive);
     newSettings.enableTipJar = tipJarActive;
     console.log('newsettings', newSettings);
     updateSettings(newSettings);
-  }, []);
+  };
 
   const contentStatus = tipJarActive ? 'Disable' : 'Enable';
   const textStatus = tipJarActive ? 'enabled' : 'disabled';
