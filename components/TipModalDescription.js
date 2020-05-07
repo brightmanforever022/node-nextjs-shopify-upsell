@@ -19,7 +19,7 @@ function TipModalDescription({ settings, updateSettings }) {
       <Card sectioned>
         <FormLayout>
           <TextField
-            label="Title Text"
+            label="Description Text"
             value={tipModalDescription}
             onChange={handleChange}
             multiline={true}

@@ -71,7 +71,7 @@ const Index = () => {
         <p>Metafield value: { JSON.stringify(originalSettings) }</p>
         <p>State: { JSON.stringify(newSettings) }</p>
 
-        <DefaultTippingPercentage />
+        <DefaultTippingPercentage settings={settings} updateSettings={updateSettings} />
 
         <EnableTipJarApp settings={settings} updateSettings={updateSettings} />
 
