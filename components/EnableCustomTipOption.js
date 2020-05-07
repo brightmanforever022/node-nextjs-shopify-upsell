@@ -2,6 +2,7 @@ import { useState, useCallback } from 'react';
 import { Layout, SettingToggle } from '@shopify/polaris';
 
 function EnableCustomTipOption({ settings }) {
+  console.log('settings.enableCustomTipOption', settings.enableCustomTipOption);
   const [customTipOptionActive, setCustomTipOptionActive] = useState(settings.enableCustomTipOption);
 
   const handleToggle = useCallback(() => {

@@ -58,7 +58,8 @@ const Index = () => {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
-  const settings = JSON.parse(data.shop.metafields.edges[0].node.value);
+  const metafieldSettings = JSON.parse(data.shop.metafields.edges[0].node.value);
+  const [settings, updateSettings] = useState(metafieldSettings);
 
   return (
     <Page
@@ -71,9 +72,10 @@ const Index = () => {
     >
       <Layout>
         <p>Data: { JSON.stringify(data) }</p>
+        <p>State: { JSON.stringify(settings) }</p>
         <DefaultTippingPercentage />
 
-        <EnableTipJarApp settings={settings} />
+        <EnableTipJarApp settings={settings} updateSettings={updateSettings} />
 
         <EnableCustomTipOption settings={settings} />
 
