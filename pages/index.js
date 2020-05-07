@@ -30,7 +30,7 @@ const Index = () => {
 
   const [updateMetafieldIsLoading, setUpdateMetafieldIsLoading] = useState(false);
 
-  const [newSettings, updateSettings] = useState({});
+  const [newSettings, updateSettings] = useState();
 
   const handleUpdateSettings = async () => {
     setUpdateMetafieldIsLoading(true);
