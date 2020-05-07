@@ -60,7 +60,7 @@ const Index = () => {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
-  const settings = data.shop.metafields.edges[0].node.value;
+  const settings = JSON.parse(data.shop.metafields.edges[0].node.value);
   console.log('high settings', settings);
   
   return (
