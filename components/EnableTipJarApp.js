@@ -6,11 +6,12 @@ function EnableTipJarApp({ settings, updateSettings }) {
   console.log('settings inside enabletipjar again', settings.enableTipJar);
   const [tipJarActive, setTipJarActive] = useState(settings.enableTipJar);
 
-  const handleToggle = useCallback(() => setTipJarActive(() => {
+  const handleToggle = useCallback(() => {
+    setTipJarActive(!tipJarActive);
     let newSettings = settings;
     newSettings.enableTipJar = tipJarActive;
     updateSettings(newSettings);
-  }), []);
+  }, []);
 
   const contentStatus = tipJarActive ? 'Disable' : 'Enable';
   const textStatus = tipJarActive ? 'enabled' : 'disabled';
