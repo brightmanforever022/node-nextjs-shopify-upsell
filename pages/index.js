@@ -73,8 +73,7 @@ const Index = () => {
       }}
     >
       <Layout>
-        <p>Data: { JSON.stringify(data) }</p>
-        <p>State: { JSON.stringify(settings) }</p>
+        <p>Metafield value: { JSON.stringify(settings) }</p>
 
         <DefaultTippingPercentage />
 
