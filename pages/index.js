@@ -30,6 +30,7 @@ const Index = () => {
   });
 
   const [updateMetafieldIsLoading, setUpdateMetafieldIsLoading] = useState(false);
+  const [installInitialSettingsLoading, setInstallInitialSettingsLoading] = useState(false);
 
   const [newSettings, updateSettings] = useState();
 
@@ -54,6 +55,8 @@ const Index = () => {
   }
 
   const handleInstallInitialSettings = async () => {
+    setInstallInitialSettingsLoading(true);
+
     const updateMetafield = await fetch('/updateSettingsMetafield', {
       method: 'POST',
       headers: {
@@ -66,6 +69,8 @@ const Index = () => {
     const updateMetafieldJson = await updateMetafield.json();
     console.log('Response for updateMetafieldJson:', JSON.stringify(updateMetafieldJson));
 
+    // Refetch data to make sure everything is up to date
+    setInstallInitialSettingsLoading(false);
     refetch();
   }
   
@@ -89,7 +94,7 @@ const Index = () => {
           <Card sectioned title="Installation instructions">
             1. Create the snippet and include at end of body tag.
             2. Install initial settings.
-            <Button action={() => handleInstallInitialSettings}></Button>
+            <Button action={() => handleInstallInitialSettings} loading={installInitialSettingsLoading}></Button>
           </Card>
         </Layout>
       }
