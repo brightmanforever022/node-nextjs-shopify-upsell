@@ -77,7 +77,7 @@ const Index = () => {
 
         <EnableCustomTipOption settings={settings} updateSettings={updateSettings} />
 
-        <TipModalTitle />
+        <TipModalTitle settings={settings} updateSettings={updateSettings} />
 
         <TipModalDescription />
       </Layout>

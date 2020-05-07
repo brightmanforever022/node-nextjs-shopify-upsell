@@ -1,9 +1,18 @@
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
 import { Layout, Card, FormLayout, TextField } from '@shopify/polaris';
 
-function TipModalTitle() {
-  const [value, setValue] = useState('Leave a Tip');
-  const handleChange = useCallback((newValue) => setValue(newValue), []);
+function TipModalTitle({ settings, updateSettings }) {
+  const [tipModalTitle, setTipModalTitle] = useState(settings.tipModalTitle);
+  // const handleChange = useCallback((newValue) => setValue(newValue), []);
+
+  // const [tipJarActive, setTipJarActive] = useState(settings.enableTipJar);
+
+  const handleToggle = (newTipModalTitle) => {
+    let newSettings = {...settings};
+    newSettings.tipModalTitle = newTipModalTitle;
+    updateSettings(newSettings);
+    setTipModalTitle(newTipModalTitle);
+  };
 
   return (
     <Layout.AnnotatedSection
@@ -14,7 +23,7 @@ function TipModalTitle() {
         <FormLayout>
           <TextField
             label="Title Text"
-            value={value}
+            value={tipModalTitle}
             onChange={handleChange}
           />
         </FormLayout>
