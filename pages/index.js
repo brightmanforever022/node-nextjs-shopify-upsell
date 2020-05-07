@@ -71,7 +71,7 @@ const Index = () => {
         <p>Data: { JSON.stringify(data) }</p>
         <DefaultTippingPercentage />
 
-        <EnableTipJarApp settings={JSON.parse(data)} />
+        <EnableTipJarApp settings={data} />
 
         <EnableCustomTipOption />
 
