@@ -41,7 +41,7 @@ const Index = () => {
       body: JSON.stringify({
         metafieldValue: JSON.stringify(
           {
-            enableTipJar: false,
+            enableTipJar: true,
             enableCustomTIpOption: true,
           }
         )
