@@ -42,7 +42,7 @@ const Index = () => {
         metafieldValue: JSON.stringify(
           {
             enableTipJar: true,
-            enableCustomTIpOption: true,
+            enableCustomTipOption: true,
           }
         )
       })
@@ -75,7 +75,7 @@ const Index = () => {
 
         <EnableTipJarApp settings={settings} />
 
-        <EnableCustomTipOption />
+        <EnableCustomTipOption settings={settings} />
 
         <TipModalTitle />
 
