@@ -60,7 +60,7 @@ const Index = () => {
   return (
     <Page
       title="Tip Settings"
-      primaryAction={newSettings && (newSettings != settings) ? {
+      primaryAction={newSettings && (JSON.stringify(newSettings) != JSON.stringify(settings)) ? {
         content: 'Update settings',
         onAction: handleUpdateSettings,
         loading: updateMetafieldIsLoading
