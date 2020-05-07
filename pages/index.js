@@ -94,7 +94,7 @@ const Index = () => {
           <Card sectioned title="Installation instructions">
             1. Create the snippet and include at end of body tag.
             2. Install initial settings.
-            <Button action={() => handleInstallInitialSettings} loading={installInitialSettingsLoading}></Button>
+            <Button primary onClick={handleInstallInitialSettings} loading={installInitialSettingsLoading}>Install initial settings</Button>
           </Card>
         </Layout>
       }
