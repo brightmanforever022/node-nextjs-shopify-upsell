@@ -68,7 +68,7 @@ const Index = () => {
     >
       {console.log('settings', settings)}
       {console.log('newSettings', newSettings)}
-      {console.log('comparison', settings == newSettings)}
+      {console.log('comparison', JSON.stringify(settings) == JSON.stringify(newSettings))}
       <Layout>
         <p>Metafield value: { JSON.stringify(settings) }</p>
         <p>State: { JSON.stringify(newSettings) }</p>
