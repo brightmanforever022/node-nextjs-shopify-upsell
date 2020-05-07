@@ -5,7 +5,7 @@ function EnableTipJarApp({ settings, updateSettings }) {
   const [tipJarActive, setTipJarActive] = useState(settings.enableTipJar);
 
   const handleToggle = useCallback(() => {
-    setTipJarActive((customTipOptionActive) => !customTipOptionActive);
+    setTipJarActive((tipJarActive) => !tipJarActive);
     let newSettings = settings;
     newSettings.enableTipJar = tipJarActive;
     updateSettings(newSettings);
