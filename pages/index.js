@@ -39,7 +39,12 @@ const Index = () => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        metafieldValue: 'This is a newly updated value again 22222.'
+        metafieldValue: JSON.stringify(
+          {
+            enableTipJar: true,
+            enableCustomTIpOption: true,
+          }
+        )
       })
     });
     const updateMetafieldJson = await updateMetafield.json();
