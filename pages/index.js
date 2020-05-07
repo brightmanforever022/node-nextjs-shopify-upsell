@@ -55,7 +55,7 @@ const Index = () => {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
-  const settings = JSON.parse(data.shop.metafields.edges[0].node.value);
+  const settings = newSettings ? newSettings : JSON.parse(data.shop.metafields.edges[0].node.value);
   
   return (
     <Page
