@@ -3,9 +3,6 @@ import { Layout, Card, FormLayout, TextField } from '@shopify/polaris';
 
 function TipModalTitle({ settings, updateSettings }) {
   const [tipModalTitle, setTipModalTitle] = useState(settings.tipModalTitle);
-  // const handleChange = useCallback((newValue) => setValue(newValue), []);
-
-  // const [tipJarActive, setTipJarActive] = useState(settings.enableTipJar);
 
   const handleChange = (newTipModalTitle) => {
     let newSettings = {...settings};

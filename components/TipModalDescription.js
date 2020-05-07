@@ -1,9 +1,15 @@
 import { useState, useCallback } from 'react';
 import { Layout, Card, FormLayout, TextField } from '@shopify/polaris';
 
-function TipModalDescription() {
-  const [value, setValue] = useState('All tips go towards our hard-working delivery drivers.');
-  const handleChange = useCallback((newValue) => setValue(newValue), []);
+function TipModalDescription({ settings, updateSettings }) {
+  const [tipModalDescription, setTipModalDescription] = useState(settings.tipModalDescription);
+
+  const handleChange = (newTipModalDescription) => {
+    let newSettings = {...settings};
+    newSettings.tipModalDescription = newTipModalDescription;
+    updateSettings(newSettings);
+    setTipModalDescription(newTipModalDescription);
+  };
 
   return (
     <Layout.AnnotatedSection
@@ -14,7 +20,7 @@ function TipModalDescription() {
         <FormLayout>
           <TextField
             label="Title Text"
-            value={value}
+            value={tipModalDescription}
             onChange={handleChange}
             multiline={true}
           />
