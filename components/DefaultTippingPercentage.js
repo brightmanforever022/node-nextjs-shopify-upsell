@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Layout, Card, FormLayout, Checkbox } from '@shopify/polaris';
 
 function DefaultTippingPercentage({ settings, updateSettings }) {
