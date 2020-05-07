@@ -66,6 +66,9 @@ const Index = () => {
         loading: updateMetafieldIsLoading
       } : null}
     >
+      {console.log('settings', settings)}
+      {console.log('newSettings', newSettings)}
+      {console.log('comparison', settings == newSettings)}
       <Layout>
         <p>Metafield value: { JSON.stringify(settings) }</p>
         <p>State: { JSON.stringify(newSettings) }</p>
