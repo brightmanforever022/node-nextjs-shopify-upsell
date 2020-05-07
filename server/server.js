@@ -76,7 +76,7 @@ app.prepare().then(() => {
           'namespace': 'tipjar',
           'key': 'settings',
           'value': ctx.request.body.metafieldValue,
-          'value_type': 'string'
+          'value_type': 'json_string'
         }
       })
     });
