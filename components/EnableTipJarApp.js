@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
 import { Layout, SettingToggle } from '@shopify/polaris';
 
 function EnableTipJarApp({ settings, updateSettings }) {
@@ -7,9 +7,7 @@ function EnableTipJarApp({ settings, updateSettings }) {
   const handleToggle = () => {
     setTipJarActive((tipJarActive) => !tipJarActive);
     let newSettings = {...settings};
-    console.log('tipjaractive', tipJarActive);
     newSettings.enableTipJar = tipJarActive;
-    console.log('newsettings', newSettings);
     updateSettings(newSettings);
   };
 

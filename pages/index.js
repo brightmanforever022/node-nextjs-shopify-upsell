@@ -41,12 +41,7 @@ const Index = () => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        metafieldValue: JSON.stringify(
-          {
-            enableTipJar: true,
-            enableCustomTipOption: true,
-          }
-        )
+        metafieldValue: JSON.stringify(newSettings)
       })
     });
     const updateMetafieldJson = await updateMetafield.json();
@@ -65,11 +60,11 @@ const Index = () => {
   return (
     <Page
       title="Tip Settings"
-      primaryAction={{
+      primaryAction={newSettings && newSettings != settings ? {
         content: 'Update settings',
         onAction: handleUpdateSettings,
         loading: updateMetafieldIsLoading
-      }}
+      } : null}
     >
       <Layout>
         <p>Metafield value: { JSON.stringify(settings) }</p>
