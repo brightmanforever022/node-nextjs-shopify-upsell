@@ -55,7 +55,7 @@ const Index = () => {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
-  const originalSettings = JSON.parse(data.shop.metafields.edges[0].node.value);
+  const originalSettings = data.shop.metafields.edges[0] ? JSON.parse(data.shop.metafields.edges[0].node.value) : null;
   const settings = newSettings ? newSettings : originalSettings;
   
   return (
@@ -67,20 +67,28 @@ const Index = () => {
         loading: updateMetafieldIsLoading
       } : null}
     >
-      <Layout>
-        <p>Metafield value: { JSON.stringify(originalSettings) }</p>
-        <p>State: { JSON.stringify(newSettings) }</p>
+      {!originalSettings &&
+        <Layout>
+          There are no shop settings yet, click here to install.
+        </Layout>
+      }
 
-        <DefaultTippingPercentage settings={settings} updateSettings={updateSettings} />
+      {originalSettings &&
+        <Layout>
+          <p>Metafield value: { JSON.stringify(originalSettings) }</p>
+          <p>State: { JSON.stringify(newSettings) }</p>
 
-        <EnableTipJarApp settings={settings} updateSettings={updateSettings} />
+          <DefaultTippingPercentage settings={settings} updateSettings={updateSettings} />
 
-        <EnableCustomTipOption settings={settings} updateSettings={updateSettings} />
+          <EnableTipJarApp settings={settings} updateSettings={updateSettings} />
 
-        <TipModalTitle settings={settings} updateSettings={updateSettings} />
+          <EnableCustomTipOption settings={settings} updateSettings={updateSettings} />
 
-        <TipModalDescription settings={settings} updateSettings={updateSettings} />
-      </Layout>
+          <TipModalTitle settings={settings} updateSettings={updateSettings} />
+
+          <TipModalDescription settings={settings} updateSettings={updateSettings} />
+        </Layout>
+      }
     </Page>
   )
 }
