@@ -7,7 +7,7 @@ function TipModalTitle({ settings, updateSettings }) {
 
   // const [tipJarActive, setTipJarActive] = useState(settings.enableTipJar);
 
-  const handleToggle = (newTipModalTitle) => {
+  const handleChange = (newTipModalTitle) => {
     let newSettings = {...settings};
     newSettings.tipModalTitle = newTipModalTitle;
     updateSettings(newSettings);
