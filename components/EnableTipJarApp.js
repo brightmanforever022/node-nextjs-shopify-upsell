@@ -8,9 +8,7 @@ function EnableTipJarApp({ settings, updateSettings }) {
     let newSettings = {...settings};
     newSettings.enableTipJar = !tipJarActive;
     updateSettings(newSettings);
-    console.log('current', tipJarActive);
     setTipJarActive((tipJarActive) => !tipJarActive);
-    console.log('new', tipJarActive);
   };
 
   const contentStatus = tipJarActive ? 'Disable' : 'Enable';

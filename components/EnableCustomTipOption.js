@@ -1,12 +1,15 @@
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
 import { Layout, SettingToggle } from '@shopify/polaris';
 
-function EnableCustomTipOption({ settings }) {
+function EnableCustomTipOption({ settings, updateSettings }) {
   const [customTipOptionActive, setCustomTipOptionActive] = useState(settings.enableCustomTipOption);
 
-  const handleToggle = useCallback(() => {
-    setCustomTipOptionActive((customTipOptionActive) => !customTipOptionActive), []
-  });
+  const handleToggle = () => {
+    let newSettings = {...settings};
+    newSettings.enableCustomTipOption = !customTipOptionActive;
+    updateSettings(newSettings);
+    setCustomTipOptionActive((customTipOptionActive) => !customTipOptionActive);
+  };
 
   const contentStatus = customTipOptionActive ? 'Disable' : 'Enable';
   const textStatus = customTipOptionActive ? 'enabled' : 'disabled';

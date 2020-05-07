@@ -77,7 +77,7 @@ const Index = () => {
 
         <EnableTipJarApp settings={settings} updateSettings={updateSettings} />
 
-        <EnableCustomTipOption settings={settings} />
+        <EnableCustomTipOption settings={settings} updateSettings={updateSettings} />
 
         <TipModalTitle />
 
