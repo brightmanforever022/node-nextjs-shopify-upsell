@@ -30,6 +30,8 @@ const Index = () => {
 
   const [updateMetafieldIsLoading, setUpdateMetafieldIsLoading] = useState(false);
 
+  const [newSettings, updateSettings] = useState({});
+
   const handleUpdateSettings = async () => {
     // setUpdateMetafieldIsLoading(true);
 
@@ -58,10 +60,7 @@ const Index = () => {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
-  if (data) {
-    const metafieldSettings = JSON.parse(data.shop.metafields.edges[0].node.value);
-    const [settings, updateSettings] = useState(metafieldSettings);
-  }
+  const settings = data.shop.metafields.edges[0].node.value;
   
   return (
     <Page
@@ -78,9 +77,9 @@ const Index = () => {
 
         <DefaultTippingPercentage />
 
-        {/* <EnableTipJarApp settings={settings} updateSettings={updateSettings} /> */}
+        <EnableTipJarApp settings={settings} updateSettings={updateSettings} />
 
-        {/* <EnableCustomTipOption settings={settings} /> */}
+        <EnableCustomTipOption settings={settings} />
 
         <TipModalTitle />
 
