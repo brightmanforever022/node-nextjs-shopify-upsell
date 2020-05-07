@@ -61,7 +61,6 @@ const Index = () => {
   if (error) return <p>Error: {error.message}</p>;
 
   const settings = JSON.parse(data.shop.metafields.edges[0].node.value);
-  console.log('high settings', settings);
   
   return (
     <Page

@@ -8,6 +8,7 @@ function EnableTipJarApp({ settings, updateSettings }) {
     setTipJarActive((tipJarActive) => !tipJarActive);
     let newSettings = {...settings};
     newSettings.enableTipJar = tipJarActive;
+    console.log('newsettings', newSettings);
     updateSettings(newSettings);
   }, []);
 
