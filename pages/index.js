@@ -31,28 +31,28 @@ const Index = () => {
   const [updateMetafieldIsLoading, setUpdateMetafieldIsLoading] = useState(false);
 
   const handleUpdateSettings = async () => {
-    setUpdateMetafieldIsLoading(true);
+    // setUpdateMetafieldIsLoading(true);
 
-    const updateMetafield = await fetch('/updateSettingsMetafield', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        metafieldValue: JSON.stringify(
-          {
-            enableTipJar: true,
-            enableCustomTipOption: true,
-          }
-        )
-      })
-    });
-    const updateMetafieldJson = await updateMetafield.json();
-    console.log('Response for updateMetafieldJson:', JSON.stringify(updateMetafieldJson));
+    // const updateMetafield = await fetch('/updateSettingsMetafield', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify({
+    //     metafieldValue: JSON.stringify(
+    //       {
+    //         enableTipJar: true,
+    //         enableCustomTipOption: true,
+    //       }
+    //     )
+    //   })
+    // });
+    // const updateMetafieldJson = await updateMetafield.json();
+    // console.log('Response for updateMetafieldJson:', JSON.stringify(updateMetafieldJson));
   
-    // Refetch data to make sure everything is up to date
-    setUpdateMetafieldIsLoading(false);
-    refetch();
+    // // Refetch data to make sure everything is up to date
+    // setUpdateMetafieldIsLoading(false);
+    // refetch();
   }
   
   if (loading) return <p>Loading...</p>;
@@ -73,11 +73,12 @@ const Index = () => {
       <Layout>
         <p>Data: { JSON.stringify(data) }</p>
         <p>State: { JSON.stringify(settings) }</p>
+        
         <DefaultTippingPercentage />
 
-        <EnableTipJarApp settings={settings} updateSettings={updateSettings} />
+        {/* <EnableTipJarApp settings={settings} updateSettings={updateSettings} /> */}
 
-        <EnableCustomTipOption settings={settings} />
+        {/* <EnableCustomTipOption settings={settings} /> */}
 
         <TipModalTitle />
 
