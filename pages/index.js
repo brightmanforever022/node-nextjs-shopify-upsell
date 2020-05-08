@@ -100,7 +100,7 @@ const Index = () => {
                 onAction: handleInstallInitialSettings
               }}
             >
-              <Card.Section fullWidth>
+              <Card.Section>
                 Press the button below initiliaze TipJar settings.
               </Card.Section>
             </Card>
