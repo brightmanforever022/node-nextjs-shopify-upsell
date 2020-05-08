@@ -12,8 +12,7 @@ const Help = () => {
         asset: {
           key: 'snippets/tipjar.liquid',
           value: 'this is a test {{ wooooo }}',
-        },
-        themeId: PRODUCTIONTHEMEID
+        }
       })
     });
     const createSnippetJson = await createSnippet.json();
