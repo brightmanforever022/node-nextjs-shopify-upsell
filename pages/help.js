@@ -1,4 +1,5 @@
-import { Page, Layout, Card, TextStyle, Button } from '@shopify/polaris';
+import { useState } from 'react';
+import { Page, Layout, Card, TextStyle } from '@shopify/polaris';
 import snippetContent from '../utils/snippetContent';
 
 const Help = () => {
