@@ -103,24 +103,27 @@ app.prepare().then(() => {
     const getThemesJson = await getThemes.json();
     console.log('Shopify getThemes response:', JSON.stringify(getThemesJson));
 
+    const publishedTheme = getThemesJson.themes.find(theme => theme.role == 'main');
+    const publishedThemeId = publishedTheme.id;
+
     // Return message if no snippet value provided
-    // if (!ctx.request.body.asset) {
-    //   ctx.body = 'No asset value or themeId provided.';
-    // };
+    if (!ctx.request.body.asset) {
+      ctx.body = 'No asset value or themeId provided.';
+    };
 
-    // const createSnippet = await fetch(`https://${ctx.session.shop}/admin/api/2020-04/themes/${ctx.request.body.themeId}/assets.json`, {
-    //   method: 'PUT',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //     'X-Shopify-Access-Token': ctx.session.accessToken,
-    //   },
-    //   body: JSON.stringify({
-    //     'asset': ctx.request.body.asset,
-    //   })
-    // });
+    const createSnippet = await fetch(`https://${ctx.session.shop}/admin/api/2020-04/themes/${publishedThemeId}/assets.json`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Shopify-Access-Token': ctx.session.accessToken,
+      },
+      body: JSON.stringify({
+        'asset': ctx.request.body.asset,
+      })
+    });
 
-    // const createSnippetJson = await createSnippet.json();
-    // console.log('Shopify createSnippet response:', JSON.stringify(createSnippetJson));
+    const createSnippetJson = await createSnippet.json();
+    console.log('Shopify createSnippet response:', JSON.stringify(createSnippetJson));
     
     ctx.body = getThemesJson;
   });
