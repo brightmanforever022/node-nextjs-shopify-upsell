@@ -39,7 +39,9 @@ const Help = () => {
         'product': {
           'title': 'Tip/Gratuity',
           'variants': [{
-            'price': 0.01
+            'price': 0.01,
+            'sku': 'TIPJAR',
+            'requires_shipping': false,
           }]
         }
       })
