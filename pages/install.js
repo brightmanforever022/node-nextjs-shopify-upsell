@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Page, Layout, Card, TextStyle } from '@shopify/polaris';
 import snippetContent from '../utils/snippetContent';
 
-const Help = () => {
+const Install = () => {
   const [createSnippetLoading, setCreateSnippetLoading] = useState(false);
   const [createProductLoading, setCreateProductLoading] = useState(false);
 
@@ -53,7 +53,7 @@ const Help = () => {
   }
 
   return (
-    <Page title="Help Center. We are here for you.">
+    <Page title="Steps to install">
       <Layout>
         <Layout.Section>
           <Card
@@ -89,4 +89,4 @@ const Help = () => {
   )
 }
 
-export default Help;
+export default Install;
