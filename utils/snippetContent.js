@@ -111,7 +111,6 @@ export default `{% for key_value in shop.metafields.tipjar.settings %}
             {{ all_products['tip-gratuity'].first_available_variant.id }}: value
           }
         };
-        // productid: 33455105605763
 
         fetch('/cart/update.js', {
           method: 'POST',
@@ -134,7 +133,7 @@ export default `{% for key_value in shop.metafields.tipjar.settings %}
 
     document.addEventListener('submit', function(event) {
       console.log('event', event);
-      if (event.target.getAttribute('action').indexOf('/cart') > -1) {
+      if (event.target.getAttribute('action') == '/cart') {
         event.preventDefault();
         onCartSubmit(event)
       }

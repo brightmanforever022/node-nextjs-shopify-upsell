@@ -1,5 +1,5 @@
 export default {
-  'enableTipJar': false,
+  'enableTipJar': true,
   'enableCustomTipOption': false,
   'tipModalTitle': 'Leave a tip',
   'tipModalDescription': 'Lorem ipsum',
