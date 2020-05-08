@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Page, Layout, Card, Button } from '@shopify/polaris';
+import { Page, Layout, Card } from '@shopify/polaris';
 import gql from 'graphql-tag';
 import { useQuery } from '@apollo/react-hooks';
 import DefaultTippingPercentage from '../components/DefaultTippingPercentage';
@@ -91,10 +91,18 @@ const Index = () => {
     >
       {!originalSettings &&
         <Layout>
-          <Card sectioned title="Installation instructions">
-            1. Create the snippet and include at end of body tag.
-            2. Install initial settings.
-            <Button primary onClick={handleInstallInitialSettings} loading={installInitialSettingsLoading}>Install initial settings</Button>
+          <Card
+            sectioned
+            title="Initialize TipJar"
+            primaryFooterAction={{
+              content: 'Install initial settings',
+              loading: installInitialSettingsLoading,
+              onAction: handleInstallInitialSettings
+            }}
+          >
+            <Card.Section fullWidth>
+              Press the button below initiliaze TipJar settings.
+            </Card.Section>
           </Card>
         </Layout>
       }
