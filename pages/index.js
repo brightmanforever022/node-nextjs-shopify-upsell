@@ -91,19 +91,21 @@ const Index = () => {
     >
       {!originalSettings &&
         <Layout>
-          <Card
-            sectioned
-            title="Initialize TipJar"
-            primaryFooterAction={{
-              content: 'Install initial settings',
-              loading: installInitialSettingsLoading,
-              onAction: handleInstallInitialSettings
-            }}
-          >
-            <Card.Section fullWidth>
-              Press the button below initiliaze TipJar settings.
-            </Card.Section>
-          </Card>
+          <Layout.Section>
+            <Card
+              sectioned
+              title="Initialize TipJar"
+              primaryFooterAction={{
+                content: 'Install initial settings',
+                loading: installInitialSettingsLoading,
+                onAction: handleInstallInitialSettings
+              }}
+            >
+              <Card.Section fullWidth>
+                Press the button below initiliaze TipJar settings.
+              </Card.Section>
+            </Card>
+          </Layout.Section>
         </Layout>
       }
 
