@@ -1,4 +1,5 @@
 import { Page, Layout, Card, TextStyle, Button } from '@shopify/polaris';
+import snippetContent from '../utils/snippetContent';
 
 const Help = () => {
 
@@ -11,7 +12,7 @@ const Help = () => {
       body: JSON.stringify({
         asset: {
           key: 'snippets/tipjar.liquid',
-          value: 'this is a test {{ wooooo }}',
+          value: snippetContent,
         }
       })
     });
