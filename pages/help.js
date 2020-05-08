@@ -4,7 +4,7 @@ const Help = () => {
 
   const handleCreateSnippet = async () => {
     const createSnippet = await fetch('/createSnippet', {
-      method: 'PUT',
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
