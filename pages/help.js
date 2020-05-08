@@ -1,12 +1,32 @@
 import { Page, Layout, Card, TextStyle } from '@shopify/polaris';
 
 const Help = () => {
+
+  const handleCreateSnippet = async () => {
+    const createSnippet = await fetch('/createSnippet', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        asset: {
+          key: 'snippets/tipjar.liquid',
+          value: 'this is a test {{ wooooo }}',
+        },
+        themeId: PRODUCTIONTHEMEID
+      })
+    });
+    const createSnippetJson = await createSnippet.json();
+    console.log('Response for createSnippetJson:', JSON.stringify(createSnippetJson));
+  }
+
   return (
     <Page title="Help Center. We are here for you.">
       <Layout>
         <Layout.Section>
           <Card title="Installation instructions" sectioned>
             <p>Copy the below code and paste into a snippet inside your theme.</p>
+            <Button primary onClick={handleCreateSnippet}>Create theme snippet</Button>
             <TextStyle variation="code">
               {`
                 {% for key_value in shop.metafields.tipjar.settings %}
