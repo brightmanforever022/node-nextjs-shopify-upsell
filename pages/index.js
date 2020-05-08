@@ -93,7 +93,6 @@ const Index = () => {
         <Layout>
           <Layout.Section>
             <Card
-              sectioned
               title="Initialize TipJar"
               primaryFooterAction={{
                 content: 'Install initial settings',
