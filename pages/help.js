@@ -1,4 +1,4 @@
-import { Page, Layout, Card, TextStyle } from '@shopify/polaris';
+import { Page, Layout, Card, TextStyle, Button } from '@shopify/polaris';
 
 const Help = () => {
 
