@@ -101,8 +101,8 @@ const Index = () => {
 
       {originalSettings &&
         <Layout>
-          <p>Metafield value: { JSON.stringify(originalSettings) }</p>
-          <p>State: { JSON.stringify(newSettings) }</p>
+          {/* <p>Metafield value: { JSON.stringify(originalSettings) }</p> */}
+          {/* <p>State: { JSON.stringify(newSettings) }</p> */}
 
           <DefaultTippingPercentage settings={settings} updateSettings={updateSettings} />
 

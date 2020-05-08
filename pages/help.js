@@ -4,6 +4,7 @@ import snippetContent from '../utils/snippetContent';
 
 const Help = () => {
   const [createSnippetLoading, setCreateSnippetLoading] = useState(false);
+  const [createProductLoading, setCreateProductLoading] = useState(false);
 
   const handleCreateSnippet = async () => {
     setCreateSnippetLoading(true);
@@ -26,6 +27,29 @@ const Help = () => {
     setCreateSnippetLoading(false);
   }
 
+  const handleCreateProduct = async () => {
+    setCreateProductLoading(true);
+
+    const createProduct = await fetch('/createProduct', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        'product': {
+          'title': 'Tip/Gratuity',
+          'variants': [{
+            'price': 0.01
+          }]
+        }
+      })
+    });
+    const createProductJson = await createProduct.json();
+    console.log('Response for createProductJson:', JSON.stringify(createProductJson));
+
+    setCreateProductLoading(false);
+  }
+
   return (
     <Page title="Help Center. We are here for you.">
       <Layout>
@@ -44,6 +68,18 @@ const Help = () => {
 
           <Card title="Include the snippet on your theme" sectioned>            
             <p>Manually add the below code to your <TextStyle variation="code">theme.liquid</TextStyle> file, directly above the <TextStyle variation="code">{'</body>'}</TextStyle> tag.</p>
+          </Card>
+
+          <Card
+            title="Create the product"
+            sectioned
+            primaryFooterAction={{
+              content: 'Create tip/gratuity product',
+              loading: createProductLoading,
+              onAction: handleCreateProduct
+            }}
+          >
+            <p>Click the button below to create the Tip/Gratuity product.</p>
           </Card>
         </Layout.Section>
       </Layout>

@@ -118,7 +118,7 @@ app.prepare().then(() => {
         'X-Shopify-Access-Token': ctx.session.accessToken,
       },
       body: JSON.stringify({
-        'asset': ctx.request.body.asset,
+        'asset': ctx.request.body.asset
       })
     });
 
@@ -126,6 +126,31 @@ app.prepare().then(() => {
     console.log('Shopify createSnippet response:', JSON.stringify(createSnippetJson));
     
     ctx.body = getThemesJson;
+  });
+
+  // Create the product
+  router.post('/createProduct', async ctx => {
+    console.log('ctx.request.body', ctx.request.body);
+    // Return message if no product value provided
+    if (!ctx.request.body.product) {
+      ctx.body = 'No product value provided.';
+    };
+
+    const createProduct = await fetch(`https://${ctx.session.shop}/admin/api/2020-04/products.json`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Shopify-Access-Token': ctx.session.accessToken,
+      },
+      body: JSON.stringify({
+        'product': ctx.request.body.product
+      })
+    });
+
+    const createProductJson = await createProduct.json();
+    console.log('Shopify createProduct response:', JSON.stringify(createProductJson));
+    
+    ctx.body = createProductJson;
   });
 
   router.get('*', verifyRequest(), async ctx => {
