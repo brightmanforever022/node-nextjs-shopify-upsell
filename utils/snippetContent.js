@@ -48,7 +48,7 @@ export default `{% for key_value in shop.metafields.tipjar.settings %}
     left: 0;
     right: 0;
     padding: 0 16px 16px 16px;
-    z-index: 99999;
+    z-index: 999999999;
     align-items: center;
     justify-content: center;
   }
