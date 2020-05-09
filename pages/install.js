@@ -71,6 +71,7 @@ const Install = () => {
 
           <Card title="Include the snippet on your theme" sectioned>            
             <p>Manually add the below code to your <TextStyle variation="code">theme.liquid</TextStyle> file, directly above the <TextStyle variation="code">{'</body>'}</TextStyle> tag.</p>
+            <p><TextStyle variation="code">{`{% render 'tipjar' %}`}</TextStyle></p>
           </Card>
 
           <Card
