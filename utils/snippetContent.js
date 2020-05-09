@@ -41,6 +41,8 @@ export default `{% for key_value in shop.metafields.tipjar.settings %}
 
 <style>
   .tj-modal {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
     position: fixed;
     top: 0;
@@ -49,8 +51,12 @@ export default `{% for key_value in shop.metafields.tipjar.settings %}
     right: 0;
     padding: 0 16px 16px 16px;
     z-index: 999999999;
-    align-items: center;
-    justify-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
   }
   
   .tj-modal-background {
@@ -77,7 +83,9 @@ export default `{% for key_value in shop.metafields.tipjar.settings %}
     border-radius: 10px;
     overflow: hidden;
     padding: 12px 16px 24px 16px;
-    transform: matrix(1, 0, 0, 1, 0, 0);
+    -webkit-transform: matrix(1, 0, 0, 1, 0, 0);
+        -ms-transform: matrix(1, 0, 0, 1, 0, 0);
+            transform: matrix(1, 0, 0, 1, 0, 0);
   }
   @media only screen and (min-width: 480px) {
     .tj-modal-content {
@@ -92,8 +100,12 @@ export default `{% for key_value in shop.metafields.tipjar.settings %}
   }
   @media only screen and (min-width: 480px) {
     .tj-modal-header {
+      display: -webkit-box;
+      display: -ms-flexbox;
       display: flex;
-      align-items: flex-start;
+      -webkit-box-align: start;
+          -ms-flex-align: start;
+              align-items: flex-start;
       padding: 24px 24px 16px 24px;
     }
   }
@@ -126,6 +138,8 @@ export default `{% for key_value in shop.metafields.tipjar.settings %}
   
   @media only screen and (min-width: 480px) {
     .tj-modal-btns-container {
+      display: -webkit-box;
+      display: -ms-flexbox;
       display: flex;
     }
   }
@@ -144,7 +158,10 @@ export default `{% for key_value in shop.metafields.tipjar.settings %}
     border: 1px solid #999999;
     padding: 8px 16px;
     background-color: #ffffff;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    -webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    -webkit-transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+    -o-transition: all 0.3s cubic-bezier(.25,.8,.25,1);
     transition: all 0.3s cubic-bezier(.25,.8,.25,1);
   }
   
@@ -179,8 +196,12 @@ export default `{% for key_value in shop.metafields.tipjar.settings %}
   left: 0;
     right: 0;
     background-color: #ffffff;
-    align-items: center;
-    justify-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
     text-align: center;
     padding: 16px;
   }
@@ -207,15 +228,23 @@ export default `{% for key_value in shop.metafields.tipjar.settings %}
   .tj-modal-loading-icon {
     display: block;
     width: 100%;
-    animation: tj-loading .5s linear infinite
+    -webkit-animation: tj-loading .5s linear infinite;
+            animation: tj-loading .5s linear infinite
+  }
+  
+  @-webkit-keyframes tj-loading {
+    to {
+      -webkit-transform:rotate(1turn);
+              transform:rotate(1turn)
+    }
   }
   
   @keyframes tj-loading {
     to {
-      transform:rotate(1turn)
+      -webkit-transform:rotate(1turn);
+              transform:rotate(1turn)
     }
   }
-  
 </style>
 
 <div id="tipJarModal" class="tj-modal" style="display: none;">
