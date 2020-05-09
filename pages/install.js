@@ -41,6 +41,7 @@ const Install = () => {
           'variants': [{
             'price': 0.01,
             'sku': 'TIPJAR',
+            'taxable': false,
             'requires_shipping': false,
           }]
         }
