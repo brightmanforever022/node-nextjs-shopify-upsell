@@ -7,8 +7,13 @@ const hsbToHsv = function({hue: h, brightness: v, saturation: s}) {
   return hsv;
 }
 
+const hsvToHsb = function({h: hue, v: brightness, s: saturation}) {
+  const hsb = { hue, brightness, saturation };
+  return hsb;
+}
+
 function TipModalTextColor({ settings, updateSettings }) {
-  const [tipModalTextColor, setTipModalTextColor] = useState(settings.tipModalTextColor);
+  const [tipModalTextColor, setTipModalTextColor] = useState(colorsys.hexToHsv(hsvToHsb(settings.tipModalTextColor)));
 
   const handleChange = (newTipModalTextColor) => {
     let newSettings = {...settings};
