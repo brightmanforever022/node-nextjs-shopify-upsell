@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Page, Layout, Card } from '@shopify/polaris';
+import { Page, Layout, Card, PageActions } from '@shopify/polaris';
 import gql from 'graphql-tag';
 import { useQuery } from '@apollo/react-hooks';
 import DefaultTippingPercentage from '../components/DefaultTippingPercentage';
