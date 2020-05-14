@@ -127,6 +127,14 @@ const Index = () => {
           <TipModalTextColor settings={settings} updateSettings={updateSettings} />
         </Layout>
       }
+
+      <PageActions
+        primaryAction={newSettings && (JSON.stringify(newSettings) != JSON.stringify(originalSettings)) ? {
+          content: 'Update settings',
+          onAction: handleUpdateSettings,
+          loading: updateMetafieldIsLoading
+        } : null}
+      />
     </Page>
   )
 }
