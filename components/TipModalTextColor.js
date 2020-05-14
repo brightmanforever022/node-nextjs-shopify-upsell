@@ -9,7 +9,7 @@ function TipModalTextColor({ settings, updateSettings }) {
   //   brightness: 1,
   //   saturation: 1,
   // });
-  console.log('converto rgb', colorsys.hsvToRgb(settings.tipModalTextColor));
+  console.log('converto rgb', colorsys.hsvToRgb({h: 120, s: 1, v: 1}));
   const [tipModalTextColor, setTipModalTextColor] = useState(settings.tipModalTextColor);
 
   const handleChange = (newTipModalTextColor) => {
