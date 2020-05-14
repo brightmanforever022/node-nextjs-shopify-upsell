@@ -1,29 +1,29 @@
 import { useState } from 'react';
-import { Layout, Card, FormLayout, TextField } from '@shopify/polaris';
+import { Layout, Card, FormLayout, TextField, ColorPicker } from '@shopify/polaris';
 
 function TipModalTextColor({ settings, updateSettings }) {
-  const [tipModalDescription, setTipModalDescription] = useState(settings.tipModalDescription);
+  // const [tipModalDescription, setTipModalDescription] = useState(settings.tipModalDescription);
+  const [tipModalTextColor, setTipModalTextColor] = useState({
+    hue: 120,
+    brightness: 1,
+    saturation: 1,
+  });
 
-  const handleChange = (newTipModalDescription) => {
+  const handleChange = (newTipModalTextColor) => {
     let newSettings = {...settings};
-    newSettings.tipModalDescription = newTipModalDescription;
+    newSettings.tipModalTextColor = newTipModalTextColor;
     updateSettings(newSettings);
-    setTipModalDescription(newTipModalDescription);
+    setTipModalTextColor(newTipModalTextColor);
   };
 
   return (
     <Layout.AnnotatedSection
-      title="Tip Modal Description"
-      description="Short description that will be displayed to the users on the Tip Modal."
+      title="Tip Modal Text Color"
+      description="Tip modal text color."
     >
       <Card sectioned>
         <FormLayout>
-          <TextField
-            label="Description Text"
-            value={tipModalDescription}
-            onChange={handleChange}
-            multiline={true}
-          />
+          <ColorPicker onChange={handleChange} color={color} />;
         </FormLayout>
       </Card>
     </Layout.AnnotatedSection>
