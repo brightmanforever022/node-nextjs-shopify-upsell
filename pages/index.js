@@ -125,6 +125,8 @@ const Index = () => {
           <TipModalBgColor settings={settings} updateSettings={updateSettings} />
 
           <TipModalTextColor settings={settings} updateSettings={updateSettings} />
+
+          <Layout.Section></Layout.Section>
         </Layout>
       }
 
