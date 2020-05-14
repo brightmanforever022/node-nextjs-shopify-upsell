@@ -89,14 +89,14 @@ export default `{% for key_value in shop.metafields.tipjar.settings %}
   }
   @media only screen and (min-width: 480px) {
     .tj-modal-content {
-      width: 100%;
-      max-width: 600px;
+      width: 600px;
+      max-width: 100%;
       padding: 12px 24px 36px 24px;
     }
   }
   
   .tj-modal-header {
-    padding: 20px 16px 16px 16px;
+    padding: 20px 0 16px 0;
   }
   @media only screen and (min-width: 480px) {
     .tj-modal-header {
@@ -106,7 +106,7 @@ export default `{% for key_value in shop.metafields.tipjar.settings %}
       -webkit-box-align: start;
           -ms-flex-align: start;
               align-items: flex-start;
-      padding: 24px 24px 16px 24px;
+      padding: 24px 0 16px 0;
     }
   }
   
