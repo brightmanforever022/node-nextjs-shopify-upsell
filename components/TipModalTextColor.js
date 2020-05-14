@@ -23,7 +23,7 @@ function TipModalTextColor({ settings, updateSettings }) {
     >
       <Card sectioned>
         <FormLayout>
-          <ColorPicker onChange={handleChange} color={color} />;
+          <ColorPicker onChange={handleChange} color={tipModalTextColor} />;
         </FormLayout>
       </Card>
     </Layout.AnnotatedSection>
