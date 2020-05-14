@@ -41,16 +41,16 @@ export default `{% for key_value in shop.metafields.tipjar.settings %}
 
 <style>
   .tj-modal {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
     position: fixed;
     top: 0;
     bottom: 0;
     left: 0;
     right: 0;
-    padding: 0 16px 16px 16px;
+    padding: 16px;
     z-index: 999999999;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
     -webkit-box-align: center;
         -ms-flex-align: center;
             align-items: center;
@@ -73,15 +73,15 @@ export default `{% for key_value in shop.metafields.tipjar.settings %}
     bottom: 0;
     left: 0;
     right: 0;
-    background-color: #666666;
+    background-color: #000000;
     opacity: 0.75;
   }
   
   .tj-modal-content {
-    overflow: auto;
+    max-height: 100vh;
     background-color: #ffffff;
     border-radius: 10px;
-    overflow: hidden;
+    overflow: auto;
     padding: 12px 16px 24px 16px;
     -webkit-transform: matrix(1, 0, 0, 1, 0, 0);
         -ms-transform: matrix(1, 0, 0, 1, 0, 0);
@@ -193,7 +193,7 @@ export default `{% for key_value in shop.metafields.tipjar.settings %}
     position: absolute;
     top: 0;
     bottom: 0;
-  left: 0;
+    left: 0;
     right: 0;
     background-color: #ffffff;
     -webkit-box-align: center;
@@ -245,63 +245,123 @@ export default `{% for key_value in shop.metafields.tipjar.settings %}
               transform:rotate(1turn)
     }
   }
+  
+  .tj-modal-input-wrapper {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: stretch;
+        -ms-flex-align: stretch;
+            align-items: stretch;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+  }
+  
+  .tj-modal-custom-input {
+    min-width: 1px;
+    flex-grow: 1;
+  }
+  
+  @media only screen and (min-width: 480px) {
+    .tj-modal-input-add {
+      width: 180px;
+      flex-basis: 180px;
+      flex-shrink: 0;
+    }
+  }
+  
+  .tj-modal-content-wrapper {
+    position: relative;
+    text-align: center;
+  }
+  
+  .tj-modal-close {
+    display: inline-block;
+    text-align: center;
+    font-size: 20px;
+    color: #ffffff;
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.5);
+    padding: 0 20px;
+    margin-bottom: 12px;
+    cursor: pointer;
+  }
 </style>
 
 <div id="tipJarModal" class="tj-modal" style="display: none;">
   <div class="tj-modal-background">
     <div class="tj-modal-background-inner"></div>
   </div>
-  <div class="tj-modal-content">
-    <div class="tj-modal-header">
-      <div class="tj-modal-header-inner">
-        <h3 class="tj-modal-title">
-          {{ tipjar_settings_tipModalTitle }}
-        </h3>
-        <p class="tj-modal-description">
-          {{ tipjar_settings_tipModalDescription }}
-        </p>
-      </div>
+  <div class="tj-modal-content-wrapper">
+    <div id="tipJarModalClose" class="tj-modal-close">
+      &larr; Cancel
     </div>
-    <div class="tj-modal-btns-container">
-      {% if tipjar_settings_defaultTipping15 %}
+    <div class="tj-modal-content">
+      <div class="tj-modal-header">
+        <div class="tj-modal-header-inner">
+          <h3 class="tj-modal-title">
+            {{ tipjar_settings_tipModalTitle }}
+          </h3>
+          <p class="tj-modal-description">
+            {{ tipjar_settings_tipModalDescription }}
+          </p>
+        </div>
+      </div>
+      <div class="tj-modal-btns-container">
+        {% if tipjar_settings_defaultTipping15 %}
+          <span class="tj-modal-btn-wrapper">
+            <button id="tipJarBtn15" type="button" class="tj-modal-btn" data-tipjar-add="{{ tipjar_cart_total | times: 0.15 }}">
+              <span class="tj-modal-btn-percentage">15%</span>
+              <span id="tipJarAmt15" class="tj-modal-btn-amount">{{ tipjar_cart_total | times: 0.15 | money }}</span>
+            </button>
+          </span>
+        {% endif %}
+        {% if tipjar_settings_defaultTipping20 %}
+          <span class="tj-modal-btn-wrapper">
+            <button id="tipJarBtn20" type="button" class="tj-modal-btn" data-tipjar-add="{{ tipjar_cart_total | times: 0.20 }}">
+              <span class="tj-modal-btn-percentage">20%</span>
+              <span id="tipJarAmt20" class="tj-modal-btn-amount">{{ tipjar_cart_total | times: 0.20 | money }}</span>
+            </button>
+          </span>
+        {% endif %}
+        {% if tipjar_settings_defaultTipping25 %}
         <span class="tj-modal-btn-wrapper">
-          <button id="tipJarBtn15" type="button" class="tj-modal-btn" data-tipjar-add="{{ tipjar_cart_total | times: 0.15 }}">
-            <span class="tj-modal-btn-percentage">15%</span>
-            <span id="tipJarAmt15" class="tj-modal-btn-amount">{{ tipjar_cart_total | times: 0.15 | money }}</span>
+          <button id="tipJarBtn25" type="button" class="tj-modal-btn" data-tipjar-add="{{ tipjar_cart_total | times: 0.25 }}">
+            <span class="tj-modal-btn-percentage">25%</span>
+            <span id="tipJarAmt25" class="tj-modal-btn-amount">{{ tipjar_cart_total | times: 0.25 | money }}</span>
           </button>
         </span>
-      {% endif %}
-      {% if tipjar_settings_defaultTipping20 %}
+        {% endif %}
+      </div>
+
+      {% if tipjar_settings_enableCustomTipOption %}
         <span class="tj-modal-btn-wrapper">
-          <button id="tipJarBtn20" type="button" class="tj-modal-btn" data-tipjar-add="{{ tipjar_cart_total | times: 0.20 }}">
-            <span class="tj-modal-btn-percentage">20%</span>
-            <span id="tipJarAmt20" class="tj-modal-btn-amount">{{ tipjar_cart_total | times: 0.20 | money }}</span>
+          <button id="tipJarBtnCustom" type="button" class="tj-modal-btn">
+            <span class="tj-modal-btn-percentage">Custom amount</span>
           </button>
+
+          <span id="tipJarCustomInputWrapper" class="tj-modal-input-wrapper" style="display: none;">
+            <input id="tipJarCustomInput" class="tj-modal-custom-input" type="number" value="0">
+            <button id="tipJarCustomInputAdd" class="tj-modal-btn tj-modal-btn-percentage tj-modal-input-add" type="button" data-tipjar-add="0">Add</button>
+          </span>
         </span>
       {% endif %}
-      {% if tipjar_settings_defaultTipping25 %}
-      <span class="tj-modal-btn-wrapper">
-        <button id="tipJarBtn25" type="button" class="tj-modal-btn" data-tipjar-add="{{ tipjar_cart_total | times: 0.25 }}">
-          <span class="tj-modal-btn-percentage">25%</span>
-          <span id="tipJarAmt25" class="tj-modal-btn-amount">{{ tipjar_cart_total | times: 0.25 | money }}</span>
+
+      <span class="tj-modal-btn-none">
+        <button type="button" class="tj-modal-btn" data-tipjar-add="0">
+          <span class="tj-modal-btn-percentage">No tip</span>
         </button>
       </span>
-      {% endif %}
-    </div>
-    
-    <span class="tj-modal-btn-none">
-      <button type="button" class="tj-modal-btn" data-tipjar-add="0">
-        <span class="tj-modal-btn-percentage">No tip</span>
-      </button>
-    </span>
-    
-    <div id="tipJarSuccess" class="tj-modal-success-content" style="display: none;">
-      <div>
-        <div class="tj-modal-loading-icon-container">
-          <svg class="tj-modal-loading-icon" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg"><path d="M15.542 1.487A21.507 21.507 0 00.5 22c0 11.874 9.626 21.5 21.5 21.5 9.847 0 18.364-6.675 20.809-16.072a1.5 1.5 0 00-2.904-.756C37.803 34.755 30.473 40.5 22 40.5 11.783 40.5 3.5 32.217 3.5 22c0-8.137 5.3-15.247 12.942-17.65a1.5 1.5 0 10-.9-2.863z"></path></svg>
+
+      <div id="tipJarSuccess" class="tj-modal-success-content" style="display: none;">
+        <div>
+          <div class="tj-modal-loading-icon-container">
+            <svg class="tj-modal-loading-icon" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg"><path d="M15.542 1.487A21.507 21.507 0 00.5 22c0 11.874 9.626 21.5 21.5 21.5 9.847 0 18.364-6.675 20.809-16.072a1.5 1.5 0 00-2.904-.756C37.803 34.755 30.473 40.5 22 40.5 11.783 40.5 3.5 32.217 3.5 22c0-8.137 5.3-15.247 12.942-17.65a1.5 1.5 0 10-.9-2.863z"></path></svg>
+          </div>
+          <p class="tj-modal-success-title">Thank you</p>
+          <p class="tj-modal-success-message">You are now being directed to the checkout page.</p>
         </div>
-        <p class="tj-modal-success-title">Thank you</p>
-        <p class="tj-modal-success-message">You are now being directed to the checkout page.</p>
       </div>
     </div>
   </div>
@@ -311,8 +371,9 @@ export default `{% for key_value in shop.metafields.tipjar.settings %}
   if (typeof fetch == 'function') {
     var onCartSubmit = function onCartSubmit(event) {
       // Show modal
-      document.getElementById('tipJarModal').style.display = 'flex'; // Grab up to date cart data (needed for ajax carts)
-
+      document.getElementById('tipJarModal').style.display = 'flex';
+      
+      // Grab up to date cart data (needed for ajax carts)
       fetch('/cart.js', {
         method: 'GET',
         headers: {
@@ -352,6 +413,24 @@ export default `{% for key_value in shop.metafields.tipjar.settings %}
         window.location.href = '/checkout';
       });
     };
+    
+    {% if tipjar_settings_enableCustomTipOption %}
+    var customBtn = document.getElementById('tipJarBtnCustom');
+    var customInputWrapper = document.getElementById('tipJarCustomInputWrapper');
+    var customInput = document.getElementById('tipJarCustomInput');
+    var customInputAdd = document.getElementById('tipJarCustomInputAdd');
+    
+    customInput.oninput = function (event) {
+      var tipValue = event.target.value;
+      customInputAdd.setAttribute('data-tipjar-add', (tipValue * 100).toFixed(2));
+    };
+    
+    customBtn.onclick = function (event) {
+      event.preventDefault();
+      customBtn.style.display = 'none';
+      customInputWrapper.style.display = 'flex';
+    }
+    {% endif %}
 
     var tipJarAddBtns = document.querySelectorAll('[data-tipjar-add]');
     tipJarAddBtns.forEach(function (btn) {
@@ -382,6 +461,11 @@ export default `{% for key_value in shop.metafields.tipjar.settings %}
         });
       };
     });
+    
+    var tipJarModalClose = document.getElementById('tipJarModalClose');
+    tipJarModalClose.onclick = function() {
+      document.getElementById('tipJarModal').style.display = 'none';
+    }
     
     document.addEventListener('submit', function (event) {
       console.log('event', event);
