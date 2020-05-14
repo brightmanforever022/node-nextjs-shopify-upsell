@@ -2,6 +2,9 @@ import { useState } from 'react';
 import { Layout, Card, FormLayout, TextField, ColorPicker } from '@shopify/polaris';
 import colorsys from 'colorsys';
 
+const hsbToHsv = function({hue: h, brightness: v, saturation: s}) {
+  console.log('new object:', {h, s, v});
+}
 
 function TipModalTextColor({ settings, updateSettings }) {
   // const [tipModalTextColor, setTipModalTextColor] = useState({
