@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { Layout, Card, FormLayout, TextField, ColorPicker } from '@shopify/polaris';
+import colorsys from 'colorsys';
+
 
 function TipModalTextColor({ settings, updateSettings }) {
   // const [tipModalTextColor, setTipModalTextColor] = useState({
@@ -7,6 +9,7 @@ function TipModalTextColor({ settings, updateSettings }) {
   //   brightness: 1,
   //   saturation: 1,
   // });
+  console.log('converto rgb', colorsys.hsvToRgb(settings.tipModalTextColor));
   const [tipModalTextColor, setTipModalTextColor] = useState(settings.tipModalTextColor);
 
   const handleChange = (newTipModalTextColor) => {
