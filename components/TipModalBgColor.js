@@ -13,8 +13,8 @@ function TipModalBgColor({ settings, updateSettings }) {
 
   return (
     <Layout.AnnotatedSection
-      title="Tip Modal Description"
-      description="Short description that will be displayed to the users on the Tip Modal."
+      title="Tip Modal Background Color"
+      description="Default background color for Tip Modal on store cart page."
     >
       <Card sectioned>
         <FormLayout>

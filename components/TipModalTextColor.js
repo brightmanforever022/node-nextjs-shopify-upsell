@@ -19,7 +19,7 @@ function TipModalTextColor({ settings, updateSettings }) {
   return (
     <Layout.AnnotatedSection
       title="Tip Modal Text Color"
-      description="Tip modal text color."
+      description="Default text color for Tip Modal on store cart page."
     >
       <Card sectioned>
         <FormLayout>

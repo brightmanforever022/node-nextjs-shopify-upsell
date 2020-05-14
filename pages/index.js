@@ -122,9 +122,9 @@ const Index = () => {
 
           <TipModalDescription settings={settings} updateSettings={updateSettings} />
 
-          <TipModalTextColor settings={settings} updateSettings={updateSettings} />
-
           <TipModalBgColor settings={settings} updateSettings={updateSettings} />
+
+          <TipModalTextColor settings={settings} updateSettings={updateSettings} />
         </Layout>
       }
     </Page>
