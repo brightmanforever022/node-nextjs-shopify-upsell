@@ -3,26 +3,16 @@ import { Layout, Card, FormLayout, TextField, ColorPicker } from '@shopify/polar
 import colorsys from 'colorsys';
 
 const hsbToHsv = function({hue: h, brightness: v, saturation: s}) {
-  console.log('new object:', {h, s, v});
+  const hsv = { h, s, v };
+  return hsv;
 }
 
 function TipModalTextColor({ settings, updateSettings }) {
-  // const [tipModalTextColor, setTipModalTextColor] = useState({
-  //   hue: 120,
-  //   brightness: 1,
-  //   saturation: 1,
-  // });
-  hsbToHsv({
-    hue: 120,
-    brightness: 1,
-    saturation: 1,
-  })
-
   const [tipModalTextColor, setTipModalTextColor] = useState(settings.tipModalTextColor);
 
   const handleChange = (newTipModalTextColor) => {
     let newSettings = {...settings};
-    newSettings.tipModalTextColor = newTipModalTextColor;
+    newSettings.tipModalTextColor = colorsys.hsvToHex(hsbToHsv(newTipModalTextColor));
     updateSettings(newSettings);
     setTipModalTextColor(newTipModalTextColor);
   };
