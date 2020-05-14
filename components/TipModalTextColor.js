@@ -16,6 +16,8 @@ function TipModalTextColor({ settings, updateSettings }) {
   const [tipModalTextColor, setTipModalTextColor] = useState(hsvToHsb(colorsys.hexToHsv(settings.tipModalTextColor)));
 
   const handleChange = (newTipModalTextColor) => {
+    console.log('new hsb:', newTipModalTextColor);
+    console.log('new hex:', colorsys.hsvToHex(hsbToHsv(newTipModalTextColor)))
     let newSettings = {...settings};
     newSettings.tipModalTextColor = colorsys.hsvToHex(hsbToHsv(newTipModalTextColor));
     updateSettings(newSettings);
