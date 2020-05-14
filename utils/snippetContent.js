@@ -89,8 +89,8 @@ export default `{% for key_value in shop.metafields.tipjar.settings %}
   }
   @media only screen and (min-width: 480px) {
     .tj-modal-content {
-      width: 600px;
-      max-width: 100%;
+      width: 90vw;
+      max-width: 600px;
       padding: 12px 24px 36px 24px;
     }
   }

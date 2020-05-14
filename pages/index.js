@@ -7,6 +7,8 @@ import EnableTipJarApp from '../components/EnableTipJarApp';
 import EnableCustomTipOption from '../components/EnableCustomTipOption';
 import TipModalTitle from '../components/TipModalTitle';
 import TipModalDescription from '../components/TipModalDescription';
+import TipModalTextColor from '../components/TipModalTextColor';
+import TipModalBgColor from '../components/TipModalBgColor';
 import initialSettings from '../utils/initialSettings';
 
 const SHOP_TIPJAR_METAFIELD_QUERY = gql`
