@@ -110,9 +110,6 @@ const Index = () => {
 
       {originalSettings &&
         <Layout>
-          {/* <p>Metafield value: { JSON.stringify(originalSettings) }</p> */}
-          {/* <p>State: { JSON.stringify(newSettings) }</p> */}
-
           <DefaultTippingPercentage settings={settings} updateSettings={updateSettings} />
 
           <EnableTipJarApp settings={settings} updateSettings={updateSettings} />
@@ -122,6 +119,10 @@ const Index = () => {
           <TipModalTitle settings={settings} updateSettings={updateSettings} />
 
           <TipModalDescription settings={settings} updateSettings={updateSettings} />
+
+          <TipModalTextColor settings={settings} updateSettings={updateSettings} />
+
+          <TipModalBgColor settings={settings} updateSettings={updateSettings} />
         </Layout>
       }
     </Page>
