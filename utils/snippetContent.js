@@ -78,7 +78,7 @@ export default `{% for key_value in shop.metafields.tipjar.settings %}
   }
   
   .tj-modal-content {
-    max-height: 100vh;
+    max-height: 85vh;
     background-color: #ffffff;
     border-radius: 10px;
     overflow: auto;
@@ -258,13 +258,14 @@ export default `{% for key_value in shop.metafields.tipjar.settings %}
             justify-content: center;
   }
   
-  .tj-modal-custom-input {
+  input.tj-modal-custom-input {
     min-width: 1px;
     flex-grow: 1;
     margin: 0;
     border: 1px solid #999999;
     border-radius: 5px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    background-color: #ffffff;
   }
   
   @media only screen and (min-width: 480px) {
