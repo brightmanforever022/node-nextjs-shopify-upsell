@@ -1,14 +1,19 @@
 import { useState } from 'react';
-import { Layout, Card, FormLayout, TextField } from '@shopify/polaris';
+import { Layout, Card, FormLayout, TextField, ColorPicker } from '@shopify/polaris';
 
 function TipModalBgColor({ settings, updateSettings }) {
-  const [tipModalDescription, setTipModalDescription] = useState(settings.tipModalDescription);
+  // const [tipModalBgColor, setTipModalBgColor] = useState({
+  //   hue: 120,
+  //   brightness: 1,
+  //   saturation: 1,
+  // });
+  const [tipModalBgColor, setTipModalBgColor] = useState(settings.tipModalBgColor);
 
-  const handleChange = (newTipModalDescription) => {
+  const handleChange = (newTipModalBgColor) => {
     let newSettings = {...settings};
-    newSettings.tipModalDescription = newTipModalDescription;
+    newSettings.tipModalBgColor = newTipModalBgColor;
     updateSettings(newSettings);
-    setTipModalDescription(newTipModalDescription);
+    setTipModalBgColor(newTipModalBgColor);
   };
 
   return (
@@ -18,12 +23,7 @@ function TipModalBgColor({ settings, updateSettings }) {
     >
       <Card sectioned>
         <FormLayout>
-          <TextField
-            label="Description Text"
-            value={tipModalDescription}
-            onChange={handleChange}
-            multiline={true}
-          />
+          <ColorPicker onChange={handleChange} color={tipModalBgColor} />
         </FormLayout>
       </Card>
     </Layout.AnnotatedSection>
