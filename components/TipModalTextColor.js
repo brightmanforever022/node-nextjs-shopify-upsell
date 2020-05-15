@@ -3,12 +3,12 @@ import { Layout, Card, FormLayout, TextField, ColorPicker } from '@shopify/polar
 import colorsys from 'colorsys';
 
 const hsbToHsv = function({hue: h, brightness: v, saturation: s}) {
-  const hsv = { h, s, v: v*100 };
+  const hsv = { h, s, v: (v * 100) };
   return hsv;
 }
 
 const hsvToHsb = function({h: hue, v: brightness, s: saturation}) {
-  const hsb = { hue, brightness, saturation };
+  const hsb = { hue, brightness: (brightness / 100), saturation };
   return hsb;
 }
 
