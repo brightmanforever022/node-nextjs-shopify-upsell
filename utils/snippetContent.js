@@ -26,6 +26,14 @@ export default `{% for key_value in shop.metafields.tipjar.settings %}
 {% if key_value[0] == 'defaultTipping25' %}
   {% assign tipjar_settings_defaultTipping25 = key_value[1] %}
 {% endif %}
+
+{% if key_value[0] == 'tipModalBgColor' %}
+  {% assign tipjar_settings_tipModalBgColor = key_value[1] %}
+{% endif %}
+
+{% if key_value[0] == 'tipModalTextColor' %}
+  {% assign tipjar_settings_tipModalTextColor = key_value[1] %}
+{% endif %}
 {% endfor %}
 
 {% if tipjar_settings_enableTipJar %}
@@ -79,7 +87,11 @@ export default `{% for key_value in shop.metafields.tipjar.settings %}
   
   .tj-modal-content {
     max-height: 85vh;
-    background-color: #ffffff;
+    {% if tipjar_settings_tipModalBgColor %}
+      background-color: {{ tipjar_settings_tipModalBgColor }};
+    {% else %}
+      background-color: #ffffff;
+    {% endif %}
     border-radius: 10px;
     overflow: auto;
     padding: 12px 16px 24px 16px;
@@ -127,6 +139,11 @@ export default `{% for key_value in shop.metafields.tipjar.settings %}
     line-height: 1.2;
     font-weight: 500;
     margin-bottom: 8px;
+    {% if tipjar_settings_tipModalTextColor %}
+      color: {{ tipjar_settings_tipModalTextColor }};
+    {% else %}
+      color: #000000;
+    {% endif %}
   }
   
   .tj-modal-description {
@@ -134,6 +151,11 @@ export default `{% for key_value in shop.metafields.tipjar.settings %}
     font-size: 18px;
     line-height: 1.6;
     margin-bottom: 0;
+    {% if tipjar_settings_tipModalTextColor %}
+      color: {{ tipjar_settings_tipModalTextColor }};
+    {% else %}
+      color: #000000;
+    {% endif %}
   }
   
   @media only screen and (min-width: 480px) {
@@ -195,7 +217,11 @@ export default `{% for key_value in shop.metafields.tipjar.settings %}
     bottom: 0;
     left: 0;
     right: 0;
-    background-color: #ffffff;
+    {% if tipjar_settings_tipModalBgColor %}
+      background-color: {{ tipjar_settings_tipModalBgColor }};
+    {% else %}
+      background-color: #ffffff;
+    {% endif %}
     -webkit-box-align: center;
         -ms-flex-align: center;
             align-items: center;
@@ -399,17 +425,17 @@ export default `{% for key_value in shop.metafields.tipjar.settings %}
         console.log('tjTotal:', tjTotal);
         
         {% if tipjar_settings_defaultTipping15 %}
-          document.getElementById('tipJarAmt15').textContent = '$' + (tjTotal * .15 / 100).toFixed(2);
+          document.getElementById('tipJarAmt15').textContent = '{{ cart.currency.symbol }}' + (tjTotal * .15 / 100).toFixed(2);
           document.getElementById('tipJarBtn15').setAttribute('data-tipjar-add', (tjTotal * .15).toFixed(2));
         {% endif %}
         
         {% if tipjar_settings_defaultTipping20 %}
-          document.getElementById('tipJarAmt20').textContent = '$' + (tjTotal * .20 / 100).toFixed(2);
+          document.getElementById('tipJarAmt20').textContent = '{{ cart.currency.symbol }}' + (tjTotal * .20 / 100).toFixed(2);
           document.getElementById('tipJarBtn20').setAttribute('data-tipjar-add', (tjTotal * .20).toFixed(2));
         {% endif %}
         
         {% if tipjar_settings_defaultTipping25 %}
-          document.getElementById('tipJarAmt25').textContent = '$' + (tjTotal * .25 / 100).toFixed(2);
+          document.getElementById('tipJarAmt25').textContent = '{{ cart.currency.symbol }}' + (tjTotal * .25 / 100).toFixed(2);
           document.getElementById('tipJarBtn25').setAttribute('data-tipjar-add', (tjTotal * .25).toFixed(2));
         {% endif %}
         
