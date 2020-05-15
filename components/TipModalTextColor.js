@@ -3,7 +3,7 @@ import { Layout, Card, FormLayout, TextField, ColorPicker } from '@shopify/polar
 import colorsys from 'colorsys';
 
 const hsbToHsv = function({hue: h, brightness: v, saturation: s}) {
-  const hsv = { h, s, v };
+  const hsv = { h, s, v: v*100 };
   return hsv;
 }
 
