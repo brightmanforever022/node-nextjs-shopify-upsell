@@ -1,32 +1,38 @@
-import { useState } from 'react';
-import { Layout, Card, FormLayout, Checkbox } from '@shopify/polaris';
+import { useState } from "react";
+import { Layout, Card, FormLayout, TextField } from "@shopify/polaris";
 
 function DefaultTippingPercentage({ settings, updateSettings }) {
-  const [defaultTipping15, setDefaultTipping15] = useState(settings.defaultTipping15);
-  const [defaultTipping20, setDefaultTipping20] = useState(settings.defaultTipping20);
-  const [defaultTipping25, setDefaultTipping25] = useState(settings.defaultTipping25);
+  const [defaultTipping1, setDefaultTipping1] = useState(
+    settings.defaultTipping1
+  );
+  const [defaultTipping2, setDefaultTipping2] = useState(
+    settings.defaultTipping2
+  );
+  const [defaultTipping3, setDefaultTipping3] = useState(
+    settings.defaultTipping3
+  );
 
-  const handleChange15 = (newValue15) => {
-    let newSettings = {...settings};
-    newSettings.defaultTipping15 = newValue15;
+  const handleChange1 = (newValue1) => {
+    let newSettings = { ...settings };
+    newSettings.defaultTipping1 = newValue1;
     updateSettings(newSettings);
-    setDefaultTipping15(newValue15);
+    setDefaultTipping1(newValue1);
   };
 
-  const handleChange20 = (newValue20) => {
-    let newSettings = {...settings};
-    newSettings.defaultTipping20 = newValue20;
+  const handleChange2 = (newValue2) => {
+    let newSettings = { ...settings };
+    newSettings.defaultTipping2 = newValue2;
     updateSettings(newSettings);
-    setDefaultTipping20(newValue20);
+    setDefaultTipping2(newValue2);
   };
 
-  const handleChange25 = (newValue25) => {
-    let newSettings = {...settings};
-    newSettings.defaultTipping25 = newValue25;
+  const handleChange3 = (newValue3) => {
+    let newSettings = { ...settings };
+    newSettings.defaultTipping3 = newValue3;
     updateSettings(newSettings);
-    setDefaultTipping25(newValue25);
+    setDefaultTipping3(newValue3);
   };
-  
+
   return (
     <Layout.AnnotatedSection
       title="Default Tipping Percentage"
@@ -34,25 +40,30 @@ function DefaultTippingPercentage({ settings, updateSettings }) {
     >
       <Card sectioned>
         <FormLayout>
-          <Checkbox
-            label="15%"
-            checked={defaultTipping15}
-            onChange={handleChange15}
-          />
-          <Checkbox
-            label="20%"
-            checked={defaultTipping20}
-            onChange={handleChange20}
-          />
-          <Checkbox
-            label="25%"
-            checked={defaultTipping25}
-            onChange={handleChange25}
-          />
+          <FormLayout.Group condensed>
+            <TextField
+              label="Tip Amount #1"
+              type="number"
+              value={defaultTipping1}
+              onChange={handleChange1}
+            />
+            <TextField
+              label="Tip Amount #2"
+              type="number"
+              value={defaultTipping2}
+              onChange={handleChange2}
+            />
+            <TextField
+              label="Tip Amount #3"
+              type="number"
+              value={defaultTipping3}
+              onChange={handleChange3}
+            />
+          </FormLayout.Group>
         </FormLayout>
       </Card>
     </Layout.AnnotatedSection>
-  )
+  );
 }
 
 export default DefaultTippingPercentage;

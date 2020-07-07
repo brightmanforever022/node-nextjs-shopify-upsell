@@ -15,16 +15,16 @@ export default `{% for key_value in shop.metafields.tipquik.settings %}
   {% assign tipquik_settings_tipModalDescription = key_value[1] %}
 {% endif %}
 
-{% if key_value[0] == 'defaultTipping15' %}
-  {% assign tipquik_settings_defaultTipping15 = key_value[1] %}
+{% if key_value[0] == 'defaultTipping1' %}
+  {% assign tipquik_settings_defaultTipping1 = key_value[1] %}
 {% endif %}
 
-{% if key_value[0] == 'defaultTipping20' %}
-  {% assign tipquik_settings_defaultTipping20 = key_value[1] %}
+{% if key_value[0] == 'defaultTipping2' %}
+  {% assign tipquik_settings_defaultTipping2 = key_value[1] %}
 {% endif %}
 
-{% if key_value[0] == 'defaultTipping25' %}
-  {% assign tipquik_settings_defaultTipping25 = key_value[1] %}
+{% if key_value[0] == 'defaultTipping3' %}
+  {% assign tipquik_settings_defaultTipping3 = key_value[1] %}
 {% endif %}
 
 {% if key_value[0] == 'tipModalBgColor' %}
@@ -340,27 +340,27 @@ export default `{% for key_value in shop.metafields.tipquik.settings %}
         </div>
       </div>
       <div class="tj-modal-btns-container">
-        {% if tipquik_settings_defaultTipping15 %}
+        {% if tipquik_settings_defaultTipping1 %}
           <span class="tj-modal-btn-wrapper">
-            <button id="tipQuikBtn15" type="button" class="tj-modal-btn" data-tipquik-add="{{ tipquik_cart_total | times: 0.15 }}">
-              <span class="tj-modal-btn-percentage">15%</span>
-              <span id="tipQuikAmt15" class="tj-modal-btn-amount">{{ tipquik_cart_total | times: 0.15 | money }}</span>
+            <button id="tipQuikBtn1" type="button" class="tj-modal-btn" data-tipquik-add="{{ tipquik_cart_total | times: tipquik_settings_defaultTipping1 | divided_by: 100 }}">
+              <span class="tj-modal-btn-percentage">{{tipquik_settings_defaultTipping1}}%</span>
+              <span id="tipQuikAmt1" class="tj-modal-btn-amount">{{ tipquik_cart_total | times: tipquik_settings_defaultTipping1 | divided_by: 100 | money }}</span>
             </button>
           </span>
         {% endif %}
-        {% if tipquik_settings_defaultTipping20 %}
+        {% if tipquik_settings_defaultTipping2 %}
           <span class="tj-modal-btn-wrapper">
-            <button id="tipQuikBtn20" type="button" class="tj-modal-btn" data-tipquik-add="{{ tipquik_cart_total | times: 0.20 }}">
-              <span class="tj-modal-btn-percentage">20%</span>
-              <span id="tipQuikAmt20" class="tj-modal-btn-amount">{{ tipquik_cart_total | times: 0.20 | money }}</span>
+            <button id="tipQuikBtn2" type="button" class="tj-modal-btn" data-tipquik-add="{{ tipquik_cart_total | times: tipquik_settings_defaultTipping2 | divided_by: 100 }}">
+              <span class="tj-modal-btn-percentage">{{tipquik_settings_defaultTipping2}}%</span>
+              <span id="tipQuikAmt2" class="tj-modal-btn-amount">{{ tipquik_cart_total | times: tipquik_settings_defaultTipping2 | divided_by: 100 | money }}</span>
             </button>
           </span>
         {% endif %}
-        {% if tipquik_settings_defaultTipping25 %}
+        {% if tipquik_settings_defaultTipping3 %}
         <span class="tj-modal-btn-wrapper">
-          <button id="tipQuikBtn25" type="button" class="tj-modal-btn" data-tipquik-add="{{ tipquik_cart_total | times: 0.25 }}">
-            <span class="tj-modal-btn-percentage">25%</span>
-            <span id="tipQuikAmt25" class="tj-modal-btn-amount">{{ tipquik_cart_total | times: 0.25 | money }}</span>
+          <button id="tipQuikBtn3" type="button" class="tj-modal-btn" data-tipquik-add="{{ tipquik_cart_total | times: tipquik_settings_defaultTipping3 | divided_by: 100 }}">
+            <span class="tj-modal-btn-percentage">{{tipquik_settings_defaultTipping3}}%</span>
+            <span id="tipQuikAmt3" class="tj-modal-btn-amount">{{ tipquik_cart_total | times: tipquik_settings_defaultTipping3 | divided_by: 100 | money }}</span>
           </button>
         </span>
         {% endif %}
@@ -424,19 +424,19 @@ export default `{% for key_value in shop.metafields.tipquik.settings %}
         });
         console.log('tjTotal:', tjTotal);
         
-        {% if tipquik_settings_defaultTipping15 %}
-          document.getElementById('tipQuikAmt15').textContent = '{{ cart.currency.symbol }}' + (tjTotal * .15 / 100).toFixed(2);
-          document.getElementById('tipQuikBtn15').setAttribute('data-tipquik-add', (tjTotal * .15).toFixed(2));
+        {% if tipquik_settings_defaultTipping1 > 0 %}
+          document.getElementById('tipQuikAmt1').textContent = '{{ cart.currency.symbol }}' + (tjTotal * {{tipquik_settings_defaultTipping1}} / 10000).toFixed(2);
+          document.getElementById('tipQuikBtn1').setAttribute('data-tipquik-add', (tjTotal * {{tipquik_settings_defaultTipping1}} / 100).toFixed(2));
         {% endif %}
         
-        {% if tipquik_settings_defaultTipping20 %}
-          document.getElementById('tipQuikAmt20').textContent = '{{ cart.currency.symbol }}' + (tjTotal * .20 / 100).toFixed(2);
-          document.getElementById('tipQuikBtn20').setAttribute('data-tipquik-add', (tjTotal * .20).toFixed(2));
+        {% if tipquik_settings_defaultTipping2 > 0 %}
+          document.getElementById('tipQuikAmt2').textContent = '{{ cart.currency.symbol }}' + (tjTotal * {{tipquik_settings_defaultTipping2}} / 10000).toFixed(2);
+          document.getElementById('tipQuikBtn2').setAttribute('data-tipquik-add', (tjTotal * {{tipquik_settings_defaultTipping2}} / 100).toFixed(2));
         {% endif %}
         
-        {% if tipquik_settings_defaultTipping25 %}
-          document.getElementById('tipQuikAmt25').textContent = '{{ cart.currency.symbol }}' + (tjTotal * .25 / 100).toFixed(2);
-          document.getElementById('tipQuikBtn25').setAttribute('data-tipquik-add', (tjTotal * .25).toFixed(2));
+        {% if tipquik_settings_defaultTipping3 > 0 %}
+          document.getElementById('tipQuikAmt3').textContent = '{{ cart.currency.symbol }}' + (tjTotal * {{tipquik_settings_defaultTipping3}} / 10000).toFixed(2);
+          document.getElementById('tipQuikBtn3').setAttribute('data-tipquik-add', (tjTotal * {{tipquik_settings_defaultTipping3}} / 100).toFixed(2));
         {% endif %}
         
       }).catch(function (error) {

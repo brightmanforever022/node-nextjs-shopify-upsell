@@ -3,9 +3,9 @@ export default {
   enableCustomTipOption: false,
   tipModalTitle: "Leave a tip",
   tipModalDescription: "Lorem ipsum",
-  defaultTipping15: true,
-  defaultTipping20: true,
-  defaultTipping25: true,
+  defaultTipping1: 15,
+  defaultTipping2: 20,
+  defaultTipping3: 25,
   tipModalTextColor: "#000000",
   tipModalBgColor: "#ffffff",
 };
