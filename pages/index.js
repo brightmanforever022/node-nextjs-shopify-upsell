@@ -1,20 +1,20 @@
-import { useState } from 'react';
-import { Page, Layout, Card, PageActions } from '@shopify/polaris';
-import gql from 'graphql-tag';
-import { useQuery } from '@apollo/react-hooks';
-import DefaultTippingPercentage from '../components/DefaultTippingPercentage';
-import EnableTipJarApp from '../components/EnableTipJarApp';
-import EnableCustomTipOption from '../components/EnableCustomTipOption';
-import TipModalTitle from '../components/TipModalTitle';
-import TipModalDescription from '../components/TipModalDescription';
-import TipModalTextColor from '../components/TipModalTextColor';
-import TipModalBgColor from '../components/TipModalBgColor';
-import initialSettings from '../utils/initialSettings';
+import { useState } from "react";
+import { Page, Layout, Card, PageActions } from "@shopify/polaris";
+import gql from "graphql-tag";
+import { useQuery } from "@apollo/react-hooks";
+import DefaultTippingPercentage from "../components/DefaultTippingPercentage";
+import EnableTipQuikApp from "../components/EnableTipQuikApp";
+import EnableCustomTipOption from "../components/EnableCustomTipOption";
+import TipModalTitle from "../components/TipModalTitle";
+import TipModalDescription from "../components/TipModalDescription";
+import TipModalTextColor from "../components/TipModalTextColor";
+import TipModalBgColor from "../components/TipModalBgColor";
+import initialSettings from "../utils/initialSettings";
 
-const SHOP_TIPJAR_METAFIELD_QUERY = gql`
+const SHOP_TIPQUIK_METAFIELD_QUERY = gql`
   query {
     shop {
-      metafields(first: 1, namespace: "tipjar") {
+      metafields(first: 1, namespace: "tipquik") {
         edges {
           node {
             key
@@ -27,118 +27,162 @@ const SHOP_TIPJAR_METAFIELD_QUERY = gql`
 `;
 
 const Index = () => {
-  const { loading, error, data, refetch } = useQuery(SHOP_TIPJAR_METAFIELD_QUERY, {
-    fetchPolicy: 'network-only'
-  });
+  const { loading, error, data, refetch } = useQuery(
+    SHOP_TIPQUIK_METAFIELD_QUERY,
+    {
+      fetchPolicy: "network-only",
+    }
+  );
 
-  const [updateMetafieldIsLoading, setUpdateMetafieldIsLoading] = useState(false);
-  const [installInitialSettingsLoading, setInstallInitialSettingsLoading] = useState(false);
+  const [updateMetafieldIsLoading, setUpdateMetafieldIsLoading] = useState(
+    false
+  );
+  const [
+    installInitialSettingsLoading,
+    setInstallInitialSettingsLoading,
+  ] = useState(false);
 
   const [newSettings, updateSettings] = useState();
 
   const handleUpdateSettings = async () => {
     setUpdateMetafieldIsLoading(true);
 
-    const updateMetafield = await fetch('/updateSettingsMetafield', {
-      method: 'POST',
+    const updateMetafield = await fetch("/updateSettingsMetafield", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        metafieldValue: JSON.stringify(newSettings)
-      })
+        metafieldValue: JSON.stringify(newSettings),
+      }),
     });
     const updateMetafieldJson = await updateMetafield.json();
-    console.log('Response for updateMetafieldJson:', JSON.stringify(updateMetafieldJson));
-  
+    console.log(
+      "Response for updateMetafieldJson:",
+      JSON.stringify(updateMetafieldJson)
+    );
+
     // Refetch data to make sure everything is up to date
     setUpdateMetafieldIsLoading(false);
     refetch();
-  }
+  };
 
   const handleInstallInitialSettings = async () => {
     setInstallInitialSettingsLoading(true);
 
-    const updateMetafield = await fetch('/updateSettingsMetafield', {
-      method: 'POST',
+    const updateMetafield = await fetch("/updateSettingsMetafield", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        metafieldValue: JSON.stringify(initialSettings)
-      })
+        metafieldValue: JSON.stringify(initialSettings),
+      }),
     });
     const updateMetafieldJson = await updateMetafield.json();
-    console.log('Response for updateMetafieldJson:', JSON.stringify(updateMetafieldJson));
+    console.log(
+      "Response for updateMetafieldJson:",
+      JSON.stringify(updateMetafieldJson)
+    );
 
     // Refetch data to make sure everything is up to date
     setInstallInitialSettingsLoading(false);
     refetch();
-  }
-  
+  };
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
-  const originalSettings = data.shop.metafields.edges[0] ? JSON.parse(data.shop.metafields.edges[0].node.value) : null;
+  const originalSettings = data.shop.metafields.edges[0]
+    ? JSON.parse(data.shop.metafields.edges[0].node.value)
+    : null;
   const settings = newSettings ? newSettings : originalSettings;
-  
+
   return (
     <Page
       title="Tip Settings"
-      primaryAction={newSettings && (JSON.stringify(newSettings) != JSON.stringify(originalSettings)) ? {
-        content: 'Update settings',
-        onAction: handleUpdateSettings,
-        loading: updateMetafieldIsLoading
-      } : null}
+      primaryAction={
+        newSettings &&
+        JSON.stringify(newSettings) != JSON.stringify(originalSettings)
+          ? {
+              content: "Update settings",
+              onAction: handleUpdateSettings,
+              loading: updateMetafieldIsLoading,
+            }
+          : null
+      }
     >
-      {!originalSettings &&
+      {!originalSettings && (
         <Layout>
           <Layout.Section>
             <Card
-              title="Initialize TipJar"
+              title="Initialize TipQuik"
               primaryFooterAction={{
-                content: 'Install initial settings',
+                content: "Install initial settings",
                 loading: installInitialSettingsLoading,
-                onAction: handleInstallInitialSettings
+                onAction: handleInstallInitialSettings,
               }}
             >
               <Card.Section>
-                Press the button below initiliaze TipJar settings.
+                Press the button below initiliaze TipQuik settings.
               </Card.Section>
             </Card>
           </Layout.Section>
         </Layout>
-      }
+      )}
 
-      {originalSettings &&
+      {originalSettings && (
         <Layout>
-          <DefaultTippingPercentage settings={settings} updateSettings={updateSettings} />
+          <DefaultTippingPercentage
+            settings={settings}
+            updateSettings={updateSettings}
+          />
 
-          <EnableTipJarApp settings={settings} updateSettings={updateSettings} />
+          <EnableTipQuikApp
+            settings={settings}
+            updateSettings={updateSettings}
+          />
 
-          <EnableCustomTipOption settings={settings} updateSettings={updateSettings} />
+          <EnableCustomTipOption
+            settings={settings}
+            updateSettings={updateSettings}
+          />
 
           <TipModalTitle settings={settings} updateSettings={updateSettings} />
 
-          <TipModalDescription settings={settings} updateSettings={updateSettings} />
+          <TipModalDescription
+            settings={settings}
+            updateSettings={updateSettings}
+          />
 
-          <TipModalBgColor settings={settings} updateSettings={updateSettings} />
+          <TipModalBgColor
+            settings={settings}
+            updateSettings={updateSettings}
+          />
 
-          <TipModalTextColor settings={settings} updateSettings={updateSettings} />
+          <TipModalTextColor
+            settings={settings}
+            updateSettings={updateSettings}
+          />
 
           <Layout.Section></Layout.Section>
         </Layout>
-      }
+      )}
 
       <PageActions
-        primaryAction={newSettings && (JSON.stringify(newSettings) != JSON.stringify(originalSettings)) ? {
-          content: 'Update settings',
-          onAction: handleUpdateSettings,
-          loading: updateMetafieldIsLoading
-        } : null}
+        primaryAction={
+          newSettings &&
+          JSON.stringify(newSettings) != JSON.stringify(originalSettings)
+            ? {
+                content: "Update settings",
+                onAction: handleUpdateSettings,
+                loading: updateMetafieldIsLoading,
+              }
+            : null
+        }
       />
     </Page>
-  )
-}
+  );
+};
 
 export default Index;
