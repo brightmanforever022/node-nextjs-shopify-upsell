@@ -1,6 +1,7 @@
 export default {
   enableTipQuik: true,
   enableCustomTipOption: false,
+  enablePoweredTipQuik: true,
   tipModalTitle: "Leave a tip",
   tipModalDescription: "Lorem ipsum",
   defaultTipping1: 15,

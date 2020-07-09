@@ -9,6 +9,10 @@ import next from "next";
 import Router from "koa-router";
 import session from "koa-session";
 import * as handlers from "./handlers/index";
+
+const Sentry = require("@sentry/node");
+Sentry.init({ dsn: process.env.SENTRY_DSN });
+
 dotenv.config();
 const port = parseInt(process.env.PORT, 10) || 8081;
 const dev = process.env.NODE_ENV !== "production";
@@ -40,6 +44,7 @@ app.prepare().then(() => {
         //Auth token and shop available in session
         //Redirect to shop upon auth
         const { shop, accessToken } = ctx.session;
+        console.log("accessToken: ", accessToken);
         ctx.cookies.set("shopOrigin", shop, {
           httpOnly: false,
           secure: true,
@@ -174,6 +179,14 @@ app.prepare().then(() => {
     );
 
     ctx.body = createProductJson;
+  });
+
+  router.post("/requestHelp", async (ctx) => {
+    console.log("sendmail body request: ", ctx.request.body);
+    // Send help request mail to support@aesymmetric.xyz
+    // Change installation_help_status in shop table (psql)
+
+    ctx.body = {};
   });
 
   router.get("*", verifyRequest(), async (ctx) => {

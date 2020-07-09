@@ -5,6 +5,7 @@ import { useQuery } from "@apollo/react-hooks";
 import DefaultTippingPercentage from "../components/DefaultTippingPercentage";
 import EnableTipQuikApp from "../components/EnableTipQuikApp";
 import EnableCustomTipOption from "../components/EnableCustomTipOption";
+import EnablePoweredTipQuik from "../components/EnablePoweredTipQuik";
 import TipModalTitle from "../components/TipModalTitle";
 import TipModalDescription from "../components/TipModalDescription";
 import TipModalTextColor from "../components/TipModalTextColor";
@@ -144,6 +145,11 @@ const Index = () => {
           />
 
           <EnableCustomTipOption
+            settings={settings}
+            updateSettings={updateSettings}
+          />
+
+          <EnablePoweredTipQuik
             settings={settings}
             updateSettings={updateSettings}
           />
