@@ -44,18 +44,21 @@ function DefaultTippingPercentage({ settings, updateSettings }) {
             <TextField
               label="Tip Amount #1"
               type="number"
+              prefix="%"
               value={defaultTipping1}
               onChange={handleChange1}
             />
             <TextField
               label="Tip Amount #2"
               type="number"
+              prefix="%"
               value={defaultTipping2}
               onChange={handleChange2}
             />
             <TextField
               label="Tip Amount #3"
               type="number"
+              prefix="%"
               value={defaultTipping3}
               onChange={handleChange3}
             />
