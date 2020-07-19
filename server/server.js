@@ -4,11 +4,14 @@ import "isomorphic-fetch";
 import createShopifyAuth, { verifyRequest } from "@shopify/koa-shopify-auth";
 import graphQLProxy, { ApiVersion } from "@shopify/koa-shopify-graphql-proxy";
 import Koa from "koa";
+import cors from "koa2-cors";
 import bodyParser from "koa-bodyparser";
 import next from "next";
 import Router from "koa-router";
 import session from "koa-session";
 import * as handlers from "./handlers/index";
+
+const { Client } = require("pg");
 
 const Sentry = require("@sentry/node");
 Sentry.init({ dsn: process.env.SENTRY_DSN });
@@ -20,10 +23,20 @@ const app = next({
   dev,
 });
 const handle = app.getRequestHandler();
-const { SHOPIFY_API_SECRET, SHOPIFY_API_KEY, SCOPES } = process.env;
-app.prepare().then(() => {
+const {
+  SHOPIFY_API_SECRET,
+  SHOPIFY_API_KEY,
+  SCOPES,
+  DATABASE_URL,
+} = process.env;
+app.prepare().then(async () => {
   const server = new Koa();
   const router = new Router();
+  const client = new Client({
+    connectionString: DATABASE_URL,
+  });
+  await client.connect();
+
   server.use(
     session(
       {
@@ -38,6 +51,7 @@ app.prepare().then(() => {
     createShopifyAuth({
       apiKey: SHOPIFY_API_KEY,
       secret: SHOPIFY_API_SECRET,
+      accessMode: "offline",
       scopes: [SCOPES],
 
       async afterAuth(ctx) {
@@ -50,6 +64,10 @@ app.prepare().then(() => {
           secure: true,
           sameSite: "none",
         });
+        // client.query('SELECT NOW()', (err, res) => {
+        //   console.log(err, res)
+        // });
+        console.log("ctx.session: ", ctx.session);
         ctx.redirect("/");
       },
     })
