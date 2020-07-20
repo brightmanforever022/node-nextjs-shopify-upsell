@@ -4,7 +4,8 @@
   "description": "Shopify's node app for CLI tool",
   "scripts": {
     "test": "jest",
-    "dev": "NODE_ENV=development nodemon ./server/index.js --watch ./server/index.js",
+    "devs": "NODE_ENV=development nodemon ./server/index.js --watch ./server/index.js",
+    "dev": "nodemon ./server/index.js --watch ./server/index.js",
     "build": "next build",
     "start": "NODE_ENV=production node ./server/index.js"
   },
@@ -22,6 +23,7 @@
     "@babel/polyfill": "^7.6.0",
     "@babel/preset-env": "^7.6.2",
     "@babel/register": "^7.6.2",
+    "@sendgrid/mail": "^7.2.1",
     "@sentry/node": "^5.19.1",
     "@shopify/app-bridge-react": "^1.15.0",
     "@shopify/app-cli-node-generator-helper": "^1.1.2",

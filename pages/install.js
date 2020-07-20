@@ -4,23 +4,22 @@ import { useQuery } from "@apollo/react-hooks";
 import { Page, Layout, Card, TextStyle } from "@shopify/polaris";
 import snippetContent from "../utils/snippetContent";
 
-const SHOP_TIPQUIK_METAFIELD_QUERY = gql`
+const SHOP_TIPQUIK_QUERY = gql`
   query {
     shop {
       email
+      primaryDomain {
+        id
+        host
+      }
     }
   }
 `;
 
 const Install = () => {
-  const { loading, error, data, refetch } = useQuery(
-    SHOP_TIPQUIK_METAFIELD_QUERY,
-    {
-      fetchPolicy: "network-only",
-    }
-  );
-
-  // console.log('store owner email: ', data.shop.email)
+  const { loading, error, data, refetch } = useQuery(SHOP_TIPQUIK_QUERY, {
+    fetchPolicy: "network-only",
+  });
 
   const [createSnippetLoading, setCreateSnippetLoading] = useState(false);
   const [createProductLoading, setCreateProductLoading] = useState(false);
@@ -88,12 +87,16 @@ const Install = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        store_owner: "whitehorse1990324@gmail.com",
+        store_owner: data.shop.email,
+        store_domain: data.shop.primaryDomain.host,
       }),
     });
     const requestHelpJson = await requestHelp.json();
     setInstallationHelpStatus(true);
   };
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
 
   return (
     <Page title="Steps to install">

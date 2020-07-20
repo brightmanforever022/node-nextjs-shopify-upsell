@@ -12,6 +12,7 @@ import session from "koa-session";
 import * as handlers from "./handlers/index";
 
 const { Client } = require("pg");
+const sgMail = require("@sendgrid/mail");
 
 const Sentry = require("@sentry/node");
 Sentry.init({ dsn: process.env.SENTRY_DSN });
@@ -200,11 +201,38 @@ app.prepare().then(async () => {
   });
 
   router.post("/requestHelp", async (ctx) => {
-    console.log("sendmail body request: ", ctx.request.body);
-    // Send help request mail to support@aesymmetric.xyz
-    // Change installation_help_status in shop table (psql)
+    const helpRequest = ctx.request.body;
+    // Send help request mail to support email (support@aesymmetric.xyz)
+    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+    const msg = {
+      to: process.env.SUPPORT_EMAIL,
+      from: helpRequest.store_owner,
+      subject: "Need Help",
+      text: "I need help from you. Store domain is " + helpRequest.store_domain,
+      html:
+        '<strong>I need help from you. Store domain is</strong> <a href="' +
+        helpRequest.store_domain +
+        '">' +
+        helpRequest.store_domain +
+        "</a>",
+    };
 
-    ctx.body = {};
+    sgMail.send(msg);
+
+    // Change installation_help_status in shop table (psql)
+    client.query(
+      'UPDATE shops SET installation_help_status=true WHERE shop_domain="' +
+        helpRequest.store_domain +
+        '"',
+      (err, res) => {
+        console.log(err, res);
+        if (err) {
+          console.log("error: ", err);
+        } else {
+          console.log(helpRequest.store_domain + " requested to support self.");
+        }
+      }
+    );
   });
 
   router.get("*", verifyRequest(), async (ctx) => {
