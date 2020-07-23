@@ -12,7 +12,6 @@ import session from "koa-session";
 import * as handlers from "./handlers/index";
 
 const { Client } = require("pg");
-const sgMail = require("@sendgrid/mail");
 
 const Sentry = require("@sentry/node");
 Sentry.init({ dsn: process.env.SENTRY_DSN });
@@ -36,7 +35,18 @@ app.prepare().then(async () => {
   const client = new Client({
     connectionString: DATABASE_URL,
   });
-  await client.connect();
+
+  try {
+    await client.connect();
+    console.log("first connection success");
+  } catch (error) {
+    try {
+      await client.connect();
+      console.log("second connection success");
+    } catch (error2) {
+      throw error2;
+    }
+  }
 
   server.use(
     session(
@@ -65,10 +75,6 @@ app.prepare().then(async () => {
           secure: true,
           sameSite: "none",
         });
-        // client.query('SELECT NOW()', (err, res) => {
-        //   console.log(err, res)
-        // });
-        console.log("ctx.session: ", ctx.session);
         ctx.redirect("/");
       },
     })
@@ -203,33 +209,45 @@ app.prepare().then(async () => {
   router.post("/requestHelp", async (ctx) => {
     const helpRequest = ctx.request.body;
     // Send help request mail to support email (support@aesymmetric.xyz)
-    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-    const msg = {
+    const nodemailer = require("nodemailer");
+    const mailOptions = {
       to: process.env.SUPPORT_EMAIL,
       from: helpRequest.store_owner,
-      subject: "Need Help",
-      text: "I need help from you. Store domain is " + helpRequest.store_domain,
-      html:
-        '<strong>I need help from you. Store domain is</strong> <a href="' +
+      subject:
+        "TipQuik - installation help request - " + helpRequest.store_domain,
+      text:
+        "TipQuik app installation help has been requested.\n Store URL: " +
         helpRequest.store_domain +
-        '">' +
-        helpRequest.store_domain +
-        "</a>",
+        "\n Store owner email: " +
+        helpRequest.store_owner,
     };
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.GMAIL_USER,
+        pass: process.env.GMAIL_PASS,
+      },
+    });
 
-    sgMail.send(msg);
+    transporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log("Email sent: " + info.response);
+      }
+    });
 
     // Change installation_help_status in shop table (psql)
     client.query(
-      'UPDATE shops SET installation_help_status=true WHERE shop_domain="' +
+      "UPDATE shops SET installation_help_status=true WHERE shop_domain='" +
         helpRequest.store_domain +
-        '"',
+        "';",
       (err, res) => {
-        console.log(err, res);
         if (err) {
           console.log("error: ", err);
         } else {
           console.log(helpRequest.store_domain + " requested to support self.");
+          ctx.body = JSON.stringify(res);
         }
       }
     );
