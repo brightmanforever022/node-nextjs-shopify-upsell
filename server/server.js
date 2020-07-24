@@ -10,6 +10,7 @@ import next from "next";
 import Router from "koa-router";
 import session from "koa-session";
 import * as handlers from "./handlers/index";
+import * as helpers from "./helper";
 
 const { Client } = require("pg");
 
@@ -36,17 +37,7 @@ app.prepare().then(async () => {
     connectionString: DATABASE_URL,
   });
 
-  try {
-    await client.connect();
-    console.log("first connection success");
-  } catch (error) {
-    try {
-      await client.connect();
-      console.log("second connection success");
-    } catch (error2) {
-      throw error2;
-    }
-  }
+  await helpers.connectRetry(3, client);
 
   server.use(
     session(
@@ -207,7 +198,8 @@ app.prepare().then(async () => {
   });
 
   router.post("/requestHelp", async (ctx) => {
-    const helpRequest = ctx.request.body;
+    const helpRequest = ctx.request.body.storedata;
+
     // Send help request mail to support email (support@aesymmetric.xyz)
     const nodemailer = require("nodemailer");
     const mailOptions = {
@@ -238,19 +230,20 @@ app.prepare().then(async () => {
     });
 
     // Change installation_help_status in shop table (psql)
-    client.query(
-      "UPDATE shops SET installation_help_status=true WHERE shop_domain='" +
-        helpRequest.store_domain +
-        "';",
-      (err, res) => {
-        if (err) {
-          console.log("error: ", err);
-        } else {
-          console.log(helpRequest.store_domain + " requested to support self.");
-          ctx.body = JSON.stringify(res);
-        }
-      }
-    );
+    client
+      .query(
+        "UPDATE shops SET installation_help_status=true WHERE shop_domain='" +
+          helpRequest.store_domain +
+          "';"
+      )
+      .then((res) => {
+        console.log(helpRequest.store_domain + " requested to support self.");
+      })
+      .catch((err) => {
+        console.log("error: ", err);
+      });
+
+    ctx.body = { storedata: { a: "b" } };
   });
 
   router.get("*", verifyRequest(), async (ctx) => {

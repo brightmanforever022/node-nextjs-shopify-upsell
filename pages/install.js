@@ -87,11 +87,14 @@ const Install = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        store_owner: data.shop.email,
-        store_domain: data.shop.primaryDomain.host,
+        storedata: {
+          store_owner: data.shop.email,
+          store_domain: data.shop.primaryDomain.host,
+        },
       }),
     });
     const requestHelpJson = await requestHelp.json();
+
     setInstallationHelpStatus(true);
   };
 

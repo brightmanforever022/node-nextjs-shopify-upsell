@@ -1,8 +1,12 @@
-function retry(maxRetries, fn) {
-  return fn().catch(function (err) {
-    if (maxRetries <= 0) {
-      throw err;
-    }
-    return retry(maxRetries - 1, fn);
-  });
-}
+const connectRetry = async (maxRetries, clientObj) => {
+  try {
+    return await clientObj.connect();
+  } catch (err) {
+    if (maxRetries === 1) throw err;
+    return await connectRetry(maxRetries - 1, clientObj);
+  }
+};
+
+module.exports = {
+  connectRetry,
+};
