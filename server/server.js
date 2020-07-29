@@ -66,6 +66,53 @@ app.prepare().then(async () => {
           secure: true,
           sameSite: "none",
         });
+
+        // get shop data from db
+        client
+          .query("SELECT * FROM shops WHERE shop_domain='" + shop + "';")
+          .then(async (res) => {
+            if (res.rows.length > 0) {
+              let shopData = res.rows[0];
+              shopData.access_token = accessToken;
+              await client.query(
+                "UPDATE shops SET access_token='" +
+                  accessToken +
+                  "' WHERE shop_domain='" +
+                  shop +
+                  "';"
+              );
+              console.log("updated token");
+            } else {
+              throw new Error("There are no shop data.");
+            }
+          })
+          .catch(async (err) => {
+            const ds = new Date();
+            const text =
+              "INSERT INTO shops(shop_domain, access_token, store_owner_email, subscription_status, snippet_installation_status, product_installation_status, " +
+              "installation_help_status, created_at, updated_at) " +
+              "VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *";
+            const values = [
+              shop,
+              accessToken,
+              "asdf@asdf.com",
+              false,
+              false,
+              false,
+              false,
+              "2020-07-30 00:43:30",
+              "2020-07-30 00:43:30",
+            ];
+
+            try {
+              const res = await client.query(text, values);
+              console.log(res.rows[0]);
+              // register webhooks
+            } catch (insertErr) {
+              console.log(insertErr);
+            }
+          });
+
         ctx.redirect("/");
       },
     })
