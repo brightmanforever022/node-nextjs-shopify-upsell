@@ -16,14 +16,16 @@ const SHOP_TIPQUIK_QUERY = gql`
   }
 `;
 
-const Install = () => {
+const Install = ({ shopSettings }) => {
   const { loading, error, data, refetch } = useQuery(SHOP_TIPQUIK_QUERY, {
     fetchPolicy: "network-only",
   });
 
   const [createSnippetLoading, setCreateSnippetLoading] = useState(false);
   const [createProductLoading, setCreateProductLoading] = useState(false);
-  const [installationHelpStatus, setInstallationHelpStatus] = useState(false);
+  const [installationHelpStatus, setInstallationHelpStatus] = useState(
+    shopSettings.shopInformation.installation_help_status
+  );
 
   const handleCreateSnippet = async () => {
     setCreateSnippetLoading(true);
@@ -88,8 +90,8 @@ const Install = () => {
       },
       body: JSON.stringify({
         storedata: {
-          store_owner: data.shop.email,
-          store_domain: data.shop.primaryDomain.host,
+          shop_owner: data.shop.email,
+          shop_domain: data.shop.primaryDomain.host,
         },
       }),
     });
@@ -157,7 +159,7 @@ const Install = () => {
             {installationHelpStatus && (
               <p>
                 Your help request has been sent, we’ll be in touch with you at
-                storeEmail@asdf.com soon.
+                support@aesymmetric.xyz soon.
               </p>
             )}
           </Card>
@@ -165,6 +167,22 @@ const Install = () => {
       </Layout>
     </Page>
   );
+};
+
+Install.getInitialProps = async (ctx) => {
+  const shopSettings = await fetch(process.env.HOST + "getShopSettings", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      shop_domain: "whitehorse-dev.myshopify.com",
+    }),
+  });
+
+  const settings = await shopSettings.json();
+
+  return { shopSettings: settings };
 };
 
 export default Install;

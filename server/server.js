@@ -9,6 +9,7 @@ import bodyParser from "koa-bodyparser";
 import next from "next";
 import Router from "koa-router";
 import session from "koa-session";
+const Ctrl = require("./controllers");
 import * as handlers from "./handlers/index";
 import * as helpers from "./helper";
 
@@ -124,6 +125,12 @@ app.prepare().then(async () => {
   );
 
   server.use(bodyParser());
+
+  // Get the setting of store
+  router.post("/getShopSettings", async (ctx) => {
+    ctx.res.setHeader("Content-Type", "application/json;charset=utf-8");
+    return Ctrl.getShopSettings(client, ctx);
+  });
 
   // Create/update the shop metafield
   router.post("/updateSettingsMetafield", async (ctx) => {
@@ -245,52 +252,8 @@ app.prepare().then(async () => {
   });
 
   router.post("/requestHelp", async (ctx) => {
-    const helpRequest = ctx.request.body.storedata;
-
     // Send help request mail to support email (support@aesymmetric.xyz)
-    const nodemailer = require("nodemailer");
-    const mailOptions = {
-      to: process.env.SUPPORT_EMAIL,
-      from: helpRequest.store_owner,
-      subject:
-        "TipQuik - installation help request - " + helpRequest.store_domain,
-      text:
-        "TipQuik app installation help has been requested.\n Store URL: " +
-        helpRequest.store_domain +
-        "\n Store owner email: " +
-        helpRequest.store_owner,
-    };
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: process.env.GMAIL_USER,
-        pass: process.env.GMAIL_PASS,
-      },
-    });
-
-    transporter.sendMail(mailOptions, function (error, info) {
-      if (error) {
-        console.log(error);
-      } else {
-        console.log("Email sent: " + info.response);
-      }
-    });
-
-    // Change installation_help_status in shop table (psql)
-    client
-      .query(
-        "UPDATE shops SET installation_help_status=true WHERE shop_domain='" +
-          helpRequest.store_domain +
-          "';"
-      )
-      .then((res) => {
-        console.log(helpRequest.store_domain + " requested to support self.");
-      })
-      .catch((err) => {
-        console.log("error: ", err);
-      });
-
-    ctx.body = { storedata: { a: "b" } };
+    return Ctrl.requestHelp(client, ctx);
   });
 
   router.get("*", verifyRequest(), async (ctx) => {
