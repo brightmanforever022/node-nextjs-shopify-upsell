@@ -106,8 +106,9 @@ app.prepare().then(async () => {
             ];
 
             try {
-              const res = await client.query(text, values);
-              console.log(res.rows[0]);
+              const insertShop = await client.query(text, values);
+              console.log(insertShop.rows[0]);
+              // const insertSettings =
               // register webhooks
             } catch (insertErr) {
               console.log(insertErr);
@@ -134,38 +135,12 @@ app.prepare().then(async () => {
 
   // Create/update the shop metafield
   router.post("/updateSettingsMetafield", async (ctx) => {
-    console.log("ctx.request.body", ctx.request.body);
     // Return message if no metafield value provided
     if (!ctx.request.body.metafieldValue) {
       ctx.body = "No metafield value provided.";
     }
 
-    const updateMetafield = await fetch(
-      `https://${ctx.session.shop}/admin/api/2020-04/metafields.json`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-Shopify-Access-Token": ctx.session.accessToken,
-        },
-        body: JSON.stringify({
-          metafield: {
-            namespace: "tipquik",
-            key: "settings",
-            value: ctx.request.body.metafieldValue,
-            value_type: "json_string",
-          },
-        }),
-      }
-    );
-
-    const updateMetafieldJson = await updateMetafield.json();
-    console.log(
-      "Shopify updateMetafield response:",
-      JSON.stringify(updateMetafieldJson)
-    );
-
-    ctx.body = updateMetafieldJson;
+    return Ctrl.updateSettingsMetafield(client, ctx);
   });
 
   // Create/update the theme snippet

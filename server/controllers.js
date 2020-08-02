@@ -1,4 +1,5 @@
 import dotenv from "dotenv";
+import "isomorphic-fetch";
 
 dotenv.config();
 
@@ -29,36 +30,30 @@ async function getShopSettings(client, ctx) {
 }
 
 async function requestHelp(client, ctx) {
-  const nodemailer = require("nodemailer");
   const helpRequest = ctx.request.body.storedata;
-
-  const mailOptions = {
-    to: process.env.SUPPORT_EMAIL,
-    from: helpRequest.shop_owner,
-    subject: "TipQuik - installation help request - " + helpRequest.shop_domain,
-    text:
-      "TipQuik app installation help has been requested.\n Store URL: " +
-      helpRequest.shop_domain +
-      "\n Store owner email: " +
-      helpRequest.shop_owner,
-  };
-
-  const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: process.env.GMAIL_USER,
-      pass: process.env.GMAIL_PASS,
-    },
-  });
-
-  // Send help request mail to support email (support@aesymmetric.xyz)
-  transporter.sendMail(mailOptions, function (error, info) {
-    if (error) {
-      console.log(error);
-    } else {
-      console.log("Email sent: " + info.response);
-    }
-  });
+  try {
+    const sgMail = require("@sendgrid/mail");
+    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+    sgMail.send({
+      to: process.env.SUPPORT_EMAIL,
+      from: process.env.SUPPORT_EMAIL,
+      subject:
+        "TipQuik - installation help request - " + helpRequest.shop_domain,
+      text:
+        "TipQuik app installation help has been requested.\n Store URL: " +
+        helpRequest.shop_domain +
+        "\n Store owner email: " +
+        helpRequest.shop_owner,
+      html:
+        "<p>TipQuik app installation help has been requested.</p><p>Store URL: " +
+        helpRequest.shop_domain +
+        "</p><p> Store owner email: " +
+        helpRequest.shop_owner +
+        "</p>",
+    });
+  } catch (error) {
+    console.log("sendgrid error: ", error);
+  }
 
   // Change installation_help_status in shop table (psql)
   const updateShop = await client.query(
@@ -66,9 +61,40 @@ async function requestHelp(client, ctx) {
     [helpRequest.shop_domain]
   );
   ctx.body = { storedata: updateShop.rows[0] };
+  // ctx.body = {storedata: {a: 'b'}};
+}
+
+async function updateSettingsMetafield(client, ctx) {
+  const updateMetafield = await fetch(
+    `https://${ctx.session.shop}/admin/api/2020-04/metafields.json`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Shopify-Access-Token": ctx.session.accessToken,
+      },
+      body: JSON.stringify({
+        metafield: {
+          namespace: "tipquik",
+          key: "settings",
+          value: ctx.request.body.metafieldValue,
+          value_type: "json_string",
+        },
+      }),
+    }
+  );
+
+  const updateMetafieldJson = await updateMetafield.json();
+  console.log(
+    "Shopify updateMetafield response:",
+    JSON.stringify(updateMetafieldJson)
+  );
+
+  ctx.body = updateMetafieldJson;
 }
 
 module.exports = {
   getShopSettings,
   requestHelp,
+  updateSettingsMetafield,
 };
