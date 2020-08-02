@@ -45,9 +45,12 @@ async function requestHelp(client, ctx) {
         "\n Store owner email: " +
         helpRequest.shop_owner,
       html:
-        "<p>TipQuik app installation help has been requested.</p><p>Store URL: " +
+        "<p>TipQuik app installation help has been requested.</p><p>Store URL: <a href='" +
         helpRequest.shop_domain +
-        "</p><p> Store owner email: " +
+        "'>" +
+        helpRequest.shop_domain +
+        "</a>" +
+        "</a></p><p> Store owner email: " +
         helpRequest.shop_owner +
         "</p>",
     });
@@ -85,9 +88,30 @@ async function updateSettingsMetafield(client, ctx) {
   );
 
   const updateMetafieldJson = await updateMetafield.json();
-  console.log(
-    "Shopify updateMetafield response:",
-    JSON.stringify(updateMetafieldJson)
+  const settingValues = JSON.parse(ctx.request.body.metafieldValue);
+
+  // Update database
+  const shopData = await client.query(
+    "SELECT id FROM shops WHERE shop_domain=$1",
+    [ctx.session.shop]
+  );
+  const shopId = shopData.rows[0].id;
+  const updateSettings = await client.query(
+    "UPDATE settings SET tip_percent1=$1, tip_percent2=$2, tip_percent3=$3, enable_tip_quik=$4, enable_custom_tip_option=$5" +
+      ", tip_modal_title=$6, tip_modal_description=$7, tip_modal_text_color=$8, tip_modal_bg_color=$9, enable_powered_tip_quik=$10 WHERE shop_id=$11",
+    [
+      settingValues.defaultTipping1,
+      settingValues.defaultTipping2,
+      settingValues.defaultTipping3,
+      settingValues.enableTipQuik,
+      settingValues.enableCustomTipOption,
+      settingValues.tipModalTitle,
+      settingValues.tipModalDescription,
+      settingValues.tipModalTextColor,
+      settingValues.tipModalBgColor,
+      settingValues.enablePoweredTipQuik,
+      shopId,
+    ]
   );
 
   ctx.body = updateMetafieldJson;

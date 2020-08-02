@@ -108,7 +108,25 @@ app.prepare().then(async () => {
             try {
               const insertShop = await client.query(text, values);
               console.log(insertShop.rows[0]);
-              // const insertSettings =
+              const insertSettings = await client.query(
+                "INSERT INTO settings(shop_id, tip_percent1, tip_percent2, tip_percent3, enable_tip_quik, enable_custom_tip_option" +
+                  ", tip_modal_title, tip_modal_description, tip_modal_text_color, tip_modal_bg_color, enable_powered_tip_quik)" +
+                  " VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *",
+                [
+                  insertShop.rows[0].id,
+                  15,
+                  20,
+                  25,
+                  true,
+                  false,
+                  "Leave a tip",
+                  "Lorem ipsum",
+                  "#000000",
+                  "#ffffff",
+                  true,
+                ]
+              );
+
               // register webhooks
             } catch (insertErr) {
               console.log(insertErr);
