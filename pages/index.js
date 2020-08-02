@@ -27,7 +27,7 @@ const SHOP_TIPQUIK_METAFIELD_QUERY = gql`
   }
 `;
 
-const Index = () => {
+const Index = (shopSettings) => {
   const { loading, error, data, refetch } = useQuery(
     SHOP_TIPQUIK_METAFIELD_QUERY,
     {
@@ -44,6 +44,8 @@ const Index = () => {
   ] = useState(false);
 
   const [newSettings, updateSettings] = useState();
+  const shopPlan =
+    shopSettings.subscription_status && shopSettings.subscription_plan > 0;
 
   const handleUpdateSettings = async () => {
     setUpdateMetafieldIsLoading(true);
@@ -146,11 +148,13 @@ const Index = () => {
 
           <EnableCustomTipOption
             settings={settings}
+            shopPlan={shopPlan}
             updateSettings={updateSettings}
           />
 
           <EnablePoweredTipQuik
             settings={settings}
+            shopPlan={shopPlan}
             updateSettings={updateSettings}
           />
 
@@ -189,6 +193,28 @@ const Index = () => {
       />
     </Page>
   );
+};
+
+Index.getInitialProps = async (ctx) => {
+  let shopOrigin = "";
+  ctx.req.headers.cookie.split(";").map((pairValue) => {
+    if (pairValue.includes("shopOrigin=")) {
+      shopOrigin = pairValue.split("shopOrigin=")[1];
+    }
+  });
+  const shopSettings = await fetch(process.env.HOST + "getShopSettings", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      shop_domain: shopOrigin,
+    }),
+  });
+
+  const settings = await shopSettings.json();
+
+  return { shopSettings: settings };
 };
 
 export default Index;

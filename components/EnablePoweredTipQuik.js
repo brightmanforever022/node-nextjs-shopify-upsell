@@ -1,20 +1,20 @@
 import { useState } from "react";
 import { Layout, SettingToggle } from "@shopify/polaris";
 
-function EnablePoweredTipQuik({ settings, updateSettings }) {
-  const [enablePoweredTipQuik, setEnablePoweredTipQuik] = useState(
+function EnablePoweredTipQuik({ settings, shopPlan, updateSettings }) {
+  const [poweredTipQuikActive, setPoweredTipQuikActive] = useState(
     settings.enablePoweredTipQuik
   );
 
   const handleToggle = () => {
     let newSettings = { ...settings };
-    newSettings.enablePoweredTipQuik = !enablePoweredTipQuik;
+    newSettings.enablePoweredTipQuik = !poweredTipQuikActive;
     updateSettings(newSettings);
-    setEnablePoweredTipQuik((enablePoweredTipQuik) => !enablePoweredTipQuik);
+    setPoweredTipQuikActive((poweredTipQuikActive) => !poweredTipQuikActive);
   };
 
-  const contentStatus = enablePoweredTipQuik ? "Disable" : "Enable";
-  const textStatus = enablePoweredTipQuik ? "enabled" : "disabled";
+  const contentStatus = poweredTipQuikActive ? "Disable" : "Enable";
+  const textStatus = poweredTipQuikActive ? "enabled" : "disabled";
 
   return (
     <Layout.AnnotatedSection
@@ -25,10 +25,12 @@ function EnablePoweredTipQuik({ settings, updateSettings }) {
         action={{
           content: contentStatus,
           onAction: handleToggle,
+          disabled: !shopPlan,
         }}
-        enabled={enablePoweredTipQuik}
+        enabled={poweredTipQuikActive}
       >
-        Custom Tip Option is currently {textStatus}.
+        <p>Powered by TipQuik Option is currently {textStatus}.</p>
+        {!shopPlan && <p>Upgrade to a paid plan to edit this setting</p>}
       </SettingToggle>
     </Layout.AnnotatedSection>
   );

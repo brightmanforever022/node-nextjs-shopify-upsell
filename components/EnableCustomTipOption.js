@@ -1,18 +1,20 @@
-import { useState } from 'react';
-import { Layout, SettingToggle } from '@shopify/polaris';
+import { useState } from "react";
+import { Layout, SettingToggle } from "@shopify/polaris";
 
-function EnableCustomTipOption({ settings, updateSettings }) {
-  const [customTipOptionActive, setCustomTipOptionActive] = useState(settings.enableCustomTipOption);
+function EnableCustomTipOption({ settings, shopPlan, updateSettings }) {
+  const [customTipOptionActive, setCustomTipOptionActive] = useState(
+    settings.enableCustomTipOption
+  );
 
   const handleToggle = () => {
-    let newSettings = {...settings};
+    let newSettings = { ...settings };
     newSettings.enableCustomTipOption = !customTipOptionActive;
     updateSettings(newSettings);
     setCustomTipOptionActive((customTipOptionActive) => !customTipOptionActive);
   };
 
-  const contentStatus = customTipOptionActive ? 'Disable' : 'Enable';
-  const textStatus = customTipOptionActive ? 'enabled' : 'disabled';
+  const contentStatus = customTipOptionActive ? "Disable" : "Enable";
+  const textStatus = customTipOptionActive ? "enabled" : "disabled";
 
   return (
     <Layout.AnnotatedSection
@@ -23,13 +25,15 @@ function EnableCustomTipOption({ settings, updateSettings }) {
         action={{
           content: contentStatus,
           onAction: handleToggle,
+          disabled: !shopPlan,
         }}
         enabled={customTipOptionActive}
       >
-        Custom Tip Option is currently {textStatus}.
+        <p>Custom Tip Option is currently {textStatus}.</p>
+        {!shopPlan && <p>Upgrade to a paid plan to edit this setting</p>}
       </SettingToggle>
     </Layout.AnnotatedSection>
-  )
+  );
 }
 
 export default EnableCustomTipOption;
