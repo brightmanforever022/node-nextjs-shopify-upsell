@@ -10,7 +10,6 @@ async function getShopSettings(client, ctx) {
   );
 
   if (shopInfo.rows.length == 1) {
-    console.log("successfully got the shop data");
     ctx.status = 200;
     ctx.res.end(
       JSON.stringify({
@@ -31,6 +30,7 @@ async function getShopSettings(client, ctx) {
 
 async function requestHelp(client, ctx) {
   const helpRequest = ctx.request.body.storedata;
+  // Send help request mail to support email (support@aesymmetric.xyz)
   try {
     const sgMail = require("@sendgrid/mail");
     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -64,7 +64,6 @@ async function requestHelp(client, ctx) {
     [helpRequest.shop_domain]
   );
   ctx.body = { storedata: updateShop.rows[0] };
-  // ctx.body = {storedata: {a: 'b'}};
 }
 
 async function updateSettingsMetafield(client, ctx) {
@@ -117,8 +116,84 @@ async function updateSettingsMetafield(client, ctx) {
   ctx.body = updateMetafieldJson;
 }
 
+async function createSnippet(client, ctx) {
+  // Get published theme
+  const getThemes = await fetch(
+    `https://${ctx.session.shop}/admin/api/2020-04/themes.json`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Shopify-Access-Token": ctx.session.accessToken,
+      },
+    }
+  );
+
+  const getThemesJson = await getThemes.json();
+
+  const publishedTheme = getThemesJson.themes.find(
+    (theme) => theme.role == "main"
+  );
+  const publishedThemeId = publishedTheme.id;
+
+  // Return message if no snippet value provided
+  if (!ctx.request.body.asset) {
+    ctx.body = "No asset value or themeId provided.";
+  }
+
+  const createSnippet = await fetch(
+    `https://${ctx.session.shop}/admin/api/2020-04/themes/${publishedThemeId}/assets.json`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Shopify-Access-Token": ctx.session.accessToken,
+      },
+      body: JSON.stringify({
+        asset: ctx.request.body.asset,
+      }),
+    }
+  );
+
+  const createSnippetJson = await createSnippet.json();
+
+  const snippetDbUpdate = await client.query(
+    "UPDATE shops SET snippet_installation_status=$1 WHERE shop_domain=$2",
+    [true, ctx.session.shop]
+  );
+
+  ctx.body = getThemesJson;
+}
+
+async function createProduct(client, ctx) {
+  const createProduct = await fetch(
+    `https://${ctx.session.shop}/admin/api/2020-04/products.json`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Shopify-Access-Token": ctx.session.accessToken,
+      },
+      body: JSON.stringify({
+        product: ctx.request.body.product,
+      }),
+    }
+  );
+
+  const createProductJson = await createProduct.json();
+
+  const productDbUpdate = await client.query(
+    "UPDATE shops SET product_installation_status=$1 WHERE shop_domain=$2",
+    [true, ctx.session.shop]
+  );
+
+  ctx.body = createProductJson;
+}
+
 module.exports = {
   getShopSettings,
   requestHelp,
   updateSettingsMetafield,
+  createSnippet,
+  createProduct,
 };

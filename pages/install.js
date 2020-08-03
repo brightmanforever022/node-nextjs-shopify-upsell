@@ -26,6 +26,12 @@ const Install = ({ shopSettings }) => {
   const [installationHelpStatus, setInstallationHelpStatus] = useState(
     shopSettings.shopInformation.installation_help_status
   );
+  const [productCreated, setProductCreated] = useState(
+    shopSettings.shopInformation.product_installation_status
+  );
+  const [snippetCreated, setSnippetCreated] = useState(
+    shopSettings.shopInformation.snippet_installation_status
+  );
 
   const handleCreateSnippet = async () => {
     setCreateSnippetLoading(true);
@@ -43,12 +49,9 @@ const Install = ({ shopSettings }) => {
       }),
     });
     const createSnippetJson = await createSnippet.json();
-    console.log(
-      "Response for createSnippetJson:",
-      JSON.stringify(createSnippetJson)
-    );
 
     setCreateSnippetLoading(false);
+    setSnippetCreated(true);
   };
 
   const handleCreateProduct = async () => {
@@ -74,12 +77,9 @@ const Install = ({ shopSettings }) => {
       }),
     });
     const createProductJson = await createProduct.json();
-    console.log(
-      "Response for createProductJson:",
-      JSON.stringify(createProductJson)
-    );
 
     setCreateProductLoading(false);
+    setProductCreated(true);
   };
 
   const handleRequestHelp = async () => {
@@ -113,6 +113,7 @@ const Install = ({ shopSettings }) => {
             primaryFooterAction={{
               content: "Create theme snippet",
               loading: createSnippetLoading,
+              disabled: snippetCreated,
               onAction: handleCreateSnippet,
             }}
           >
@@ -121,6 +122,7 @@ const Install = ({ shopSettings }) => {
               <TextStyle variation="code">tipquik.liquid</TextStyle> snippet on
               your published theme.
             </p>
+            {snippetCreated && <p>You have already created snippet file.</p>}
           </Card>
 
           <Card title="Include the snippet on your theme" sectioned>
@@ -141,10 +143,12 @@ const Install = ({ shopSettings }) => {
             primaryFooterAction={{
               content: "Create tip/gratuity product",
               loading: createProductLoading,
+              disabled: productCreated,
               onAction: handleCreateProduct,
             }}
           >
             <p>Click the button below to create the Tip/Gratuity product.</p>
+            {productCreated && <p>You have already created product.</p>}
           </Card>
 
           <Card

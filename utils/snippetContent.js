@@ -7,6 +7,10 @@ export default `{% for key_value in shop.metafields.tipquik.settings %}
   {% assign tipquik_settings_enableCustomTipOption = key_value[1] %}
 {% endif %}
 
+{% if key_value[0] == 'enablePoweredTipQuik' %}
+  {% assign tipquik_settings_enablePoweredTipQuik = key_value[1] %}
+{% endif %}
+
 {% if key_value[0] == 'tipModalTitle' %}
   {% assign tipquik_settings_tipModalTitle = key_value[1] %}
 {% endif %}
