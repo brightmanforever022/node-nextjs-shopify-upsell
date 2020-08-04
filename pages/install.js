@@ -113,7 +113,7 @@ const Install = ({ shopSettings }) => {
             primaryFooterAction={{
               content: "Create theme snippet",
               loading: createSnippetLoading,
-              disabled: snippetCreated,
+              // disabled: snippetCreated,
               onAction: handleCreateSnippet,
             }}
           >

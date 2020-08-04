@@ -20,15 +20,15 @@ export default `{% for key_value in shop.metafields.tipquik.settings %}
 {% endif %}
 
 {% if key_value[0] == 'defaultTipping1' %}
-  {% assign tipquik_settings_defaultTipping1 = key_value[1] %}
+  {% assign tipquik_settings_defaultTipping1 = key_value[1] | plus: 0 %}
 {% endif %}
 
 {% if key_value[0] == 'defaultTipping2' %}
-  {% assign tipquik_settings_defaultTipping2 = key_value[1] %}
+  {% assign tipquik_settings_defaultTipping2 = key_value[1] | plus: 0 %}
 {% endif %}
 
 {% if key_value[0] == 'defaultTipping3' %}
-  {% assign tipquik_settings_defaultTipping3 = key_value[1] %}
+  {% assign tipquik_settings_defaultTipping3 = key_value[1] | plus: 0 %}
 {% endif %}
 
 {% if key_value[0] == 'tipModalBgColor' %}
@@ -214,6 +214,13 @@ export default `{% for key_value in shop.metafields.tipquik.settings %}
     border-radius: 5px;
     padding: 0 8px;
   }
+
+  .tj-modal-powered {
+    display: block;
+    margin-top: 16px;
+    width: 100%;
+    text-align: center;
+  }
   
   .tj-modal-success-content {
     position: absolute;
@@ -389,6 +396,10 @@ export default `{% for key_value in shop.metafields.tipquik.settings %}
         </button>
       </span>
 
+      {% if tipquik_settings_enablePoweredTipQuik %}
+        <span class="tj-modal-powered">Powered by TipQuik</span>
+      {% endif %}
+
       <div id="tipQuikSuccess" class="tj-modal-success-content" style="display: none;">
         <div>
           <div class="tj-modal-loading-icon-container">
@@ -406,7 +417,8 @@ export default `{% for key_value in shop.metafields.tipquik.settings %}
   if (typeof fetch == 'function') {
     var onCartSubmit = function onCartSubmit(event) {
       // Show modal
-      document.getElementById('tipQuikModal').style.display = 'flex';
+      // document.getElementById('tipQuikModal').style.display = 'flex';
+      $('#tipQuikModal').css('display', 'flex').hide().fadeIn(500);
       
       // Grab up to date cart data (needed for ajax carts)
       fetch('/cart.js', {
@@ -499,7 +511,8 @@ export default `{% for key_value in shop.metafields.tipquik.settings %}
     
     var tipQuikModalClose = document.getElementById('tipQuikModalClose');
     tipQuikModalClose.onclick = function() {
-      document.getElementById('tipQuikModal').style.display = 'none';
+      // document.getElementById('tipQuikModal').style.display = 'none';
+      $('#tipQuikModal').fadeOut(500);
     }
     
     document.addEventListener('submit', function (event) {
