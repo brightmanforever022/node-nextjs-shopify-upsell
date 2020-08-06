@@ -36,6 +36,7 @@
     "colorsys": "^1.0.22",
     "compression": "^1.7.4",
     "dotenv": "^8.2.0",
+    "event-stream": "^4.0.1",
     "graphql": "^14.5.8",
     "isomorphic-fetch": "^2.1.1",
     "js-cookie": "^2.2.1",
