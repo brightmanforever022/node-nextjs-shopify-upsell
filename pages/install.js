@@ -113,7 +113,7 @@ const Install = ({ shopSettings }) => {
             primaryFooterAction={{
               content: "Create theme snippet",
               loading: createSnippetLoading,
-              // disabled: snippetCreated,
+              disabled: snippetCreated,
               onAction: handleCreateSnippet,
             }}
           >
@@ -175,11 +175,15 @@ const Install = ({ shopSettings }) => {
 
 Install.getInitialProps = async (ctx) => {
   let shopOrigin = "";
-  ctx.req.headers.cookie.split(";").map((pairValue) => {
-    if (pairValue.includes("shopOrigin=")) {
-      shopOrigin = pairValue.split("shopOrigin=")[1];
-    }
-  });
+  if (ctx.query.shop) {
+    shopOrigin = ctx.query.shop;
+  } else {
+    ctx.req.headers.cookie.split(";").map((pairValue) => {
+      if (pairValue.includes("shopOrigin=")) {
+        shopOrigin = pairValue.split("shopOrigin=")[1];
+      }
+    });
+  }
   const shopSettings = await fetch(process.env.HOST + "getShopSettings", {
     method: "POST",
     headers: {

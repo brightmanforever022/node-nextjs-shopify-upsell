@@ -14,6 +14,9 @@ import * as handlers from "./handlers/index";
 import * as helpers from "./helper";
 
 const { Client } = require("pg");
+const url = require("url");
+const koaConnect = require("koa-connect");
+const compression = require("compression");
 
 const Sentry = require("@sentry/node");
 Sentry.init({ dsn: process.env.SENTRY_DSN });
@@ -33,6 +36,10 @@ const {
 } = process.env;
 app.prepare().then(async () => {
   const server = new Koa();
+  server.use(koaConnect(compression()));
+  server.use(cors());
+  server.proxy = true;
+
   const router = new Router();
   const client = new Client({
     connectionString: DATABASE_URL,
@@ -50,35 +57,55 @@ app.prepare().then(async () => {
     )
   );
   server.keys = [SHOPIFY_API_SECRET];
+
+  server.use(async (ctx, next) => {
+    if (ctx.request.header.cookie) {
+      if (
+        (ctx.request.url.split("?")[0] === "/" &&
+          ctx.request.querystring.split("&") &&
+          ctx.request.querystring.split("&")[0].split("=")[0] === "hmac" &&
+          ctx.request.querystring.split("&")[1].split("=")[0] !== "locale") ||
+        (ctx.request.url.split("?")[0] === "/auth/callback" &&
+          ctx.request.querystring.split("&") &&
+          ctx.request.querystring.split("&")[1].split("=")[0] === "hmac")
+      ) {
+        ctx.request.header.cookie = ctx.request.header.cookie
+          .split(" ")
+          .filter(
+            (item) =>
+              ["koa:sess", "koa:sess.sig"].indexOf(item.split("=")[0]) === -1
+          )
+          .join(" ");
+      }
+    }
+    await next();
+  });
+
   server.use(
     createShopifyAuth({
       apiKey: SHOPIFY_API_KEY,
       secret: SHOPIFY_API_SECRET,
-      accessMode: "offline",
       scopes: [SCOPES],
 
       async afterAuth(ctx) {
         //Auth token and shop available in session
         //Redirect to shop upon auth
-        const { shop, accessToken } = ctx.session;
-        ctx.cookies.set("shopOrigin", shop, {
+        const { shop: shopOrigin, accessToken } = ctx.session;
+        ctx.cookies.set("shopOrigin", shopOrigin, {
           httpOnly: false,
-          secure: true,
-          sameSite: "none",
         });
+        ctx.cookies.set("accessToken", accessToken, { httpOnly: false });
 
         // get shop data from db
         client
-          .query("SELECT * FROM shops WHERE shop_domain='" + shop + "';")
+          .query("SELECT * FROM shops WHERE shop_domain='" + shopOrigin + "';")
           .then(async (res) => {
             if (res.rows.length > 0) {
-              let shopData = res.rows[0];
-              shopData.access_token = accessToken;
               await client.query(
                 "UPDATE shops SET access_token='" +
                   accessToken +
                   "' WHERE shop_domain='" +
-                  shop +
+                  shopOrigin +
                   "';"
               );
               console.log("updated token");
@@ -93,7 +120,7 @@ app.prepare().then(async () => {
               "installation_help_status, created_at, updated_at) " +
               "VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *";
             const values = [
-              shop,
+              shopOrigin,
               accessToken,
               "asdf@asdf.com",
               false,
