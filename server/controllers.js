@@ -1,7 +1,53 @@
 import dotenv from "dotenv";
 import "isomorphic-fetch";
-
+import { ApiVersion } from "@shopify/koa-shopify-graphql-proxy";
+import * as helpers from "./helper";
 dotenv.config();
+
+async function fetchShopDetails(ctx) {
+  const shopOrigin = ctx.session.shop;
+  const accessToken = ctx.session.accessToken;
+  const apiVersion = "2020-04";
+  // console.debug(`fetching shop info for: ${JSON.stringify(shopOrigin)}`)
+  if (!shopOrigin || !accessToken) {
+    console.log(
+      `Can't fetch shop information because shopOrigin/accessToken params are missing/bad`
+    );
+    ctx.status = 401;
+    return;
+  }
+  try {
+    // console.debug(`>fetchShopDetails: Shop origin: ${shopOrigin}`)
+    let response = await fetch(
+      `https://${shopOrigin}/admin/api/${apiVersion}/shop.json`,
+      {
+        credentials: "include",
+        headers: {
+          "X-Shopify-Access-Token": accessToken,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    let jsonData = await response.json();
+    if (!jsonData) {
+      // console.debug(`no data was received for: ${shopOrigin}`);
+      ctx.status = 401;
+      return;
+    } else {
+      // console.debug(`recieved the following shop information: ${JSON.stringify(jsonData)}`)
+      ctx.status = 200;
+      return jsonData.shop;
+    }
+  } catch (error) {
+    ctx.status = 400;
+    reportEvent(ctx.shop, "error", {
+      value: "error when fetching for shop details",
+    });
+    console.debug(
+      `error when fetching for shop: ${shopOrigin}. error information: ${error}`
+    );
+  }
+}
 
 async function getShopSettings(client, ctx) {
   const shopInfo = await client.query(
@@ -60,8 +106,8 @@ async function requestHelp(client, ctx) {
 
   // Change installation_help_status in shop table (psql)
   const updateShop = await client.query(
-    "UPDATE shops SET installation_help_status=true WHERE shop_domain=$1 RETURNING *",
-    [helpRequest.shop_domain]
+    "UPDATE shops SET installation_help_status=true, updated_at=$1 WHERE shop_domain=$2 RETURNING *",
+    [helpers.getCurrentDate(), helpRequest.shop_domain]
   );
   ctx.body = { storedata: updateShop.rows[0] };
 }
@@ -158,8 +204,8 @@ async function createSnippet(client, ctx) {
   const createSnippetJson = await createSnippet.json();
 
   const snippetDbUpdate = await client.query(
-    "UPDATE shops SET snippet_installation_status=$1 WHERE shop_domain=$2",
-    [true, ctx.session.shop]
+    "UPDATE shops SET snippet_installation_status=$1, updated_at=$2 WHERE shop_domain=$3",
+    [true, helpers.getCurrentDate(), ctx.session.shop]
   );
 
   ctx.body = getThemesJson;
@@ -183,8 +229,8 @@ async function createProduct(client, ctx) {
   const createProductJson = await createProduct.json();
 
   const productDbUpdate = await client.query(
-    "UPDATE shops SET product_installation_status=$1 WHERE shop_domain=$2",
-    [true, ctx.session.shop]
+    "UPDATE shops SET product_installation_status=$1, updated_at=$2 WHERE shop_domain=$3",
+    [true, helpers.getCurrentDate(), ctx.session.shop]
   );
 
   ctx.body = createProductJson;
@@ -193,12 +239,13 @@ async function createProduct(client, ctx) {
 async function uninstallShop(client, ctx) {
   const updateShop = await client.query(
     "UPDATE shops SET app_uninstalled_at=$1 WHERE shop_domain=$2 RETURNING *",
-    ["2020-08-07 00:00:00", ctx.state.webhook.domain]
+    [helpers.getCurrentDate(), ctx.state.webhook.domain]
   );
   ctx.body = { storedata: updateShop.rows[0] };
 }
 
 module.exports = {
+  fetchShopDetails,
   getShopSettings,
   requestHelp,
   updateSettingsMetafield,

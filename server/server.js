@@ -96,6 +96,8 @@ app.prepare().then(async () => {
           httpOnly: false,
         });
         ctx.cookies.set("accessToken", accessToken, { httpOnly: false });
+        const shopDetail = await Ctrl.fetchShopDetails(ctx);
+        console.log("current date: ", helpers.getCurrentDate());
 
         // get shop data from db
         client
@@ -103,8 +105,15 @@ app.prepare().then(async () => {
           .then(async (res) => {
             if (res.rows.length > 0) {
               await client.query(
-                "UPDATE shops SET access_token=$1, app_uninstalled_at=$2 WHERE shop_domain=$3",
-                [accessToken, null, shopOrigin]
+                "UPDATE shops SET access_token=$1, updated_at=$2, app_uninstalled_at=$3 WHERE shop_domain=$4",
+                [accessToken, helpers.getCurrentDate(), null, shopOrigin]
+              );
+              const uninstallWebhook = await handlers.registerWebhooks(
+                shopOrigin,
+                accessToken,
+                "APP_UNINSTALLED",
+                "webhooks/uninstall",
+                ApiVersion.April20
               );
             } else {
               throw new Error("There are no shop data.");
@@ -119,13 +128,13 @@ app.prepare().then(async () => {
             const values = [
               shopOrigin,
               accessToken,
-              "asdf@asdf.com",
+              shopDetail.email,
               false,
               false,
               false,
               false,
-              "2020-07-30 00:43:30",
-              "2020-07-30 00:43:30",
+              helpers.getCurrentDate(),
+              helpers.getCurrentDate(),
             ];
 
             try {
@@ -225,7 +234,7 @@ app.prepare().then(async () => {
       path: "/webhooks/uninstall",
       secret: SHOPIFY_API_SECRET,
       async onReceived(ctx) {
-        console.log("received webhook: ", ctx.state.webhook);
+        console.log("received webhook related with uninstallation of app");
         return Ctrl.uninstallShop(client, ctx);
       },
     })
