@@ -190,10 +190,19 @@ async function createProduct(client, ctx) {
   ctx.body = createProductJson;
 }
 
+async function uninstallShop(client, ctx) {
+  const updateShop = await client.query(
+    "UPDATE shops SET app_uninstalled_at=$1 WHERE shop_domain=$2 RETURNING *",
+    ["2020-08-07 00:00:00", ctx.state.webhook.domain]
+  );
+  ctx.body = { storedata: updateShop.rows[0] };
+}
+
 module.exports = {
   getShopSettings,
   requestHelp,
   updateSettingsMetafield,
   createSnippet,
   createProduct,
+  uninstallShop,
 };

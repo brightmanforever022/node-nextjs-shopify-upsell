@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import "isomorphic-fetch";
 import createShopifyAuth, { verifyRequest } from "@shopify/koa-shopify-auth";
 import graphQLProxy, { ApiVersion } from "@shopify/koa-shopify-graphql-proxy";
+import { receiveWebhook } from "@shopify/koa-shopify-webhooks";
 import Koa from "koa";
 import cors from "koa2-cors";
 import bodyParser from "koa-bodyparser";
@@ -11,7 +12,7 @@ import Router from "koa-router";
 import session from "koa-session";
 const Ctrl = require("./controllers");
 import * as handlers from "./handlers/index";
-import * as helpers from "./helper";
+import helper, * as helpers from "./helper";
 
 const { Client } = require("pg");
 const url = require("url");
@@ -102,13 +103,9 @@ app.prepare().then(async () => {
           .then(async (res) => {
             if (res.rows.length > 0) {
               await client.query(
-                "UPDATE shops SET access_token='" +
-                  accessToken +
-                  "' WHERE shop_domain='" +
-                  shopOrigin +
-                  "';"
+                "UPDATE shops SET access_token=$1, app_uninstalled_at=$2 WHERE shop_domain=$3",
+                [accessToken, null, shopOrigin]
               );
-              console.log("updated token");
             } else {
               throw new Error("There are no shop data.");
             }
@@ -133,7 +130,7 @@ app.prepare().then(async () => {
 
             try {
               const insertShop = await client.query(text, values);
-              console.log(insertShop.rows[0]);
+              console.log("inserted shop data");
               const insertSettings = await client.query(
                 "INSERT INTO settings(shop_id, tip_percent1, tip_percent2, tip_percent3, enable_tip_quik, enable_custom_tip_option" +
                   ", tip_modal_title, tip_modal_description, tip_modal_text_color, tip_modal_bg_color, enable_powered_tip_quik)" +
@@ -152,8 +149,16 @@ app.prepare().then(async () => {
                   true,
                 ]
               );
+              console.log("inserted shop settings");
 
               // register webhooks
+              const uninstallWebhook = await handlers.registerWebhooks(
+                shopOrigin,
+                accessToken,
+                "APP_UNINSTALLED",
+                "webhooks/uninstall",
+                ApiVersion.April20
+              );
             } catch (insertErr) {
               console.log(insertErr);
             }
@@ -213,6 +218,19 @@ app.prepare().then(async () => {
   });
   server.use(router.allowedMethods());
   server.use(router.routes());
+
+  // webhook for uninstallation
+  server.use(
+    receiveWebhook({
+      path: "/webhooks/uninstall",
+      secret: SHOPIFY_API_SECRET,
+      async onReceived(ctx) {
+        console.log("received webhook: ", ctx.state.webhook);
+        return Ctrl.uninstallShop(client, ctx);
+      },
+    })
+  );
+
   server.listen(port, () => {
     console.log(`> Ready on http://localhost:${port}`);
   });

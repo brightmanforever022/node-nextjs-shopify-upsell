@@ -7,6 +7,24 @@ const connectRetry = async (maxRetries, clientObj) => {
   }
 };
 
+const getCurrentDate = () => {
+  const d = new Date();
+  return (
+    d.getFullYear() +
+    "-" +
+    d.getUTCMonth() +
+    "-" +
+    d.getDay() +
+    " " +
+    d.getHours() +
+    ":" +
+    d.getMinutes() +
+    ":" +
+    d.getSeconds()
+  );
+};
+
 module.exports = {
   connectRetry,
+  getCurrentDate,
 };
