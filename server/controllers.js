@@ -244,6 +244,14 @@ async function uninstallShop(client, ctx) {
   ctx.body = { storedata: updateShop.rows[0] };
 }
 
+async function updateSubscription(client, ctx) {
+  const updateShop = await client.query(
+    "UPDATE shops SET subscription_updated_at=$1 WHERE shop_domain=$2 RETURNING *",
+    [helpers.getCurrentDate(), ctx.state.webhook.domain]
+  );
+  ctx.body = { storedata: updateShop.rows[0] };
+}
+
 module.exports = {
   fetchShopDetails,
   getShopSettings,

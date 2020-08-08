@@ -12,11 +12,11 @@ export const registerWebhooks = async (
     topic: type,
     accessToken,
     shop,
-    apiVersion
+    apiVersion,
   });
 
   if (registration.success) {
-    console.log("Successfully registered webhook!");
+    console.log("Successfully registered webhook!", type);
   } else {
     console.log(
       "Failed to register webhook",

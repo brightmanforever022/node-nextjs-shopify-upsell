@@ -97,7 +97,6 @@ app.prepare().then(async () => {
         });
         ctx.cookies.set("accessToken", accessToken, { httpOnly: false });
         const shopDetail = await Ctrl.fetchShopDetails(ctx);
-        console.log("current date: ", helpers.getCurrentDate());
 
         // get shop data from db
         client
@@ -108,11 +107,19 @@ app.prepare().then(async () => {
                 "UPDATE shops SET access_token=$1, updated_at=$2, app_uninstalled_at=$3 WHERE shop_domain=$4",
                 [accessToken, helpers.getCurrentDate(), null, shopOrigin]
               );
+              // register webhook
               const uninstallWebhook = await handlers.registerWebhooks(
                 shopOrigin,
                 accessToken,
                 "APP_UNINSTALLED",
                 "webhooks/uninstall",
+                ApiVersion.April20
+              );
+              const subscriptionWebhook = await handlers.registerWebhooks(
+                shopOrigin,
+                accessToken,
+                "APP_SUBSCRIPTIONS_UPDATE",
+                "webhooks/subscriptionUpdate",
                 ApiVersion.April20
               );
             } else {
@@ -166,6 +173,13 @@ app.prepare().then(async () => {
                 accessToken,
                 "APP_UNINSTALLED",
                 "webhooks/uninstall",
+                ApiVersion.April20
+              );
+              const subscriptionWebhook = await handlers.registerWebhooks(
+                shopOrigin,
+                accessToken,
+                "APP_SUBSCRIPTIONS_UPDATE",
+                "webhooks/subscriptionUpdate",
                 ApiVersion.April20
               );
             } catch (insertErr) {
@@ -236,6 +250,19 @@ app.prepare().then(async () => {
       async onReceived(ctx) {
         console.log("received webhook related with uninstallation of app");
         return Ctrl.uninstallShop(client, ctx);
+      },
+    })
+  );
+  server.use(
+    receiveWebhook({
+      path: "/webhooks/subscriptionUpdate",
+      secret: SHOPIFY_API_SECRET,
+      async onReceived(ctx) {
+        console.log(
+          "received webhook related with subscriptionUpdate of app",
+          ctx.state.webhook
+        );
+        return Ctrl.updateSubscription(client, ctx);
       },
     })
   );
