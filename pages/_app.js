@@ -21,6 +21,7 @@ class MyApp extends App {
       shopOrigin: Cookies.get("shopOrigin"),
       forceRedirect: true,
     };
+    console.log("app.js shoporigin: ", Cookies.get("shopOrigin"));
 
     return (
       <AppProvider i18n={translations}>
