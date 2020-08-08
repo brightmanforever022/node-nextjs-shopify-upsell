@@ -260,4 +260,5 @@ module.exports = {
   createSnippet,
   createProduct,
   uninstallShop,
+  updateSubscription,
 };

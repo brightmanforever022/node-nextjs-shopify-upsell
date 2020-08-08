@@ -100,7 +100,7 @@ app.prepare().then(async () => {
 
         // get shop data from db
         client
-          .query("SELECT * FROM shops WHERE shop_domain='" + shopOrigin + "';")
+          .query("SELECT * FROM shops WHERE shop_domain=$1", [shopOrigin])
           .then(async (res) => {
             if (res.rows.length > 0) {
               await client.query(
