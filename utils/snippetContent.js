@@ -1,4 +1,8 @@
-export default `{% for key_value in shop.metafields.tipquik.settings %}
+export default `{% assign shopCurrency = shop.currency %}
+{% if shopCurrency == 'USD' %}
+  {% assign shopCurrency = '$' %}
+{% endif %}
+{% for key_value in shop.metafields.tipquik.settings %}
 {% if key_value[0] == 'enableTipQuik' %}
   {% assign tipquik_settings_enableTipQuik = key_value[1] %}
 {% endif %}
@@ -294,6 +298,30 @@ export default `{% for key_value in shop.metafields.tipquik.settings %}
         -ms-flex-pack: center;
             justify-content: center;
   }
+
+  #tipQuikCustomInputWrapper {
+  	position: relative;
+  }
+  #tipQuikCustomInputWrapper:before {
+  	content: "{{shopCurrency}}";
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 30px;
+    height: 50px;
+    background-color: #eee;
+    padding-top: 13px;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+    z-index: 100;
+  }
+  #tipQuikCustomInput {
+    padding-left: 45px;
+  }
+
+  #tipQuikCustomInputAdd {
+    margin-left: 30px;
+  }
   
   input.tj-modal-custom-input {
     min-width: 1px;
@@ -384,7 +412,7 @@ export default `{% for key_value in shop.metafields.tipquik.settings %}
           </button>
 
           <span id="tipQuikCustomInputWrapper" class="tj-modal-input-wrapper" style="display: none;">
-            <input id="tipQuikCustomInput" class="tj-modal-custom-input" type="number" value="0">
+            <input id="tipQuikCustomInput" class="tj-modal-custom-input" type="number" value="0" min="0">
             <button id="tipQuikCustomInputAdd" class="tj-modal-btn tj-modal-btn-percentage tj-modal-input-add" type="button" data-tipquik-add="0">Add</button>
           </span>
         </span>
@@ -417,8 +445,7 @@ export default `{% for key_value in shop.metafields.tipquik.settings %}
   if (typeof fetch == 'function') {
     var onCartSubmit = function onCartSubmit(event) {
       // Show modal
-      // document.getElementById('tipQuikModal').style.display = 'flex';
-      $('#tipQuikModal').css('display', 'flex').hide().fadeIn(500);
+      $('#tipQuikModal').css('display', 'flex').hide().fadeIn(200);
       
       // Grab up to date cart data (needed for ajax carts)
       fetch('/cart.js', {
@@ -511,8 +538,7 @@ export default `{% for key_value in shop.metafields.tipquik.settings %}
     
     var tipQuikModalClose = document.getElementById('tipQuikModalClose');
     tipQuikModalClose.onclick = function() {
-      // document.getElementById('tipQuikModal').style.display = 'none';
-      $('#tipQuikModal').fadeOut(500);
+      $('#tipQuikModal').fadeOut(200);
     }
     
     document.addEventListener('submit', function (event) {
