@@ -162,8 +162,8 @@ const Install = (shopSettings) => {
           >
             {installationHelpStatus && (
               <p>
-                Your help request has been sent, we’ll be in touch with you at
-                support@aesymmetric.xyz soon.
+                Your help request has been sent. We will reach out to the{" "}
+                {shopSettings.shopInformation.store_owner_email} address soon.
               </p>
             )}
           </Card>
