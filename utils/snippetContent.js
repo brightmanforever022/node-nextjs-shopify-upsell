@@ -1,8 +1,4 @@
-export default `{% assign shopCurrency = shop.currency %}
-{% if shopCurrency == 'USD' %}
-  {% assign shopCurrency = '$' %}
-{% endif %}
-{% for key_value in shop.metafields.tipquik.settings %}
+export default `{% for key_value in shop.metafields.tipquik.settings %}
 {% if key_value[0] == 'enableTipQuik' %}
   {% assign tipquik_settings_enableTipQuik = key_value[1] %}
 {% endif %}
@@ -303,14 +299,14 @@ export default `{% assign shopCurrency = shop.currency %}
   	position: relative;
   }
   #tipQuikCustomInputWrapper:before {
-  	content: "{{shopCurrency}}";
+  	content: "{{cart.currency.symbol}}";
     position: absolute;
     top: 2px;
     left: 2px;
     width: 30px;
     height: 50px;
     background-color: #eee;
-    padding-top: 13px;
+    padding-top: 12px;
     border-top-left-radius: 3px;
     border-bottom-left-radius: 3px;
     z-index: 100;
