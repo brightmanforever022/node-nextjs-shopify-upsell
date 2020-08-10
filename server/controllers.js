@@ -112,8 +112,8 @@ async function requestHelp(client, ctx) {
   ctx.body = { storedata: updateShop.rows[0] };
 }
 
-async function updateSettingsMetafield(client, ctx) {
-  const updateMetafield = await fetch(
+async function createSettingsMetafield(client, ctx) {
+  const createMetafield = await fetch(
     `https://${ctx.session.shop}/admin/api/2020-04/metafields.json`,
     {
       method: "POST",
@@ -132,7 +132,39 @@ async function updateSettingsMetafield(client, ctx) {
     }
   );
 
+  const createMetafieldJson = await createMetafield.json();
+
+  // Update database
+  const updateShops = await client.query(
+    "UPDATE shops SET metafield_id=$1 WHERE shop_domain=$2",
+    [createMetafieldJson.metafield.id, ctx.session.shop]
+  );
+
+  ctx.body = createMetafieldJson;
+}
+
+async function updateSettingsMetafield(client, ctx) {
+  const updateMetafield = await fetch(
+    `https://${ctx.session.shop}/admin/api/2020-04/metafields/${ctx.request.body.metafieldId}.json`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Shopify-Access-Token": ctx.session.accessToken,
+      },
+      body: JSON.stringify({
+        metafield: {
+          namespace: "tipquik",
+          key: "settings",
+          value: ctx.request.body.metafieldValue,
+          value_type: "json_string",
+        },
+      }),
+    }
+  );
+
   const updateMetafieldJson = await updateMetafield.json();
+  console.log("metafiled value:", updateMetafieldJson);
   const settingValues = JSON.parse(ctx.request.body.metafieldValue);
 
   // Update database
@@ -256,6 +288,7 @@ module.exports = {
   fetchShopDetails,
   getShopSettings,
   requestHelp,
+  createSettingsMetafield,
   updateSettingsMetafield,
   createSnippet,
   createProduct,

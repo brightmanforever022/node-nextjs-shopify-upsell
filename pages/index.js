@@ -45,7 +45,8 @@ const Index = (shopSettings) => {
 
   const [newSettings, updateSettings] = useState();
   const shopPlan =
-    shopSettings.subscription_status && shopSettings.subscription_plan > 0;
+    shopSettings.shopInformation &&
+    shopSettings.shopInformation.subscription_plan > 0;
 
   const handleUpdateSettings = async () => {
     setUpdateMetafieldIsLoading(true);
@@ -57,6 +58,7 @@ const Index = (shopSettings) => {
       },
       body: JSON.stringify({
         metafieldValue: JSON.stringify(newSettings),
+        metafieldId: shopSettings.shopInformation.metafield_id,
       }),
     });
     const updateMetafieldJson = await updateMetafield.json();
@@ -73,7 +75,7 @@ const Index = (shopSettings) => {
   const handleInstallInitialSettings = async () => {
     setInstallInitialSettingsLoading(true);
 
-    const updateMetafield = await fetch("/updateSettingsMetafield", {
+    const createMetafield = await fetch("/createSettingsMetafield", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -82,10 +84,10 @@ const Index = (shopSettings) => {
         metafieldValue: JSON.stringify(initialSettings),
       }),
     });
-    const updateMetafieldJson = await updateMetafield.json();
+    const createMetafieldJson = await createMetafield.json();
     console.log(
-      "Response for updateMetafieldJson:",
-      JSON.stringify(updateMetafieldJson)
+      "Response for createMetafieldJson:",
+      JSON.stringify(createMetafieldJson)
     );
 
     // Refetch data to make sure everything is up to date
@@ -219,7 +221,7 @@ Index.getInitialProps = async (ctx) => {
 
   const settings = await shopSettings.json();
 
-  return { shopSettings: settings };
+  return settings;
 };
 
 export default Index;

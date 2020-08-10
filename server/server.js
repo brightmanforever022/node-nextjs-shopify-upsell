@@ -205,7 +205,16 @@ app.prepare().then(async () => {
     return Ctrl.getShopSettings(client, ctx);
   });
 
-  // Create/update the shop metafield
+  // Create the shop initial metafield
+  router.post("/createSettingsMetafield", async (ctx) => {
+    // Return message if no metafield value provided
+    if (!ctx.request.body.metafieldValue) {
+      ctx.body = "No metafield value provided.";
+    }
+
+    return Ctrl.createSettingsMetafield(client, ctx);
+  });
+  // Update the shop metafield
   router.post("/updateSettingsMetafield", async (ctx) => {
     // Return message if no metafield value provided
     if (!ctx.request.body.metafieldValue) {

@@ -16,8 +16,8 @@ const client = new ApolloClient({
 class MyApp extends App {
   constructor(props) {
     super(props);
-    let shopDomain = props.pageProps.shopSettings
-      ? props.pageProps.shopSettings.shopInformation.shop_domain
+    let shopDomain = props.pageProps.shopInformation
+      ? props.pageProps.shopInformation.shop_domain
       : "";
     this.state = {
       shopOrigin: shopDomain,

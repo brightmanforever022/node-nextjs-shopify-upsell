@@ -16,7 +16,7 @@ const SHOP_TIPQUIK_QUERY = gql`
   }
 `;
 
-const Install = ({ shopSettings }) => {
+const Install = (shopSettings) => {
   const { loading, error, data, refetch } = useQuery(SHOP_TIPQUIK_QUERY, {
     fetchPolicy: "network-only",
   });
@@ -196,7 +196,7 @@ Install.getInitialProps = async (ctx) => {
 
   const settings = await shopSettings.json();
 
-  return { shopSettings: settings };
+  return settings;
 };
 
 export default Install;
