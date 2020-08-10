@@ -14,14 +14,20 @@ const client = new ApolloClient({
 });
 
 class MyApp extends App {
+  constructor(props) {
+    super(props);
+    this.state = {
+      shopOrigin: props.pageProps.shopSettings.shopInformation.shop_domain,
+    };
+  }
+
   render(ctx) {
     const { Component, pageProps } = this.props;
     const config = {
       apiKey: API_KEY,
-      shopOrigin: Cookies.get("shopOrigin"),
+      shopOrigin: this.state.shopOrigin,
       forceRedirect: true,
     };
-    console.log("app.js shoporigin: ", Cookies.get("shopOrigin"));
 
     return (
       <AppProvider i18n={translations}>

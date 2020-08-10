@@ -206,7 +206,7 @@ Index.getInitialProps = async (ctx) => {
       }
     });
   }
-  console.log("shop Origin in index page: ", shopOrigin);
+
   const shopSettings = await fetch(process.env.HOST + "getShopSettings", {
     method: "POST",
     headers: {
