@@ -311,6 +311,9 @@ export default `{% for key_value in shop.metafields.tipquik.settings %}
     border-bottom-left-radius: 3px;
     z-index: 100;
   }
+  #tipQuikCustomInputWrapper.customInputHidden:before {
+    display: none;
+  }
   #tipQuikCustomInput {
     padding-left: 45px;
   }
@@ -408,7 +411,7 @@ export default `{% for key_value in shop.metafields.tipquik.settings %}
           </button>
 
           <span id="tipQuikCustomInputWrapper" class="tj-modal-input-wrapper" style="display: none;">
-            <input id="tipQuikCustomInput" class="tj-modal-custom-input" type="number" value="0" min="0">
+            <input id="tipQuikCustomInput" class="tj-modal-custom-input" type="number" value="0" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57">
             <button id="tipQuikCustomInputAdd" class="tj-modal-btn tj-modal-btn-percentage tj-modal-input-add" type="button" data-tipquik-add="0">Add</button>
           </span>
         </span>
@@ -441,7 +444,7 @@ export default `{% for key_value in shop.metafields.tipquik.settings %}
   if (typeof fetch == 'function') {
     var onCartSubmit = function onCartSubmit(event) {
       // Show modal
-      $('#tipQuikModal').css('display', 'flex').hide().fadeIn(200);
+      $('#tipQuikModal').css('display', 'flex').hide().fadeIn(100);
       
       // Grab up to date cart data (needed for ajax carts)
       fetch('/cart.js', {
@@ -508,6 +511,7 @@ export default `{% for key_value in shop.metafields.tipquik.settings %}
         console.log('click event', event); // Show loading/success message
 
         document.getElementById('tipQuikSuccess').style.display = 'flex';
+        document.getElementById('tipQuikCustomInputWrapper').className = 'customInputHidden';
         var value = parseInt(event.currentTarget.getAttribute('data-tipquik-add'));
         var tipProductData = {
           updates: {
@@ -534,7 +538,7 @@ export default `{% for key_value in shop.metafields.tipquik.settings %}
     
     var tipQuikModalClose = document.getElementById('tipQuikModalClose');
     tipQuikModalClose.onclick = function() {
-      $('#tipQuikModal').fadeOut(200);
+      $('#tipQuikModal').fadeOut(100);
     }
     
     document.addEventListener('submit', function (event) {
