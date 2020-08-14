@@ -276,12 +276,45 @@ async function uninstallShop(client, ctx) {
   ctx.body = { storedata: updateShop.rows[0] };
 }
 
-async function updateSubscription(client, ctx) {
+async function updateShopWithSubscription(client, ctx) {
+  const subscriptionData = ctx.body.subData;
   const updateShop = await client.query(
-    "UPDATE shops SET subscription_updated_at=$1 WHERE shop_domain=$2 RETURNING *",
-    [helpers.getCurrentDate(), ctx.state.webhook.domain]
+    "UPDATE shops SET payment_confirmation_url=$1, charge_id=$2, updated_at=$3 WHERE shop_domain=$4 RETURNING *",
+    [
+      subscriptionData.confirmationUrl,
+      subscriptionData.appSubscription.id.split("/").slice(-1)[0],
+      helpers.getCurrentDate(),
+      ctx.session.shop,
+    ]
   );
-  ctx.body = { storedata: updateShop.rows[0] };
+  ctx.body = { subData: subscriptionData };
+}
+
+async function updateSubscription(client, ctx) {
+  const wh = ctx.state.webhook;
+  const planList = ["Free", "Standard", "Premium"];
+  if (wh.payload.app_subscription.status == "ACTIVE") {
+    const updateShop = await client.query(
+      "UPDATE shops SET subscription_plan=$1, subscription_updated_at=$2, last_billed_at=$3, updated_at=$4, subscription_status=$5 WHERE shop_domain=$6 RETURNING *",
+      [
+        planList.indexOf(wh.payload.app_subscription.name),
+        helpers.getCurrentDate(),
+        helpers.getCurrentDate(),
+        helpers.getCurrentDate(),
+        true,
+        wh.domain,
+      ]
+    );
+    ctx.body = { storedata: updateShop.rows[0] };
+  } else if (wh.payload.app_subscription.status == "CANCELLED") {
+    const updateShop = await client.query(
+      "UPDATE shops SET subscription_plan=$1, subscription_updated_at=$2, updated_at=$3, subscription_status=$4 WHERE shop_domain=$5 RETURNING *",
+      [0, helpers.getCurrentDate(), helpers.getCurrentDate(), false, wh.domain]
+    );
+    ctx.body = { storedata: updateShop.rows[0] };
+  } else {
+    ctx.body = { storedata: { active: false } };
+  }
 }
 
 module.exports = {
@@ -293,5 +326,6 @@ module.exports = {
   createSnippet,
   createProduct,
   uninstallShop,
+  updateShopWithSubscription,
   updateSubscription,
 };

@@ -13,6 +13,8 @@ import session from "koa-session";
 const Ctrl = require("./controllers");
 import * as handlers from "./handlers/index";
 import helper, * as helpers from "./helper";
+const getSubscriptionUrl = require("./lib/getSubscriptionUrl");
+const cancelSubscription = require("./lib/cancelSubscription");
 
 const { Client } = require("pg");
 const url = require("url");
@@ -57,6 +59,7 @@ app.prepare().then(async () => {
       server
     )
   );
+
   server.keys = [SHOPIFY_API_SECRET];
 
   server.use(async (ctx, next) => {
@@ -241,6 +244,40 @@ app.prepare().then(async () => {
   // Send help request mail to support email (support@aesymmetric.xyz)
   router.post("/requestHelp", async (ctx) => {
     return Ctrl.requestHelp(client, ctx);
+  });
+
+  router.post("/joinStandard", async (ctx) => {
+    await getSubscriptionUrl(
+      ctx,
+      ctx.session.accessToken,
+      ctx.session.shop,
+      "Standard",
+      4.99
+    );
+    await Ctrl.updateShopWithSubscription(client, ctx);
+    ctx.body = { storeData: ctx.body.subData };
+  });
+
+  router.post("/joinPremium", async (ctx) => {
+    await getSubscriptionUrl(
+      ctx,
+      ctx.session.accessToken,
+      ctx.session.shop,
+      "Premium",
+      9.99
+    );
+    await Ctrl.updateShopWithSubscription(client, ctx);
+    ctx.body = { storeData: ctx.body.subData };
+  });
+
+  router.post("/downGrade", async (ctx) => {
+    await cancelSubscription(
+      ctx,
+      ctx.session.accessToken,
+      ctx.session.shop,
+      ctx.request.body.chargeId
+    );
+    ctx.body = { storeData: ctx.body.subData };
   });
 
   router.get("*", verifyRequest(), async (ctx) => {
