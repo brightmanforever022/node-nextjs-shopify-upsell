@@ -11,7 +11,7 @@ const Plan = (shopSettings) => {
   currentPlanString =
     "Plan List (Your current plan is " + planList[currentPlan] + ")";
 
-  const joinStandard = async () => {
+  /*const joinStandard = async () => {
     console.log("arrive standard");
     const joinStandardRes = await fetch("/joinStandard", {
       method: "POST",
@@ -28,7 +28,7 @@ const Plan = (shopSettings) => {
     console.log("joinStandardJson: ", joinStandardJson);
     setCurrentPlan(1);
     window.top.location.replace(joinStandardJson.storeData.confirmationUrl);
-  };
+  };*/
 
   const joinPremium = async () => {
     console.log("arrive premium");
@@ -73,7 +73,7 @@ const Plan = (shopSettings) => {
               <p>You have some limitations.</p>
             </Card.Section>
 
-            <Card.Section
+            {/* <Card.Section
               title="Standard"
               actions={[
                 {
@@ -84,7 +84,7 @@ const Plan = (shopSettings) => {
               ]}
             >
               <p>You have no limitations.</p>
-            </Card.Section>
+            </Card.Section> */}
             <Card.Section
               title="Premium"
               actions={[
