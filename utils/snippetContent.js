@@ -133,7 +133,7 @@ export default `{% for key_value in shop.metafields.tipquik.settings %}
   @media only screen and (min-width: 480px) {
     .tj-modal-header-inner {
       margin: 0 16px 0 16px;
-      text-align: left;
+      /* text-align: left; */
     }
   }
   
