@@ -195,7 +195,6 @@ Install.getInitialProps = async (ctx) => {
   });
 
   const settings = await shopSettings.json();
-
   return settings;
 };
 

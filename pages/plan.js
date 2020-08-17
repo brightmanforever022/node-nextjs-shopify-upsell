@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Page, Layout, Card, TextStyle } from "@shopify/polaris";
+import { Page, Layout, Card } from "@shopify/polaris";
 
 const Plan = (shopSettings) => {
   const shopPlan = shopSettings.shopInformation
@@ -126,7 +126,6 @@ Plan.getInitialProps = async (ctx) => {
   });
 
   const settings = await shopSettings.json();
-
   return settings;
 };
 
