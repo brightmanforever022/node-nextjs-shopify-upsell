@@ -161,6 +161,13 @@ export default `{% for key_value in shop.metafields.tipquik.settings %}
       color: #000000;
     {% endif %}
   }
+  .tj-modal-btns-container {
+    {% if tipquik_settings_tipModalTextColor %}
+      color: {{ tipquik_settings_tipModalTextColor }};
+    {% else %}
+      color: #000000;
+    {% endif %}
+  }
   
   @media only screen and (min-width: 480px) {
     .tj-modal-btns-container {
@@ -176,6 +183,11 @@ export default `{% for key_value in shop.metafields.tipquik.settings %}
     border-radius: 5px;
     padding: 0 8px;
     margin: 12px 0;
+    {% if tipquik_settings_tipModalTextColor %}
+      color: {{ tipquik_settings_tipModalTextColor }};
+    {% else %}
+      color: #000000;
+    {% endif %}
   }
   
   .tj-modal-btn {
@@ -189,6 +201,11 @@ export default `{% for key_value in shop.metafields.tipquik.settings %}
     -webkit-transition: all 0.3s cubic-bezier(.25,.8,.25,1);
     -o-transition: all 0.3s cubic-bezier(.25,.8,.25,1);
     transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+    {% if tipquik_settings_tipModalTextColor %}
+      color: {{ tipquik_settings_tipModalTextColor }};
+    {% else %}
+      color: #000000;
+    {% endif %}
   }
   
   .tj-modal-btn-percentage {
@@ -220,6 +237,11 @@ export default `{% for key_value in shop.metafields.tipquik.settings %}
     margin-top: 16px;
     width: 100%;
     text-align: center;
+    {% if tipquik_settings_tipModalTextColor %}
+      color: {{ tipquik_settings_tipModalTextColor }};
+    {% else %}
+      color: #000000;
+    {% endif %}
   }
   
   .tj-modal-success-content {
@@ -232,6 +254,11 @@ export default `{% for key_value in shop.metafields.tipquik.settings %}
       background-color: {{ tipquik_settings_tipModalBgColor }};
     {% else %}
       background-color: #ffffff;
+    {% endif %}
+    {% if tipquik_settings_tipModalTextColor %}
+      color: {{ tipquik_settings_tipModalTextColor }};
+    {% else %}
+      color: #000000;
     {% endif %}
     -webkit-box-align: center;
         -ms-flex-align: center;
@@ -330,6 +357,11 @@ export default `{% for key_value in shop.metafields.tipquik.settings %}
     border-radius: 5px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
     background-color: #ffffff;
+    {% if tipquik_settings_tipModalTextColor %}
+      color: {{ tipquik_settings_tipModalTextColor }};
+    {% else %}
+      color: #000000;
+    {% endif %}
   }
   
   @media only screen and (min-width: 480px) {
@@ -343,6 +375,11 @@ export default `{% for key_value in shop.metafields.tipquik.settings %}
   .tj-modal-content-wrapper {
     position: relative;
     text-align: center;
+    {% if tipquik_settings_tipModalTextColor %}
+      color: {{ tipquik_settings_tipModalTextColor }};
+    {% else %}
+      color: #000000;
+    {% endif %}
   }
   
   .tj-modal-close {
