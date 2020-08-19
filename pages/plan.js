@@ -90,7 +90,7 @@ const Plan = (shopSettings) => {
               <p>You have no limitations.</p>
             </Card.Section> */}
             <Card.Section
-              title="Premium"
+              title="Premium ($9.99/month)"
               actions={[
                 {
                   content: currentPlan == 2 ? "Unsubscribe" : "Subscribe",
