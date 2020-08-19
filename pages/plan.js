@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Page, Layout, Card } from "@shopify/polaris";
+import { Page, Layout, Card, Link } from "@shopify/polaris";
+import "../components/custom.css";
 
 const Plan = (shopSettings) => {
   const shopPlan = shopSettings.shopInformation
@@ -65,12 +66,15 @@ const Plan = (shopSettings) => {
   };
 
   return (
-    <Page title="Subscription Plans">
+    <Page title="Your Subscription Plan">
       <Layout>
         <Layout.Section>
           <Card title={currentPlanString}>
             <Card.Section title="Free">
-              <p>You have some limitations.</p>
+              <p>
+                Collect tips from your customers before checkout. Completely
+                free to use!
+              </p>
             </Card.Section>
 
             {/* <Card.Section
@@ -95,8 +99,27 @@ const Plan = (shopSettings) => {
                 },
               ]}
             >
-              <p>You would be benefited.</p>
+              <div>
+                <p>Includes more ways to customize the tip modal:</p>
+                <ul>
+                  <li>Show a custom tip amount option</li>
+                  <li>Hide the 'Powered by TipQuik' text</li>
+                  <li>Access to more premium options as they are released</li>
+                </ul>
+              </div>
             </Card.Section>
+          </Card>
+          <Card sectioned title="Need help? Questions? Comments?">
+            <p>
+              Don't hesitate to get in touch with us! We will be happy to assist
+              you with anything TipQuik related. Send us an email anytime to{" "}
+              <span className="install-email">
+                <Link external url="mailto:support@aesymmetric.xyz">
+                  support@aesymmetric.xyz
+                </Link>
+              </span>
+              . We'll respond within 24 hours.
+            </p>
           </Card>
         </Layout.Section>
       </Layout>

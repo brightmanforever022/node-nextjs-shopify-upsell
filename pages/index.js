@@ -177,12 +177,12 @@ const Index = (shopSettings) => {
 
       {originalSettings && (
         <Layout>
-          <DefaultTippingPercentage
+          <EnableTipQuikApp
             settings={settings}
             updateSettings={updateSettings}
           />
 
-          <EnableTipQuikApp
+          <DefaultTippingPercentage
             settings={settings}
             updateSettings={updateSettings}
           />

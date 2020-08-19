@@ -3,6 +3,7 @@ import gql from "graphql-tag";
 import { useQuery } from "@apollo/react-hooks";
 import { Page, Layout, Card, TextStyle } from "@shopify/polaris";
 import snippetContent from "../utils/snippetContent";
+import "../components/custom.css";
 
 const SHOP_TIPQUIK_QUERY = gql`
   query {
@@ -109,7 +110,7 @@ const Install = (shopSettings) => {
         <Layout.Section>
           <Card
             sectioned
-            title="Create the snippet"
+            title="1. Create the snippet"
             primaryFooterAction={{
               content: "Create theme snippet",
               loading: createSnippetLoading,
@@ -122,10 +123,12 @@ const Install = (shopSettings) => {
               <TextStyle variation="code">tipquik.liquid</TextStyle> snippet on
               your published theme.
             </p>
-            {snippetCreated && <p>You have already created snippet file.</p>}
+            {snippetCreated && (
+              <p className="install-des">Snippet has already been created.</p>
+            )}
           </Card>
 
-          <Card title="Include the snippet on your theme" sectioned>
+          <Card title="2. Include the snippet on your theme" sectioned>
             <p>
               Manually add the below code to your{" "}
               <TextStyle variation="code">theme.liquid</TextStyle> file,
@@ -138,7 +141,7 @@ const Install = (shopSettings) => {
           </Card>
 
           <Card
-            title="Create the product"
+            title="3. Create the product"
             sectioned
             primaryFooterAction={{
               content: "Create tip/gratuity product",
@@ -148,12 +151,16 @@ const Install = (shopSettings) => {
             }}
           >
             <p>Click the button below to create the Tip/Gratuity product.</p>
-            {productCreated && <p>You have already created product.</p>}
+            {productCreated && (
+              <p className="install-des">
+                Tip/Gratuity product has already been created.
+              </p>
+            )}
           </Card>
-
+          <div className="card-spliter"></div>
           <Card
-            title="Need help with installation?"
             sectioned
+            title="Need help with installation?"
             primaryFooterAction={{
               content: "Request Help",
               onAction: handleRequestHelp,
@@ -163,7 +170,10 @@ const Install = (shopSettings) => {
             {installationHelpStatus && (
               <p>
                 Your help request has been sent. We will reach out to the{" "}
-                {shopSettings.shopInformation.store_owner_email} address soon.
+                <span className="install-email">
+                  {shopSettings.shopInformation.store_owner_email}
+                </span>{" "}
+                address soon.
               </p>
             )}
           </Card>
