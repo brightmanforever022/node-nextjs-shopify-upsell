@@ -288,3 +288,7 @@ input.tj-modal-custom-input {
   margin-top: 30px;
   margin-bottom: 30px;
 }
+.input-validation {
+  color: red;
+  margin-top: 15px;
+}

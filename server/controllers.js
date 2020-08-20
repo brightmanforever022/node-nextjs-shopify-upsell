@@ -164,7 +164,6 @@ async function updateSettingsMetafield(client, ctx) {
   );
 
   const updateMetafieldJson = await updateMetafield.json();
-  console.log("metafiled value:", updateMetafieldJson);
   const settingValues = JSON.parse(ctx.request.body.metafieldValue);
 
   // Update database

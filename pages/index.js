@@ -47,32 +47,44 @@ const Index = (shopSettings) => {
   const [customValue, setCustomValue] = useState(0);
 
   const [newSettings, updateSettings] = useState();
+  const [emptyError, setEmptyError] = useState(false);
   const shopPlan =
     shopSettings.shopInformation &&
     shopSettings.shopInformation.subscription_plan > 0;
 
   const handleUpdateSettings = async () => {
-    setUpdateMetafieldIsLoading(true);
+    if (
+      !(
+        parseInt(newSettings.defaultTipping1) > 0 &&
+        parseInt(newSettings.defaultTipping2) > 0 &&
+        parseInt(newSettings.defaultTipping3) > 0
+      )
+    ) {
+      setEmptyError(true);
+    } else {
+      setUpdateMetafieldIsLoading(true);
+      setEmptyError(false);
 
-    const updateMetafield = await fetch("/updateSettingsMetafield", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        metafieldValue: JSON.stringify(newSettings),
-        metafieldId: shopSettings.shopInformation.metafield_id,
-      }),
-    });
-    const updateMetafieldJson = await updateMetafield.json();
-    console.log(
-      "Response for updateMetafieldJson:",
-      JSON.stringify(updateMetafieldJson)
-    );
+      const updateMetafield = await fetch("/updateSettingsMetafield", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          metafieldValue: JSON.stringify(newSettings),
+          metafieldId: shopSettings.shopInformation.metafield_id,
+        }),
+      });
+      const updateMetafieldJson = await updateMetafield.json();
+      console.log(
+        "Response for updateMetafieldJson:",
+        JSON.stringify(updateMetafieldJson)
+      );
 
-    // Refetch data to make sure everything is up to date
-    setUpdateMetafieldIsLoading(false);
-    refetch();
+      // Refetch data to make sure everything is up to date
+      setUpdateMetafieldIsLoading(false);
+      refetch();
+    }
   };
 
   const handleInstallInitialSettings = async () => {
@@ -185,6 +197,8 @@ const Index = (shopSettings) => {
           <DefaultTippingPercentage
             settings={settings}
             updateSettings={updateSettings}
+            emptyError={emptyError}
+            updateError={setEmptyError}
           />
 
           <EnableCustomTipOption
