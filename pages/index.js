@@ -150,9 +150,9 @@ const Index = (shopSettings) => {
     color: settings.tipModalTextColor,
   };
 
-  const handleCustom = () => {
-    setCustomBtnClicked(true);
-  };
+  // const handleCustom = () => {
+  //   setCustomBtnClicked(true);
+  // };
 
   return (
     <Page
