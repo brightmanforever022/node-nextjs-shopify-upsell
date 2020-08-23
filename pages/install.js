@@ -157,7 +157,7 @@ const Install = (shopSettings) => {
               </p>
             )}
           </Card>
-          <div className="card-spliter"></div>
+          {/* <div className="card-spliter"></div>
           <Card
             sectioned
             title="Need help with installation?"
@@ -176,7 +176,7 @@ const Install = (shopSettings) => {
                 address soon.
               </p>
             )}
-          </Card>
+          </Card> */}
         </Layout.Section>
       </Layout>
     </Page>

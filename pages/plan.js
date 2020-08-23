@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Page, Layout, Card, Link } from "@shopify/polaris";
+import FooterHelpDiv from "../components/FooterHelp";
 import "../components/custom.css";
 
 const Plan = (shopSettings) => {
@@ -104,6 +105,7 @@ const Plan = (shopSettings) => {
                 <ul>
                   <li>Show a custom tip amount option</li>
                   <li>Hide the 'Powered by TipQuik' text</li>
+                  <li>Customized tip modal design implementation help</li>
                   <li>Access to more premium options as they are released</li>
                 </ul>
               </div>
@@ -112,15 +114,17 @@ const Plan = (shopSettings) => {
           <Card sectioned title="Need help? Questions? Comments?">
             <p>
               Don't hesitate to get in touch with us! We will be happy to assist
-              you with anything TipQuik related. Send us an email anytime to{" "}
+              you with anything TipQuik related. Get in touch with us via live
+              chat or send an email to
               <span className="install-email">
                 <Link external url="mailto:support@aesymmetric.xyz">
                   support@aesymmetric.xyz
                 </Link>
               </span>
-              . We'll respond within 24 hours.
+              . We’ll get back to you quickly!
             </p>
           </Card>
+          <FooterHelpDiv />
         </Layout.Section>
       </Layout>
     </Page>

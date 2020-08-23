@@ -279,6 +279,7 @@ input.tj-modal-custom-input {
 }
 .install-email {
   font-style: italic;
+  margin-left: 5px;
 }
 
 .card-spliter {

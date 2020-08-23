@@ -1,6 +1,8 @@
 import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "react-apollo";
 import App, { Container } from "next/app";
+import Router from "next/router";
+import withGA from "next-ga";
 import { AppProvider } from "@shopify/polaris";
 import { Provider } from "@shopify/app-bridge-react";
 import Cookies from "js-cookie";
@@ -44,4 +46,4 @@ class MyApp extends App {
   }
 }
 
-export default MyApp;
+export default withGA(ANALYTIC_KEY, Router)(MyApp);
