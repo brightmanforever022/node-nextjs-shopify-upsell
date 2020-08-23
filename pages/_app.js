@@ -1,8 +1,9 @@
 import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "react-apollo";
-import App, { Container } from "next/app";
+import App from "next/app";
 import Router from "next/router";
 import withGA from "next-ga";
+import { hotjar } from "react-hotjar";
 import { AppProvider } from "@shopify/polaris";
 import { Provider } from "@shopify/app-bridge-react";
 import Cookies from "js-cookie";
@@ -24,6 +25,10 @@ class MyApp extends App {
     this.state = {
       shopOrigin: shopDomain,
     };
+  }
+
+  componentDidMount() {
+    hotjar.initialize(HJID, HJSV);
   }
 
   render(ctx) {

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import gql from "graphql-tag";
 import { useQuery } from "@apollo/react-hooks";
-import { Page, Layout, Card, TextStyle } from "@shopify/polaris";
+import { Page, Layout, Card, TextStyle, Link } from "@shopify/polaris";
 import snippetContent from "../utils/snippetContent";
 import "../components/custom.css";
 
@@ -128,15 +128,26 @@ const Install = (shopSettings) => {
             )}
           </Card>
 
-          <Card title="2. Include the snippet on your theme" sectioned>
+          <Card title="2. Add the snippet to your theme" sectioned>
             <p>
-              Manually add the below code to your{" "}
+              Add the code below to your{" "}
               <TextStyle variation="code">theme.liquid</TextStyle> file,
               directly above the{" "}
               <TextStyle variation="code">{"</body>"}</TextStyle> tag.
             </p>
+            <br />
             <p>
               <TextStyle variation="code">{`{% render 'tipquik' %}`}</TextStyle>
+            </p>
+            <br />
+            <p>
+              Not sure how to do this? Watch
+              <span className="install-email">
+                <Link external url="https://vimeo.com/450159271">
+                  this video
+                </Link>
+              </span>
+              this video that shows you how to install the snippet.
             </p>
           </Card>
 

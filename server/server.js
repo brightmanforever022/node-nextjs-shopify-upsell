@@ -97,8 +97,14 @@ app.prepare().then(async () => {
         const { shop: shopOrigin, accessToken } = ctx.session;
         ctx.cookies.set("shopOrigin", shopOrigin, {
           httpOnly: false,
+          overwrite: true,
+          SameSite: "None",
         });
-        ctx.cookies.set("accessToken", accessToken, { httpOnly: false });
+        ctx.cookies.set("accessToken", accessToken, {
+          httpOnly: false,
+          overwrite: true,
+          SameSite: "None",
+        });
         const shopDetail = await Ctrl.fetchShopDetails(ctx);
 
         // get shop data from db
