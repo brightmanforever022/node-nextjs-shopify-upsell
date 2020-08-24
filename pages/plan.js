@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Page, Layout, Card, Link } from "@shopify/polaris";
 import FooterHelpDiv from "../components/FooterHelp";
+import $ from "jquery";
 import "../components/custom.css";
 
 const Plan = (shopSettings) => {
@@ -66,6 +67,10 @@ const Plan = (shopSettings) => {
     setCurrentPlan(0);
   };
 
+  const triggerIntercom = () => {
+    $(".intercom-launcher").trigger("click");
+  };
+
   return (
     <Page title="Your Subscription Plan">
       <Layout>
@@ -114,8 +119,14 @@ const Plan = (shopSettings) => {
           <Card sectioned title="Need help? Questions? Comments?">
             <p>
               Don't hesitate to get in touch with us! We will be happy to assist
-              you with anything TipQuik related. Get in touch with us via live
-              chat or send an email to
+              you with anything TipQuik related. Get in touch with us via
+              <span
+                className="install-email live-chat"
+                onClick={triggerIntercom}
+              >
+                live chat
+              </span>
+              or send an email to
               <span className="install-email">
                 <Link external url="mailto:support@aesymmetric.xyz">
                   support@aesymmetric.xyz

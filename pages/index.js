@@ -424,7 +424,6 @@ const Index = (shopSettings) => {
                 </FormLayout>
               </Card>
             </Layout.AnnotatedSection>
-            <FooterHelpDiv />
           </Layout>
         )}
 
@@ -441,6 +440,7 @@ const Index = (shopSettings) => {
           }
         />
       </Page>
+      <FooterHelpDiv />
     </Fragment>
   );
 };
