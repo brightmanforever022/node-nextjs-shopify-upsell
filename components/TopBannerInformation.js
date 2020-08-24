@@ -21,7 +21,7 @@ function TopBannerInformation({ settings }) {
 
   return (
     <Fragment>
-      {bannerHide && (
+      {!bannerHide && (
         <Banner
           title="You need to finish installing TipQuik"
           action={{

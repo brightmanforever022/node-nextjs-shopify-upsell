@@ -280,6 +280,13 @@ input.tj-modal-custom-input {
 .install-email {
   font-style: italic;
   margin-left: 5px;
+  margin-right: 5px;
+}
+.live-chat {
+  color: var(--p-interactive, #006fbb);
+}
+.live-chat:hover {
+  cursor: pointer;
 }
 
 .card-spliter {

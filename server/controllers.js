@@ -8,7 +8,6 @@ async function fetchShopDetails(ctx) {
   const shopOrigin = ctx.session.shop;
   const accessToken = ctx.session.accessToken;
   const apiVersion = "2020-04";
-  // console.debug(`fetching shop info for: ${JSON.stringify(shopOrigin)}`)
   if (!shopOrigin || !accessToken) {
     console.log(
       `Can't fetch shop information because shopOrigin/accessToken params are missing/bad`
@@ -17,7 +16,6 @@ async function fetchShopDetails(ctx) {
     return;
   }
   try {
-    // console.debug(`>fetchShopDetails: Shop origin: ${shopOrigin}`)
     let response = await fetch(
       `https://${shopOrigin}/admin/api/${apiVersion}/shop.json`,
       {
@@ -30,11 +28,9 @@ async function fetchShopDetails(ctx) {
     );
     let jsonData = await response.json();
     if (!jsonData) {
-      // console.debug(`no data was received for: ${shopOrigin}`);
       ctx.status = 401;
       return;
     } else {
-      // console.debug(`recieved the following shop information: ${JSON.stringify(jsonData)}`)
       ctx.status = 200;
       return jsonData.shop;
     }
@@ -316,6 +312,34 @@ async function updateSubscription(client, ctx) {
   }
 }
 
+async function klaviyoSubscribe(apiKey, listId, shopInfo, ctx) {
+  const addEmailKlaviyo = await fetch(
+    `https://a.klaviyo.com/api/v2/list/${listId}/members`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "api-key": apiKey,
+      },
+      body: JSON.stringify({
+        profiles: [
+          {
+            email: shopInfo.email,
+            full_name: shopInfo.name,
+          },
+        ],
+      }),
+    }
+  );
+
+  if (addEmailKlaviyo.status == 200) {
+    ctx.status = 200;
+    return addEmailKlaviyo;
+  } else {
+    return false;
+  }
+}
+
 module.exports = {
   fetchShopDetails,
   getShopSettings,
@@ -327,4 +351,5 @@ module.exports = {
   uninstallShop,
   updateShopWithSubscription,
   updateSubscription,
+  klaviyoSubscribe,
 };

@@ -36,6 +36,8 @@ const {
   SHOPIFY_API_KEY,
   SCOPES,
   DATABASE_URL,
+  KLAVIYO_API_KEY,
+  KLAVIYO_LIST,
 } = process.env;
 app.prepare().then(async () => {
   const server = new Koa();
@@ -97,13 +99,6 @@ app.prepare().then(async () => {
         const { shop: shopOrigin, accessToken } = ctx.session;
         ctx.cookies.set("shopOrigin", shopOrigin, {
           httpOnly: false,
-          overwrite: true,
-          SameSite: "None",
-        });
-        ctx.cookies.set("accessToken", accessToken, {
-          httpOnly: false,
-          overwrite: true,
-          SameSite: "None",
         });
         const shopDetail = await Ctrl.fetchShopDetails(ctx);
 
@@ -130,6 +125,14 @@ app.prepare().then(async () => {
                 "APP_SUBSCRIPTIONS_UPDATE",
                 "webhooks/subscriptionUpdate",
                 ApiVersion.April20
+              );
+
+              // Klaviyo Subscribe
+              await Ctrl.klaviyoSubscribe(
+                KLAVIYO_API_KEY,
+                KLAVIYO_LIST,
+                shopDetail,
+                ctx
               );
             } else {
               throw new Error("There are no shop data.");
@@ -190,6 +193,14 @@ app.prepare().then(async () => {
                 "APP_SUBSCRIPTIONS_UPDATE",
                 "webhooks/subscriptionUpdate",
                 ApiVersion.April20
+              );
+
+              // Subscribe into Klaviyo
+              await Ctrl.klaviyoSubscribe(
+                KLAVIYO_API_KEY,
+                KLAVIYO_LIST,
+                shopDetail,
+                ctx
               );
             } catch (insertErr) {
               console.log(insertErr);

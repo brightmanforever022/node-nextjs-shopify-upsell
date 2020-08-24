@@ -12,6 +12,7 @@ import TipModalDescription from "../components/TipModalDescription";
 import TipModalTextColor from "../components/TipModalTextColor";
 import TipModalBgColor from "../components/TipModalBgColor";
 import initialSettings from "../utils/initialSettings";
+import FooterHelpDiv from "../components/FooterHelp";
 import "../components/custom.css";
 
 const SHOP_TIPQUIK_METAFIELD_QUERY = gql`
@@ -423,6 +424,7 @@ const Index = (shopSettings) => {
                 </FormLayout>
               </Card>
             </Layout.AnnotatedSection>
+            <FooterHelpDiv />
           </Layout>
         )}
 

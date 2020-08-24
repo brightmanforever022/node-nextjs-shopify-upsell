@@ -3,6 +3,7 @@ import gql from "graphql-tag";
 import { useQuery } from "@apollo/react-hooks";
 import { Page, Layout, Card, TextStyle, Link } from "@shopify/polaris";
 import snippetContent from "../utils/snippetContent";
+import FooterHelpDiv from "../components/FooterHelp";
 import "../components/custom.css";
 
 const SHOP_TIPQUIK_QUERY = gql`
@@ -143,13 +144,13 @@ const Install = (shopSettings) => {
             <br />
             <br />
             <p>
-              Not sure how to do this? Watch
+              Not sure how to do this?
               <span className="install-email">
                 <Link external url="https://vimeo.com/450159271">
-                  this video
+                  Watch this video
                 </Link>
               </span>
-              this video that shows you how to install the snippet.
+              that shows you how to install the snippet to your theme.
             </p>
           </Card>
 
@@ -190,6 +191,7 @@ const Install = (shopSettings) => {
               </p>
             )}
           </Card> */}
+          <FooterHelpDiv />
         </Layout.Section>
       </Layout>
     </Page>

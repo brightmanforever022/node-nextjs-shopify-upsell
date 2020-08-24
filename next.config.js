@@ -28,6 +28,12 @@ module.exports = withCSS({
       APP_URL: appUrl,
     };
     config.plugins.push(new webpack.DefinePlugin(env));
+    config.plugins.push(
+      new webpack.ProvidePlugin({
+        $: "jquery",
+        jQuery: "jquery",
+      })
+    );
     return config;
   },
 });

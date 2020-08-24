@@ -40,18 +40,18 @@ class MyApp extends App {
       forceRedirect: true,
     };
 
-    // const intercomUser = {
-    //   user_id: INTERCOM_USER_ID,
-    //   email: INTERCOM_EMAIL,
-    //   name: INTERCOM_APP_NAME,
-    // };
+    const intercomUser = {
+      user_id: INTERCOM_USER_ID,
+      email: INTERCOM_EMAIL,
+      name: INTERCOM_APP_NAME,
+    };
 
     return (
       <AppProvider i18n={translations}>
         <Provider config={config}>
           <ApolloProvider client={client}>
             <Component {...pageProps} />
-            {/* <Intercom appID={INTERCOM_APP_ID} { ...intercomUser } /> */}
+            <Intercom appID={INTERCOM_APP_ID} {...intercomUser} />
           </ApolloProvider>
         </Provider>
       </AppProvider>
