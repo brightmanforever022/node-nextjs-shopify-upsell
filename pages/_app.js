@@ -4,9 +4,10 @@ import App from "next/app";
 import Router from "next/router";
 import withGA from "next-ga";
 import { hotjar } from "react-hotjar";
+import Intercom from "react-intercom";
 import { AppProvider } from "@shopify/polaris";
 import { Provider } from "@shopify/app-bridge-react";
-import Cookies from "js-cookie";
+// import Cookies from "js-cookie";
 import "@shopify/polaris/styles.css";
 import translations from "@shopify/polaris/locales/en.json";
 
@@ -39,11 +40,18 @@ class MyApp extends App {
       forceRedirect: true,
     };
 
+    // const intercomUser = {
+    //   user_id: INTERCOM_USER_ID,
+    //   email: INTERCOM_EMAIL,
+    //   name: INTERCOM_APP_NAME,
+    // };
+
     return (
       <AppProvider i18n={translations}>
         <Provider config={config}>
           <ApolloProvider client={client}>
             <Component {...pageProps} />
+            {/* <Intercom appID={INTERCOM_APP_ID} { ...intercomUser } /> */}
           </ApolloProvider>
         </Provider>
       </AppProvider>
