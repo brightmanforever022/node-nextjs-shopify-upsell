@@ -15,9 +15,7 @@ function TopBannerInformation({ settings }) {
         settings.product_installation_status
     );
     const insUrl =
-      "https://" + settings.shop_domain + "/admin/apps/tipquik-local/install";
-    // const insUrl = 'https://alex-test-4-22-2018.myshopify.com/admin/apps/tipquik-local/install';
-    // const insUrl = 'https://tipquik.ngrok.io/install';
+      "https://" + settings.shop_domain + "/admin/apps/" + APP_URL + "/install";
     setInstallationUrl(insUrl);
   }, [settings]);
 

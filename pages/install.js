@@ -24,9 +24,9 @@ const Install = (shopSettings) => {
 
   const [createSnippetLoading, setCreateSnippetLoading] = useState(false);
   const [createProductLoading, setCreateProductLoading] = useState(false);
-  // const [installationHelpStatus, setInstallationHelpStatus] = useState(
-  //   shopSettings.shopInformation.installation_help_status
-  // );
+  const [installationHelpStatus, setInstallationHelpStatus] = useState(
+    shopSettings.shopInformation.installation_help_status
+  );
   const [productCreated, setProductCreated] = useState(
     shopSettings.shopInformation.product_installation_status
   );
