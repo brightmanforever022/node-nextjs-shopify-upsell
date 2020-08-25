@@ -67,6 +67,9 @@ const Plan = (shopSettings) => {
 
   const triggerIntercom = () => {
     $(".intercom-launcher").trigger("click");
+
+    const frame = $("#intercom-container iframe");
+    $(".intercom-launcher", frame.contents()).trigger("click");
   };
 
   return (

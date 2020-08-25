@@ -9,7 +9,7 @@ function TopBannerInformation({ settings }) {
 
   useEffect(() => {
     setBannerHide(
-      settings.snippet_installation_status ||
+      settings.snippet_installation_status &&
         settings.product_installation_status
     );
     const instUrl =

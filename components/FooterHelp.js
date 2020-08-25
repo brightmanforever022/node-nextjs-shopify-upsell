@@ -4,6 +4,9 @@ import $ from "jquery";
 function FooterHelpDiv() {
   const triggerIntercom = () => {
     $(".intercom-launcher").trigger("click");
+
+    const frame = $("#intercom-container iframe");
+    $(".intercom-launcher", frame.contents()).trigger("click");
   };
 
   return (
