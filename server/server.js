@@ -302,26 +302,26 @@ app.prepare().then(async () => {
     ctx.body = { storeData: ctx.body.subData };
   });
 
-  router.get("/customerrequest", async (ctx) => {
+  router.post("/customerrequest", async (ctx, next) => {
     ctx.status = 200;
-    if (ctx.state && ctx.state.webhook) {
-      return Ctrl.gdprWebhook(shopInfo, ctx);
+    if (ctx.request && ctx.request.body) {
+      return Ctrl.gdprWebhook(shopInfo, "customers/data_request", ctx);
     } else {
       console.log("attack");
     }
   });
-  router.get("/customererase", async (ctx) => {
+  router.post("/customererase", async (ctx) => {
     ctx.status = 200;
-    if (ctx.state && ctx.state.webhook) {
-      return Ctrl.gdprWebhook(shopInfo, ctx);
+    if (ctx.request && ctx.request.body) {
+      return Ctrl.gdprWebhook(shopInfo, "customers/redact", ctx);
     } else {
       console.log("attack");
     }
   });
-  router.get("/shoperase", async (ctx) => {
+  router.post("/shoperase", async (ctx) => {
     ctx.status = 200;
-    if (ctx.state && ctx.state.webhook) {
-      return Ctrl.gdprWebhook(shopInfo, ctx);
+    if (ctx.request && ctx.request.body) {
+      return Ctrl.gdprWebhook(shopInfo, "shop/redact", ctx);
     } else {
       console.log("attack");
     }

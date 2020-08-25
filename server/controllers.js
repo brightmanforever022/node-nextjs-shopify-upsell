@@ -339,38 +339,43 @@ async function klaviyoSubscribe(apiKey, listId, shopInfo, ctx) {
   }
 }
 
-async function gdprWebhook(shopInfo, ctx) {
-  const webhookData = ctx.state.webhook;
-  const sgMail = require("@sendgrid/mail");
-  sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-  await sgMail.send({
-    to: process.env.SUPPORT_EMAIL,
-    from: shopInfo.email,
-    subject: "TipQuik - GDPR Webhook Request - <" + webhookData.topic + ">",
-    text:
-      "TipQuik GDPR Webhook content is following: " +
-      "\n App Name: " +
-      "TipQuik" +
-      "\n Store owner email: " +
-      webhookData.payload.email +
-      "\n Store Domain: " +
-      webhookData.domain +
-      "\n Webhook Content: " +
-      JSON.stringify(webhookData),
-    html:
-      "<p>TipQuik GDPR Webhook's content is following: " +
-      "</p><p> App Name: " +
-      "TipQuik" +
-      "</p><p>Store owner email: " +
-      webhookData.payload.email +
-      "</p><p>Store Domain: <a href='" +
-      webhookData.domain +
-      "'>" +
-      webhookData.domain +
-      "</a></p><p>Webhook Content: " +
-      JSON.stringify(webhookData) +
-      "</p>",
-  });
+async function gdprWebhook(shopInfo, topic, ctx) {
+  const gdprData = ctx.request.body;
+  console.log("gdprdata: ", gdprData);
+  try {
+    const sgMail = require("@sendgrid/mail");
+    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+    sgMail.send({
+      to: process.env.SUPPORT_EMAIL,
+      from: shopInfo.email,
+      subject: "TipQuik - GDPR Webhook Request - " + topic,
+      text:
+        "TipQuik GDPR Webhook content is following: " +
+        "\n App Name: " +
+        "TipQuik" +
+        "\n Store owner email: " +
+        shopInfo.email +
+        "\n Store Domain: " +
+        gdprData.shop_domain +
+        "\n Webhook Content: " +
+        JSON.stringify(gdprData),
+      html:
+        "<p>TipQuik GDPR Webhook content is following: " +
+        "</p><p> App Name: " +
+        "TipQuik" +
+        "</p><p>Store owner email: " +
+        shopInfo.email +
+        "</p><p>Store Domain: <a href='" +
+        gdprData.shop_domain +
+        "'>" +
+        gdprData.shop_domain +
+        "</a></p><p>Webhook Content: " +
+        JSON.stringify(gdprData) +
+        "</p>",
+    });
+  } catch (error) {
+    console.log("sendgrid error: ", error);
+  }
 
   ctx.body = { gdprStore: { active: true } };
 }
