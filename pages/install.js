@@ -150,7 +150,7 @@ const Install = (shopSettings) => {
                   Watch this video
                 </Link>
               </span>
-              that shows you how to install the snippet to your theme.
+              that shows you how to add the snippet to your theme.
             </p>
           </Card>
 

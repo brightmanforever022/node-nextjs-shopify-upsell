@@ -78,10 +78,6 @@ const Index = (shopSettings) => {
         }),
       });
       const updateMetafieldJson = await updateMetafield.json();
-      console.log(
-        "Response for updateMetafieldJson:",
-        JSON.stringify(updateMetafieldJson)
-      );
 
       // Refetch data to make sure everything is up to date
       setUpdateMetafieldIsLoading(false);
@@ -102,10 +98,6 @@ const Index = (shopSettings) => {
       }),
     });
     const createMetafieldJson = await createMetafield.json();
-    console.log(
-      "Response for createMetafieldJson:",
-      JSON.stringify(createMetafieldJson)
-    );
 
     // Refetch data to make sure everything is up to date
     setInstallInitialSettingsLoading(false);

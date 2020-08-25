@@ -39,6 +39,9 @@ const {
   KLAVIYO_API_KEY,
   KLAVIYO_LIST,
 } = process.env;
+
+let shopInfo = {};
+
 app.prepare().then(async () => {
   const server = new Koa();
   server.use(koaConnect(compression()));
@@ -101,6 +104,7 @@ app.prepare().then(async () => {
           httpOnly: false,
         });
         const shopDetail = await Ctrl.fetchShopDetails(ctx);
+        shopInfo = shopDetail;
 
         // get shop data from db
         client
@@ -141,13 +145,14 @@ app.prepare().then(async () => {
           .catch(async (err) => {
             const ds = new Date();
             const text =
-              "INSERT INTO shops(shop_domain, access_token, store_owner_email, subscription_status, snippet_installation_status, product_installation_status, " +
-              "installation_help_status, created_at, updated_at) " +
-              "VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *";
+              "INSERT INTO shops(shop_domain, access_token, store_owner_email, store_owner_full_name, subscription_status, " +
+              "snippet_installation_status, product_installation_status, installation_help_status, created_at, updated_at) " +
+              "VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *";
             const values = [
               shopOrigin,
               accessToken,
               shopDetail.email,
+              shopDetail.shop_owner,
               false,
               false,
               false,
@@ -326,6 +331,39 @@ app.prepare().then(async () => {
           ctx.state.webhook
         );
         return Ctrl.updateSubscription(client, ctx);
+      },
+    })
+  );
+
+  server.use(
+    receiveWebhook({
+      path: "/customers/redact",
+      secret: SHOPIFY_API_SECRET,
+      async onReceived(ctx) {
+        console.log("/customers/redact");
+        return Ctrl.gdprWebhook(shopInfo, ctx);
+      },
+    })
+  );
+
+  server.use(
+    receiveWebhook({
+      path: "/shop/redact",
+      secret: SHOPIFY_API_SECRET,
+      async onReceived(ctx) {
+        console.log("/shop/redact");
+        return Ctrl.gdprWebhook(shopInfo, ctx);
+      },
+    })
+  );
+
+  server.use(
+    receiveWebhook({
+      path: "/customers/data_request",
+      secret: SHOPIFY_API_SECRET,
+      async onReceived(ctx) {
+        console.log("/customers/data_request");
+        return Ctrl.gdprWebhook(shopInfo, ctx);
       },
     })
   );

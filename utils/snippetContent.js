@@ -492,16 +492,13 @@ export default `{% for key_value in shop.metafields.tipquik.settings %}
       }).then(function (response) {
         return response.json();
       }).then(function (data) {
-        console.log('Current cart data:', data);
         var lineItems = data.items;
-        console.log('lineItems:', lineItems);
         var tjTotal = 0;
         lineItems.forEach(function (item) {
           if (item.handle != 'tip-gratuity') {
             tjTotal = tjTotal + item.final_line_price;
           }
         });
-        console.log('tjTotal:', tjTotal);
         
         {% if tipquik_settings_defaultTipping1 > 0 %}
           document.getElementById('tipQuikAmt1').textContent = '{{ cart.currency.symbol }}' + (tjTotal * {{tipquik_settings_defaultTipping1}} / 10000).toFixed(2);
@@ -545,8 +542,7 @@ export default `{% for key_value in shop.metafields.tipquik.settings %}
     var tipQuikAddBtns = document.querySelectorAll('[data-tipquik-add]');
     tipQuikAddBtns.forEach(function (btn) {
       btn.onclick = function (event) {
-        console.log('click event', event); // Show loading/success message
-
+        
         document.getElementById('tipQuikSuccess').style.display = 'flex';
         document.getElementById('tipQuikCustomInputWrapper').className = 'customInputHidden';
         var value = parseInt(event.currentTarget.getAttribute('data-tipquik-add'));
@@ -564,7 +560,6 @@ export default `{% for key_value in shop.metafields.tipquik.settings %}
         }).then(function (response) {
           return response.json();
         }).then(function (data) {
-          console.log('Success:', data);
           window.location.href = '/checkout';
         }).catch(function (error) {
           console.error('Error:', error);
@@ -579,8 +574,7 @@ export default `{% for key_value in shop.metafields.tipquik.settings %}
     }
     
     document.addEventListener('submit', function (event) {
-      console.log('event', event);
-
+      
       if (event.target.getAttribute('action') == '/cart' && event.submitter.getAttribute('name') != 'update') {
         event.preventDefault();
         onCartSubmit(event);

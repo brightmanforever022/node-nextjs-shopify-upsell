@@ -340,6 +340,37 @@ async function klaviyoSubscribe(apiKey, listId, shopInfo, ctx) {
   }
 }
 
+async function gdprWebhook(shopInfo, ctx) {
+  const webhookData = ctx.state.webhook;
+  console.log("shopinfo: ", shopInfo);
+  console.log("webhookData: ", webhookData);
+
+  /*
+  const sgMail = require("@sendgrid/mail");
+  sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+  sgMail.send({
+    to: process.env.SUPPORT_EMAIL,
+    from: process.env.SUPPORT_EMAIL,
+    subject:
+      "TipQuik - installation help request - " + helpRequest.shop_domain,
+    text:
+      "TipQuik app installation help has been requested.\n Store URL: " +
+      helpRequest.shop_domain +
+      "\n Store owner email: " +
+      helpRequest.shop_owner,
+    html:
+      "<p>TipQuik app installation help has been requested.</p><p>Store URL: <a href='" +
+      helpRequest.shop_domain +
+      "'>" +
+      helpRequest.shop_domain +
+      "</a>" +
+      "</a></p><p> Store owner email: " +
+      helpRequest.shop_owner +
+      "</p>",
+  });
+  */
+}
+
 module.exports = {
   fetchShopDetails,
   getShopSettings,
@@ -352,4 +383,5 @@ module.exports = {
   updateShopWithSubscription,
   updateSubscription,
   klaviyoSubscribe,
+  gdprWebhook,
 };

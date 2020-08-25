@@ -34,7 +34,6 @@ const Plan = (shopSettings) => {
   };*/
 
   const joinPremium = async () => {
-    console.log("arrive premium");
     const joinPremiumRes = await fetch("/joinPremium", {
       method: "POST",
       headers: {
@@ -52,7 +51,6 @@ const Plan = (shopSettings) => {
   };
 
   const downGrade = async () => {
-    console.log("arrive downGrade");
     const downGradeRes = await fetch("/downGrade", {
       method: "POST",
       headers: {

@@ -5,18 +5,16 @@ function TopBannerInformation({ settings }) {
   const [bannerHide, setBannerHide] = useState(
     settings.snippet_installation_status || settings.product_installation_status
   );
-  const instUrl =
-    "https://" + settings.shop_domain + "/admin/apps/tipquik-local/install";
-  const [installationUrl, setInstallationUrl] = useState(instUrl);
+  const [installationUrl, setInstallationUrl] = useState("");
 
   useEffect(() => {
     setBannerHide(
       settings.snippet_installation_status ||
         settings.product_installation_status
     );
-    const insUrl =
+    const instUrl =
       "https://" + settings.shop_domain + "/admin/apps/" + APP_URL + "/install";
-    setInstallationUrl(insUrl);
+    setInstallationUrl(instUrl);
   }, [settings]);
 
   return (

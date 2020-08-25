@@ -25,6 +25,9 @@ class MyApp extends App {
       : "";
     this.state = {
       shopOrigin: shopDomain,
+      shopInfo: props.pageProps.shopInformation
+        ? props.pageProps.shopInformation
+        : {},
     };
   }
 
@@ -41,9 +44,13 @@ class MyApp extends App {
     };
 
     const intercomUser = {
-      user_id: INTERCOM_USER_ID,
-      email: INTERCOM_EMAIL,
-      name: INTERCOM_APP_NAME,
+      user_id: this.state.shopInfo ? this.state.shopInfo.id : "9989",
+      email: this.state.shopInfo
+        ? this.state.shopInfo.store_owner_email
+        : "abc@temp.com",
+      name: this.state.shopInfo
+        ? this.state.shopInfo.store_owner_full_name
+        : "TipQuik User",
     };
 
     return (

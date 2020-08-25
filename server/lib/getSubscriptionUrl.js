@@ -49,7 +49,6 @@ const getSubscriptionUrl = async (ctx, accessToken, shop, planName, price) => {
 
   const responseJson = await response.json();
   ctx.body = { subData: responseJson.data.appSubscriptionCreate };
-  console.log(responseJson.data);
 };
 
 module.exports = getSubscriptionUrl;
