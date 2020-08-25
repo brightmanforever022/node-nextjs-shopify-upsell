@@ -302,6 +302,31 @@ app.prepare().then(async () => {
     ctx.body = { storeData: ctx.body.subData };
   });
 
+  router.get("/customerrequest", async (ctx) => {
+    ctx.status = 200;
+    if (ctx.state && ctx.state.webhook) {
+      return Ctrl.gdprWebhook(shopInfo, ctx);
+    } else {
+      console.log("attack");
+    }
+  });
+  router.get("/customererase", async (ctx) => {
+    ctx.status = 200;
+    if (ctx.state && ctx.state.webhook) {
+      return Ctrl.gdprWebhook(shopInfo, ctx);
+    } else {
+      console.log("attack");
+    }
+  });
+  router.get("/shoperase", async (ctx) => {
+    ctx.status = 200;
+    if (ctx.state && ctx.state.webhook) {
+      return Ctrl.gdprWebhook(shopInfo, ctx);
+    } else {
+      console.log("attack");
+    }
+  });
+
   router.get("*", verifyRequest(), async (ctx) => {
     await handle(ctx.req, ctx.res);
     ctx.respond = false;

@@ -51,6 +51,9 @@ class MyApp extends App {
       name: this.state.shopInfo
         ? this.state.shopInfo.store_owner_full_name
         : "TipQuik User",
+      created_at: this.state.shopInfo
+        ? Date.parse(this.state.shopInfo.created_at)
+        : 1598337229000,
     };
 
     return (

@@ -1,6 +1,5 @@
 import dotenv from "dotenv";
 import "isomorphic-fetch";
-import { ApiVersion } from "@shopify/koa-shopify-graphql-proxy";
 import * as helpers from "./helper";
 dotenv.config();
 
@@ -325,7 +324,7 @@ async function klaviyoSubscribe(apiKey, listId, shopInfo, ctx) {
         profiles: [
           {
             email: shopInfo.email,
-            full_name: shopInfo.name,
+            full_name: shopInfo.store_owner_full_name,
           },
         ],
       }),
@@ -342,33 +341,38 @@ async function klaviyoSubscribe(apiKey, listId, shopInfo, ctx) {
 
 async function gdprWebhook(shopInfo, ctx) {
   const webhookData = ctx.state.webhook;
-  console.log("shopinfo: ", shopInfo);
-  console.log("webhookData: ", webhookData);
-
-  /*
   const sgMail = require("@sendgrid/mail");
   sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-  sgMail.send({
+  await sgMail.send({
     to: process.env.SUPPORT_EMAIL,
-    from: process.env.SUPPORT_EMAIL,
-    subject:
-      "TipQuik - installation help request - " + helpRequest.shop_domain,
+    from: shopInfo.email,
+    subject: "TipQuik - GDPR Webhook Request - <" + webhookData.topic + ">",
     text:
-      "TipQuik app installation help has been requested.\n Store URL: " +
-      helpRequest.shop_domain +
+      "TipQuik GDPR Webhook content is following: " +
+      "\n App Name: " +
+      "TipQuik" +
       "\n Store owner email: " +
-      helpRequest.shop_owner,
+      webhookData.payload.email +
+      "\n Store Domain: " +
+      webhookData.domain +
+      "\n Webhook Content: " +
+      JSON.stringify(webhookData),
     html:
-      "<p>TipQuik app installation help has been requested.</p><p>Store URL: <a href='" +
-      helpRequest.shop_domain +
+      "<p>TipQuik GDPR Webhook's content is following: " +
+      "</p><p> App Name: " +
+      "TipQuik" +
+      "</p><p>Store owner email: " +
+      webhookData.payload.email +
+      "</p><p>Store Domain: <a href='" +
+      webhookData.domain +
       "'>" +
-      helpRequest.shop_domain +
-      "</a>" +
-      "</a></p><p> Store owner email: " +
-      helpRequest.shop_owner +
+      webhookData.domain +
+      "</a></p><p>Webhook Content: " +
+      JSON.stringify(webhookData) +
       "</p>",
   });
-  */
+
+  ctx.body = { gdprStore: { active: true } };
 }
 
 module.exports = {
