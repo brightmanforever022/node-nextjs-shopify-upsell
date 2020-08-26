@@ -355,7 +355,7 @@ async function klaviyoSubscribe(apiKey, listId, shopInfo, ctx) {
   }
 }
 
-async function gdprWebhook(shopInfo, topic, ctx) {
+async function gdprWebhook(shopInfo, appName, topic, ctx) {
   const gdprData = ctx.request.body;
   try {
     const sgMail = require("@sendgrid/mail");
@@ -363,11 +363,12 @@ async function gdprWebhook(shopInfo, topic, ctx) {
     sgMail.send({
       to: process.env.SUPPORT_EMAIL,
       from: process.env.SUPPORT_EMAIL,
-      subject: "TipQuik - GDPR Webhook Request - " + topic,
+      subject: appName + " - GDPR Webhook Request - " + topic,
       text:
-        "TipQuik GDPR Webhook content is following: " +
+        appName +
+        " GDPR Webhook content is following: " +
         "\n App Name: " +
-        "TipQuik" +
+        appName +
         "\n Store owner email: " +
         shopInfo.store_owner_email +
         "\n Store Domain: " +
@@ -375,9 +376,11 @@ async function gdprWebhook(shopInfo, topic, ctx) {
         "\n Webhook Content: " +
         JSON.stringify(gdprData),
       html:
-        "<p>TipQuik GDPR Webhook content is following: " +
+        "<p>" +
+        appName +
+        " GDPR Webhook content is following: " +
         "</p><p> App Name: " +
-        "TipQuik" +
+        appName +
         "</p><p>Store owner email: " +
         shopInfo.store_owner_email +
         "</p><p>Store Domain: <a href='" +

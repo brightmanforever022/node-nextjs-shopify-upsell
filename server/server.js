@@ -38,6 +38,7 @@ const {
   DATABASE_URL,
   KLAVIYO_API_KEY,
   KLAVIYO_LIST,
+  APP_NAME,
 } = process.env;
 
 app.prepare().then(async () => {
@@ -303,7 +304,12 @@ app.prepare().then(async () => {
     ctx.status = 200;
     if (ctx.request && ctx.request.body) {
       const shopInfo = await Ctrl.getShopDataByDomain(client, ctx);
-      return Ctrl.gdprWebhook(shopInfo, "customers/data_request", ctx);
+      return Ctrl.gdprWebhook(
+        shopInfo,
+        APP_NAME,
+        "customers/data_request",
+        ctx
+      );
     } else {
       console.log("attack");
     }
@@ -312,7 +318,7 @@ app.prepare().then(async () => {
     ctx.status = 200;
     if (ctx.request && ctx.request.body) {
       const shopInfo = await Ctrl.getShopDataByDomain(client, ctx);
-      return Ctrl.gdprWebhook(shopInfo, "customers/redact", ctx);
+      return Ctrl.gdprWebhook(shopInfo, APP_NAME, "customers/redact", ctx);
     } else {
       console.log("attack");
     }
@@ -321,7 +327,7 @@ app.prepare().then(async () => {
     ctx.status = 200;
     if (ctx.request && ctx.request.body) {
       const shopInfo = await Ctrl.getShopDataByDomain(client, ctx);
-      return Ctrl.gdprWebhook(shopInfo, "shop/redact", ctx);
+      return Ctrl.gdprWebhook(shopInfo, APP_NAME, "shop/redact", ctx);
     } else {
       console.log("attack");
     }
@@ -382,16 +388,16 @@ app.prepare().then(async () => {
   //   })
   // );
 
-  server.use(
-    receiveWebhook({
-      path: "/customers/data_request",
-      secret: SHOPIFY_API_SECRET,
-      async onReceived(ctx) {
-        console.log("/customers/data_request");
-        return Ctrl.gdprWebhook(shopInfo, ctx);
-      },
-    })
-  );
+  // server.use(
+  //   receiveWebhook({
+  //     path: "/customers/data_request",
+  //     secret: SHOPIFY_API_SECRET,
+  //     async onReceived(ctx) {
+  //       console.log("/customers/data_request");
+  //       return Ctrl.gdprWebhook(shopInfo, ctx);
+  //     },
+  //   })
+  // );
 
   server.listen(port, () => {
     console.log(`> Ready on http://localhost:${port}`);
