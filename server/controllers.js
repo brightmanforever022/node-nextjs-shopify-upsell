@@ -325,6 +325,7 @@ async function klaviyoSubscribe(apiKey, listId, shopInfo, ctx) {
           {
             email: shopInfo.email,
             full_name: shopInfo.store_owner_full_name,
+            store_url: shopInfo.shop_domain,
           },
         ],
       }),
