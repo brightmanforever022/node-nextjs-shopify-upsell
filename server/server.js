@@ -40,8 +40,6 @@ const {
   KLAVIYO_LIST,
 } = process.env;
 
-let shopInfo = {};
-
 app.prepare().then(async () => {
   const server = new Koa();
   server.use(koaConnect(compression()));
@@ -52,7 +50,6 @@ app.prepare().then(async () => {
   const client = new Client({
     connectionString: DATABASE_URL,
   });
-
   await helpers.connectRetry(3, client);
 
   server.use(
@@ -104,7 +101,6 @@ app.prepare().then(async () => {
           httpOnly: false,
         });
         const shopDetail = await Ctrl.fetchShopDetails(ctx);
-        shopInfo = shopDetail;
 
         // get shop data from db
         client
@@ -145,10 +141,11 @@ app.prepare().then(async () => {
           .catch(async (err) => {
             const ds = new Date();
             const text =
-              "INSERT INTO shops(shop_domain, access_token, store_owner_email, store_owner_full_name, subscription_status, " +
+              "INSERT INTO shops(shop_id, shop_domain, access_token, store_owner_email, store_owner_full_name, subscription_status, " +
               "snippet_installation_status, product_installation_status, installation_help_status, created_at, updated_at) " +
-              "VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *";
+              "VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *";
             const values = [
+              shopDetail.id,
               shopOrigin,
               accessToken,
               shopDetail.email,
@@ -302,9 +299,10 @@ app.prepare().then(async () => {
     ctx.body = { storeData: ctx.body.subData };
   });
 
-  router.post("/customerrequest", async (ctx, next) => {
+  router.post("/customerrequest", async (ctx) => {
     ctx.status = 200;
     if (ctx.request && ctx.request.body) {
+      const shopInfo = await Ctrl.getShopDataByDomain(client, ctx);
       return Ctrl.gdprWebhook(shopInfo, "customers/data_request", ctx);
     } else {
       console.log("attack");
@@ -313,6 +311,7 @@ app.prepare().then(async () => {
   router.post("/customererase", async (ctx) => {
     ctx.status = 200;
     if (ctx.request && ctx.request.body) {
+      const shopInfo = await Ctrl.getShopDataByDomain(client, ctx);
       return Ctrl.gdprWebhook(shopInfo, "customers/redact", ctx);
     } else {
       console.log("attack");
@@ -321,6 +320,7 @@ app.prepare().then(async () => {
   router.post("/shoperase", async (ctx) => {
     ctx.status = 200;
     if (ctx.request && ctx.request.body) {
+      const shopInfo = await Ctrl.getShopDataByDomain(client, ctx);
       return Ctrl.gdprWebhook(shopInfo, "shop/redact", ctx);
     } else {
       console.log("attack");
@@ -360,27 +360,27 @@ app.prepare().then(async () => {
     })
   );
 
-  server.use(
-    receiveWebhook({
-      path: "/customers/redact",
-      secret: SHOPIFY_API_SECRET,
-      async onReceived(ctx) {
-        console.log("/customers/redact");
-        return Ctrl.gdprWebhook(shopInfo, ctx);
-      },
-    })
-  );
+  // server.use(
+  //   receiveWebhook({
+  //     path: "/customers/redact",
+  //     secret: SHOPIFY_API_SECRET,
+  //     async onReceived(ctx) {
+  //       console.log("/customers/redact");
+  //       return Ctrl.gdprWebhook(shopInfo, ctx);
+  //     },
+  //   })
+  // );
 
-  server.use(
-    receiveWebhook({
-      path: "/shop/redact",
-      secret: SHOPIFY_API_SECRET,
-      async onReceived(ctx) {
-        console.log("/shop/redact");
-        return Ctrl.gdprWebhook(shopInfo, ctx);
-      },
-    })
-  );
+  // server.use(
+  //   receiveWebhook({
+  //     path: "/shop/redact",
+  //     secret: SHOPIFY_API_SECRET,
+  //     async onReceived(ctx) {
+  //       console.log("/shop/redact");
+  //       return Ctrl.gdprWebhook(shopInfo, ctx);
+  //     },
+  //   })
+  // );
 
   server.use(
     receiveWebhook({

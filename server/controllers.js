@@ -69,6 +69,21 @@ async function getShopSettings(client, ctx) {
   return;
 }
 
+async function getShopDataByDomain(client, ctx) {
+  const shopInfo = await client.query(
+    "SELECT * FROM shops WHERE shop_domain=$1",
+    [ctx.request.body.shop_domain]
+  );
+
+  if (shopInfo.rows.length == 1) {
+    ctx.status = 200;
+    return shopInfo.rows[0];
+  } else {
+    ctx.status = 401;
+    return;
+  }
+}
+
 async function requestHelp(client, ctx) {
   const helpRequest = ctx.request.body.storedata;
   // Send help request mail to support email (support@aesymmetric.xyz)
@@ -354,7 +369,7 @@ async function gdprWebhook(shopInfo, topic, ctx) {
         "\n App Name: " +
         "TipQuik" +
         "\n Store owner email: " +
-        shopInfo.email +
+        shopInfo.store_owner_email +
         "\n Store Domain: " +
         gdprData.shop_domain +
         "\n Webhook Content: " +
@@ -364,7 +379,7 @@ async function gdprWebhook(shopInfo, topic, ctx) {
         "</p><p> App Name: " +
         "TipQuik" +
         "</p><p>Store owner email: " +
-        shopInfo.email +
+        shopInfo.store_owner_email +
         "</p><p>Store Domain: <a href='" +
         gdprData.shop_domain +
         "'>" +
@@ -383,6 +398,7 @@ async function gdprWebhook(shopInfo, topic, ctx) {
 module.exports = {
   fetchShopDetails,
   getShopSettings,
+  getShopDataByDomain,
   requestHelp,
   createSettingsMetafield,
   updateSettingsMetafield,
