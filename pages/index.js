@@ -1,4 +1,5 @@
-import { useState, Fragment } from "react";
+import { useState, useEffect, Fragment } from "react";
+import Head from "next/head";
 import { Page, Layout, FormLayout, Card, PageActions } from "@shopify/polaris";
 import gql from "graphql-tag";
 import { useQuery } from "@apollo/react-hooks";
@@ -53,6 +54,28 @@ const Index = (shopSettings) => {
   const shopPlan =
     shopSettings.shopInformation &&
     shopSettings.shopInformation.subscription_plan > 0;
+  const [headJS, setHeadJS] = useState(null);
+  useEffect(() => {
+    setHeadJS(
+      <Head>
+        <script
+          async
+          src={`https://www.googletagmanager.com/gtag/js?id=${ANALYTIC_KEY}`}
+        ></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){window.dataLayer.push(arguments)}
+          gtag('js', new Date());
+
+          gtag('config', "${ANALYTIC_KEY}", {'page_title': 'Settings', 'page_path': '/'});
+        `,
+          }}
+        />
+      </Head>
+    );
+  }, []);
 
   const handleUpdateSettings = async () => {
     if (
@@ -150,6 +173,7 @@ const Index = (shopSettings) => {
 
   return (
     <Fragment>
+      {headJS}
       <TopBannerInformation settings={shopSettings.shopInformation} />
       <Page
         title="Tip Settings"

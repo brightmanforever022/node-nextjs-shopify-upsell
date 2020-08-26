@@ -1,13 +1,13 @@
 import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "react-apollo";
 import App from "next/app";
-import Router from "next/router";
-import withGA from "next-ga";
+// import Cookies from "js-cookie";
+// import Router from "next/router";
+// import withGA from "next-ga";
 import { hotjar } from "react-hotjar";
 import Intercom from "react-intercom";
 import { AppProvider } from "@shopify/polaris";
 import { Provider } from "@shopify/app-bridge-react";
-// import Cookies from "js-cookie";
 import "@shopify/polaris/styles.css";
 import translations from "@shopify/polaris/locales/en.json";
 
@@ -69,4 +69,5 @@ class MyApp extends App {
   }
 }
 
-export default withGA(ANALYTIC_KEY, Router)(MyApp);
+// export default withGA(ANALYTIC_KEY, Router)(MyApp);
+export default MyApp;

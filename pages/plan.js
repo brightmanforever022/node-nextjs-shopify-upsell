@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import Head from "next/head";
 import { Page, Layout, Card, Link } from "@shopify/polaris";
 import FooterHelpDiv from "../components/FooterHelp";
 import $ from "jquery";
@@ -13,6 +14,28 @@ const Plan = (shopSettings) => {
   let currentPlanString;
   currentPlanString =
     "Plan List (Your current plan is " + planList[currentPlan] + ")";
+  const [headJS, setHeadJS] = useState(null);
+  useEffect(() => {
+    setHeadJS(
+      <Head>
+        <script
+          async
+          src={`https://www.googletagmanager.com/gtag/js?id=${ANALYTIC_KEY}`}
+        ></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){window.dataLayer.push(arguments)}
+          gtag('js', new Date());
+
+          gtag('config', "${ANALYTIC_KEY}", {'page_title': 'Account', 'page_path': '/plan'});
+        `,
+          }}
+        />
+      </Head>
+    );
+  }, []);
 
   /*const joinStandard = async () => {
     console.log("arrive standard");
@@ -73,73 +96,77 @@ const Plan = (shopSettings) => {
   };
 
   return (
-    <Page title="Your Subscription Plan">
-      <Layout>
-        <Layout.Section>
-          <Card title={currentPlanString}>
-            <Card.Section title="Free">
-              <p>
-                Collect tips from your customers before checkout. Completely
-                free to use!
-              </p>
-            </Card.Section>
+    <div>
+      {headJS}
+      <Page title="Your Subscription Plan">
+        <Layout>
+          <Layout.Section>
+            <Card title={currentPlanString}>
+              <Card.Section title="Free">
+                <p>
+                  Collect tips from your customers before checkout. Completely
+                  free to use!
+                </p>
+              </Card.Section>
 
-            {/* <Card.Section
-              title="Standard"
-              actions={[
-                {
-                  content: currentPlan == 1 ? "Unsubscribe" : "Subscribe",
-                  onAction: currentPlan == 1 ? downGrade : joinStandard,
-                  disabled: currentPlan == 2,
-                },
-              ]}
-            >
-              <p>You have no limitations.</p>
-            </Card.Section> */}
-            <Card.Section
-              title="Premium ($9.99/month)"
-              actions={[
-                {
-                  content: currentPlan == 2 ? "Unsubscribe" : "Subscribe",
-                  onAction: currentPlan == 2 ? downGrade : joinPremium,
-                  disabled: currentPlan == 1,
-                },
-              ]}
-            >
-              <div>
-                <p>Includes more ways to customize the tip modal:</p>
-                <ul>
-                  <li>Show a custom tip amount option</li>
-                  <li>Hide the 'Powered by TipQuik' text</li>
-                  <li>Customized tip modal design implementation help</li>
-                  <li>Access to more premium options as they are released</li>
-                </ul>
-              </div>
-            </Card.Section>
-          </Card>
-          <Card sectioned title="Need help? Questions? Comments?">
-            <p>
-              Don't hesitate to get in touch with us! We will be happy to assist
-              you with anything TipQuik related. Get in touch with us via
-              <span
-                className="install-email live-chat"
-                onClick={triggerIntercom}
+              {/* <Card.Section
+                title="Standard"
+                actions={[
+                  {
+                    content: currentPlan == 1 ? "Unsubscribe" : "Subscribe",
+                    onAction: currentPlan == 1 ? downGrade : joinStandard,
+                    disabled: currentPlan == 2,
+                  },
+                ]}
               >
-                live chat
-              </span>
-              or send an email to
-              <span className="install-email">
-                <Link external url="mailto:support@aesymmetric.xyz">
-                  support@aesymmetric.xyz
-                </Link>
-              </span>
-              . We’ll get back to you quickly!
-            </p>
-          </Card>
-          <FooterHelpDiv />
-        </Layout.Section>
-      </Layout>
-    </Page>
+                <p>You have no limitations.</p>
+              </Card.Section> */}
+              <Card.Section
+                title="Premium ($9.99/month)"
+                actions={[
+                  {
+                    content: currentPlan == 2 ? "Unsubscribe" : "Subscribe",
+                    onAction: currentPlan == 2 ? downGrade : joinPremium,
+                    disabled: currentPlan == 1,
+                  },
+                ]}
+              >
+                <div>
+                  <p>Includes more ways to customize the tip modal:</p>
+                  <ul>
+                    <li>Show a custom tip amount option</li>
+                    <li>Hide the 'Powered by TipQuik' text</li>
+                    <li>Customized tip modal design implementation help</li>
+                    <li>Access to more premium options as they are released</li>
+                  </ul>
+                </div>
+              </Card.Section>
+            </Card>
+            <Card sectioned title="Need help? Questions? Comments?">
+              <p>
+                Don't hesitate to get in touch with us! We will be happy to
+                assist you with anything TipQuik related. Get in touch with us
+                via
+                <span
+                  className="install-email live-chat"
+                  onClick={triggerIntercom}
+                >
+                  live chat
+                </span>
+                or send an email to
+                <span className="install-email">
+                  <Link external url="mailto:support@aesymmetric.xyz">
+                    support@aesymmetric.xyz
+                  </Link>
+                </span>
+                . We’ll get back to you quickly!
+              </p>
+            </Card>
+            <FooterHelpDiv />
+          </Layout.Section>
+        </Layout>
+      </Page>
+    </div>
   );
 };
 
