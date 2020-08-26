@@ -2,10 +2,9 @@ import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "react-apollo";
 import App from "next/app";
 // import Cookies from "js-cookie";
-// import Router from "next/router";
-// import withGA from "next-ga";
 import { hotjar } from "react-hotjar";
 import Intercom from "react-intercom";
+import { initGA, logPageView } from "../utils/analytics";
 import { AppProvider } from "@shopify/polaris";
 import { Provider } from "@shopify/app-bridge-react";
 import "@shopify/polaris/styles.css";
@@ -33,6 +32,12 @@ class MyApp extends App {
 
   componentDidMount() {
     hotjar.initialize(HJID, HJSV);
+
+    if (!window.GA_INITIALIZED) {
+      initGA();
+      window.GA_INITIALIZED = true;
+    }
+    logPageView();
   }
 
   render(ctx) {

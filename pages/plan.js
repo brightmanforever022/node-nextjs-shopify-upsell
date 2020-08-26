@@ -97,7 +97,7 @@ const Plan = (shopSettings) => {
 
   return (
     <div>
-      {headJS}
+      {/* {headJS} */}
       <Page title="Your Subscription Plan">
         <Layout>
           <Layout.Section>

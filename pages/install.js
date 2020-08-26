@@ -130,7 +130,7 @@ const Install = (shopSettings) => {
 
   return (
     <div>
-      {headJS}
+      {/* {headJS} */}
       <Page title="Steps to install">
         <Layout>
           <Layout.Section>

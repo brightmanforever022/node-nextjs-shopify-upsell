@@ -173,7 +173,7 @@ const Index = (shopSettings) => {
 
   return (
     <Fragment>
-      {headJS}
+      {/* {headJS} */}
       <TopBannerInformation settings={shopSettings.shopInformation} />
       <Page
         title="Tip Settings"
@@ -209,7 +209,6 @@ const Index = (shopSettings) => {
 
         {originalSettings && (
           <Layout>
-            {/* <TopBannerInformation settings={settings} /> */}
             <EnableTipQuikApp
               settings={settings}
               updateSettings={updateSettings}
