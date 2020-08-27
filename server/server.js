@@ -142,11 +142,10 @@ app.prepare().then(async () => {
           .catch(async (err) => {
             const ds = new Date();
             const text =
-              "INSERT INTO shops(shop_id, shop_domain, access_token, store_owner_email, store_owner_full_name, subscription_status, " +
+              "INSERT INTO shops(shop_domain, access_token, store_owner_email, store_owner_full_name, subscription_status, " +
               "snippet_installation_status, product_installation_status, installation_help_status, created_at, updated_at) " +
-              "VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *";
+              "VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *";
             const values = [
-              shopDetail.id,
               shopOrigin,
               accessToken,
               shopDetail.email,
