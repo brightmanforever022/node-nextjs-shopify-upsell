@@ -24,7 +24,6 @@ class MyApp extends App {
       : "";
     this.state = {
       shopOrigin: shopDomain,
-      // shopOrigin: "alex-test-4-22-2018.myshopify.com",
       shopInfo: props.pageProps.shopInformation
         ? props.pageProps.shopInformation
         : {},
@@ -32,10 +31,6 @@ class MyApp extends App {
   }
 
   componentDidMount() {
-    // const url = new URL(window.location.href);
-    // this.setState({
-    //   shopOrigin: url.searchParams.get("shop"),
-    // });
     hotjar.initialize(HJID, HJSV);
 
     if (!window.GA_INITIALIZED) {
