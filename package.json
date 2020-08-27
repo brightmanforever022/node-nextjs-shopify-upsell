@@ -27,7 +27,7 @@
     "@sentry/node": "^5.19.1",
     "@shopify/app-bridge-react": "^1.26.2",
     "@shopify/app-cli-node-generator-helper": "^1.2.1",
-    "@shopify/koa-shopify-auth": "^3.1.68",
+    "@shopify/koa-shopify-auth": "^3.1.61",
     "@shopify/koa-shopify-graphql-proxy": "^4.0.1",
     "@shopify/koa-shopify-webhooks": "^2.5.0",
     "@shopify/polaris": "^4.13.0",

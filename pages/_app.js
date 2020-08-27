@@ -19,11 +19,13 @@ const client = new ApolloClient({
 class MyApp extends App {
   constructor(props) {
     super(props);
-    let shopDomain = props.pageProps.shopInformation
-      ? props.pageProps.shopInformation.shop_domain
-      : "";
+    // let shopDomain = props.pageProps.shopInformation
+    //   ? props.pageProps.shopInformation.shop_domain
+    //   : "";
+    const url = new URL(window.location.href);
     this.state = {
-      shopOrigin: shopDomain,
+      // shopOrigin: shopDomain,
+      shopOrigin: url.searchParams.get("shop"),
       shopInfo: props.pageProps.shopInformation
         ? props.pageProps.shopInformation
         : {},

@@ -93,6 +93,7 @@ app.prepare().then(async () => {
       apiKey: SHOPIFY_API_KEY,
       secret: SHOPIFY_API_SECRET,
       scopes: [SCOPES],
+      accessMode: "offline",
 
       async afterAuth(ctx) {
         //Auth token and shop available in session
