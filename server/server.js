@@ -53,6 +53,8 @@ app.prepare().then(async () => {
   });
   await helpers.connectRetry(3, client);
 
+  server.use(bodyParser());
+
   server.use(
     session(
       {
@@ -219,8 +221,6 @@ app.prepare().then(async () => {
       version: ApiVersion.April20,
     })
   );
-
-  server.use(bodyParser());
 
   // Get the setting of store
   router.post("/getShopSettings", async (ctx) => {

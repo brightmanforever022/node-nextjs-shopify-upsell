@@ -24,7 +24,7 @@ class MyApp extends App {
     //   : "";
     this.state = {
       // shopOrigin: shopDomain,
-      shopOrigin: "",
+      shopOrigin: "alex-test-4-22-2018.myshopify.com",
       shopInfo: props.pageProps.shopInformation
         ? props.pageProps.shopInformation
         : {},
