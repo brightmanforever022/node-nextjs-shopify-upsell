@@ -22,10 +22,9 @@ class MyApp extends App {
     // let shopDomain = props.pageProps.shopInformation
     //   ? props.pageProps.shopInformation.shop_domain
     //   : "";
-    const url = new URL(window.location.href);
     this.state = {
       // shopOrigin: shopDomain,
-      shopOrigin: url.searchParams.get("shop"),
+      shopOrigin: "",
       shopInfo: props.pageProps.shopInformation
         ? props.pageProps.shopInformation
         : {},
@@ -33,6 +32,10 @@ class MyApp extends App {
   }
 
   componentDidMount() {
+    const url = new URL(window.location.href);
+    this.setState({
+      shopOrigin: url.searchParams.get("shop"),
+    });
     hotjar.initialize(HJID, HJSV);
 
     if (!window.GA_INITIALIZED) {
