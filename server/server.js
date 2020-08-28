@@ -10,7 +10,6 @@ import bodyParser from "koa-bodyparser";
 import next from "next";
 import Router from "koa-router";
 import session from "koa-session";
-import Cookies from "js-cookie";
 const Ctrl = require("./controllers");
 import * as handlers from "./handlers/index";
 import helper, * as helpers from "./helper";
@@ -45,7 +44,6 @@ const {
 app.prepare().then(async () => {
   const server = new Koa();
   server.use(koaConnect(compression()));
-  // server.use(bodyParser());
   server.use(cors());
   server.proxy = true;
 
@@ -120,8 +118,8 @@ app.prepare().then(async () => {
         const { shop: shopOrigin, accessToken } = ctx.session;
         ctx.cookies.set("shopOrigin", shopOrigin, {
           httpOnly: false,
-          secure: true,
-          sameSite: "none",
+          // secure: true,
+          // sameSite: "none",
         });
         const shopDetail = await Ctrl.fetchShopDetails(ctx);
 

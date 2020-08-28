@@ -480,7 +480,6 @@ Index.getInitialProps = async (ctx) => {
     },
     body: JSON.stringify({
       shop_domain: shopOrigin,
-      // shop_domain: Cookies.get("shopOrigin"),
     }),
   });
 
