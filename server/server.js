@@ -234,22 +234,22 @@ app.prepare().then(async () => {
     })
   );
 
-  server.use(async (ctx, next) => {
-    const { shop: shopOrigin } = ctx.session;
+  // server.use(async (ctx, next) => {
+  //   const { shop: shopOrigin } = ctx.session;
 
-    const queryData = url.parse(ctx.request.url, true);
-    if (
-      shopOrigin &&
-      queryData.query.shop &&
-      shopOrigin !== queryData.query.shop
-    ) {
-      console.debug("🎤 Dropping invalid session");
-      ctx.session.shopOrigin = null;
-      ctx.session.accessToken = null;
-      ctx.redirect("/auth");
-    }
-    await next();
-  });
+  //   const queryData = url.parse(ctx.request.url, true);
+  //   if (
+  //     shopOrigin &&
+  //     queryData.query.shop &&
+  //     shopOrigin !== queryData.query.shop
+  //   ) {
+  //     console.debug("🎤 Dropping invalid session");
+  //     ctx.session.shopOrigin = null;
+  //     ctx.session.accessToken = null;
+  //     ctx.redirect("/auth");
+  //   }
+  //   await next();
+  // });
 
   server.use(
     graphQLProxy({
