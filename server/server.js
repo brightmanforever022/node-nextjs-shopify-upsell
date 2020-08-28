@@ -10,6 +10,7 @@ import bodyParser from "koa-bodyparser";
 import next from "next";
 import Router from "koa-router";
 import session from "koa-session";
+import Cookies from "js-cookie";
 const Ctrl = require("./controllers");
 import * as handlers from "./handlers/index";
 import helper, * as helpers from "./helper";
@@ -44,6 +45,7 @@ const {
 app.prepare().then(async () => {
   const server = new Koa();
   server.use(koaConnect(compression()));
+  // server.use(bodyParser());
   server.use(cors());
   server.proxy = true;
 
@@ -58,12 +60,29 @@ app.prepare().then(async () => {
       {
         sameSite: "none",
         secure: true,
+        httpOnly: false,
       },
       server
     )
   );
 
   server.keys = [SHOPIFY_API_SECRET];
+
+  // server.use(async (ctx) => {
+
+  //   if (typeof ctx.cookies.get('shopOrigin') === "undefined" && typeof ctx.session.shop !== "undefined") {
+  //     console.log('arrive empty shoporigin')
+  //     ctx.cookies.set('shopOrigin', ctx.session.shop, { httpOnly: false, sameSite: 'none', secure: true });
+  //     ctx.redirect(ctx.req.url);
+  //     return
+  //   }
+
+  //   await handle(ctx.req, ctx.res);
+  //   ctx.respond = false;
+  //   ctx.res.statusCode = 200;
+  //   console.log(`server responding: ${ctx.req.url}`);
+  //   return
+  // });
 
   server.use(async (ctx, next) => {
     if (ctx.request.header.cookie) {
@@ -101,6 +120,8 @@ app.prepare().then(async () => {
         const { shop: shopOrigin, accessToken } = ctx.session;
         ctx.cookies.set("shopOrigin", shopOrigin, {
           httpOnly: false,
+          secure: true,
+          sameSite: "none",
         });
         const shopDetail = await Ctrl.fetchShopDetails(ctx);
 
@@ -214,6 +235,24 @@ app.prepare().then(async () => {
       },
     })
   );
+
+  server.use(async (ctx, next) => {
+    const { shop: shopOrigin } = ctx.session;
+
+    const queryData = url.parse(ctx.request.url, true);
+    if (
+      shopOrigin &&
+      queryData.query.shop &&
+      shopOrigin !== queryData.query.shop
+    ) {
+      console.debug("🎤 Dropping invalid session");
+      ctx.session.shopOrigin = null;
+      ctx.session.accessToken = null;
+      ctx.redirect("/auth");
+    }
+    await next();
+  });
+
   server.use(
     graphQLProxy({
       version: ApiVersion.April20,
@@ -224,6 +263,7 @@ app.prepare().then(async () => {
 
   // Get the setting of store
   router.post("/getShopSettings", async (ctx) => {
+    console.log("arrive getshopsettings");
     ctx.res.setHeader("Content-Type", "application/json;charset=utf-8");
     return Ctrl.getShopSettings(client, ctx);
   });
