@@ -119,7 +119,7 @@ app.prepare().then(async () => {
         ctx.cookies.set("shopOrigin", shopOrigin, {
           httpOnly: false,
           // secure: true,
-          // sameSite: "none",
+          sameSite: "none",
         });
         const shopDetail = await Ctrl.fetchShopDetails(ctx);
 

@@ -19,11 +19,11 @@ const client = new ApolloClient({
 class MyApp extends App {
   constructor(props) {
     super(props);
-    // let shopDomain = props.pageProps.shopInformation
-    //   ? props.pageProps.shopInformation.shop_domain
-    //   : "";
+    let shopDomain = props.pageProps.shopInformation
+      ? props.pageProps.shopInformation.shop_domain
+      : "";
     this.state = {
-      // shopOrigin: shopDomain,
+      shopOrigin: shopDomain,
       shopInfo: props.pageProps.shopInformation
         ? props.pageProps.shopInformation
         : {},
@@ -44,8 +44,8 @@ class MyApp extends App {
     const { Component, pageProps } = this.props;
     const config = {
       apiKey: API_KEY,
-      shopOrigin: Cookies.get("shopOrigin"),
-      // shopOrigin: this.state.shopOrigin,
+      // shopOrigin: Cookies.get("shopOrigin"),
+      shopOrigin: this.state.shopOrigin,
       forceRedirect: true,
     };
 
