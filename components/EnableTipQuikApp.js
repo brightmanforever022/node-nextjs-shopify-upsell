@@ -16,7 +16,7 @@ function EnableTipQuikApp({ settings, updateSettings }) {
 
   return (
     <Layout.AnnotatedSection
-      title="Enable TipQuik App"
+      title="Enable TipQuik Application"
       description="Will mandatory enable or disable the TipQuik Modal on store checkout page."
     >
       <SettingToggle
