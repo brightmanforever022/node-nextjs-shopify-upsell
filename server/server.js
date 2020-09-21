@@ -116,11 +116,11 @@ app.prepare().then(async () => {
         //Auth token and shop available in session
         //Redirect to shop upon auth
         const { shop: shopOrigin, accessToken } = ctx.session;
-        ctx.cookies.set("shopOrigin", shopOrigin, {
-          httpOnly: false,
-          // secure: true,
-          sameSite: "none",
-        });
+        // ctx.cookies.set("shopOrigin", shopOrigin, {
+        //   httpOnly: false,
+        //   secure: true,
+        //   sameSite: "none",
+        // });
         const shopDetail = await Ctrl.fetchShopDetails(ctx);
 
         // get shop data from db

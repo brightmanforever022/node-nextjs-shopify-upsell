@@ -1,7 +1,6 @@
 import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "react-apollo";
 import App from "next/app";
-import Cookies from "js-cookie";
 import { hotjar } from "react-hotjar";
 import Intercom from "react-intercom";
 import { initGA, logPageView } from "../utils/analytics";
@@ -44,8 +43,7 @@ class MyApp extends App {
     const { Component, pageProps } = this.props;
     const config = {
       apiKey: API_KEY,
-      // shopOrigin: Cookies.get("shopOrigin"),
-      shopOrigin: this.state.shopOrigin,
+      shopOrigin: pageProps.shopInformation.shopOrigin,
       forceRedirect: true,
     };
 
@@ -75,5 +73,4 @@ class MyApp extends App {
   }
 }
 
-// export default withGA(ANALYTIC_KEY, Router)(MyApp);
 export default MyApp;

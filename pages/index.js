@@ -3,7 +3,6 @@ import Head from "next/head";
 import { Page, Layout, FormLayout, Card, PageActions } from "@shopify/polaris";
 import gql from "graphql-tag";
 import { useQuery } from "@apollo/react-hooks";
-import Cookies from "js-cookie";
 import TopBannerInformation from "../components/TopBannerInformation";
 import DefaultTippingPercentage from "../components/DefaultTippingPercentage";
 import EnableTipQuikApp from "../components/EnableTipQuikApp";
@@ -483,7 +482,6 @@ Index.getInitialProps = async (ctx) => {
     }),
   });
 
-  console.log("shop settings: ", shopSettings.status);
   const settings = await shopSettings.json();
   return settings;
 };
