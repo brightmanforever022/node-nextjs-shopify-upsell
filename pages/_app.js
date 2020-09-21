@@ -43,7 +43,7 @@ class MyApp extends App {
     const { Component, pageProps } = this.props;
     const config = {
       apiKey: API_KEY,
-      shopOrigin: pageProps.shopInformation.shopOrigin,
+      shopOrigin: pageProps.shopInformation.shop_domain,
       forceRedirect: true,
     };
 
